@@ -3,17 +3,22 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Cansin's Base SaaS (Flask) documentation
+Cansin's Base SaaS (Flask) Documentation
 ========================================
 
-Add your content using ``reStructuredText`` syntax. See the
-`reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
-documentation for details.
-
+Welcome to Cansin's Base SaaS (Flask) documentation!
 
 .. toctree::
    :maxdepth: 4
-   :caption: Contents:
+   :caption: Documentation:
 
+   features
+   getting-started
    autoapi/index
 
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Additional Resources:
+   
+   contact
