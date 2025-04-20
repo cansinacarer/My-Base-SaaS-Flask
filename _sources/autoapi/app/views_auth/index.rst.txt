@@ -1,0 +1,65 @@
+app.views_auth
+==============
+
+.. py:module:: app.views_auth
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   app.views_auth.app_auth
+   app.views_auth.google_client
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   app.views_auth.load_user
+   app.views_auth.unauthorized_callback
+   app.views_auth.logout
+   app.views_auth.register
+   app.views_auth.login
+   app.views_auth.two_factor
+   app.views_auth.email_confirmation_by_code
+   app.views_auth.password_reset
+   app.views_auth.password_reset_requested
+   app.views_auth.set_new_password
+   app.views_auth.get_google_sso_config
+   app.views_auth.login_callback_google
+
+
+Module Contents
+---------------
+
+.. py:data:: app_auth
+
+.. py:function:: load_user(user_id)
+
+.. py:data:: google_client
+
+.. py:function:: unauthorized_callback()
+
+.. py:function:: logout()
+
+.. py:function:: register()
+
+.. py:function:: login()
+
+.. py:function:: two_factor()
+
+.. py:function:: email_confirmation_by_code()
+
+.. py:function:: password_reset()
+
+.. py:function:: password_reset_requested()
+
+.. py:function:: set_new_password(token)
+
+.. py:function:: get_google_sso_config()
+
+.. py:function:: login_callback_google()
+

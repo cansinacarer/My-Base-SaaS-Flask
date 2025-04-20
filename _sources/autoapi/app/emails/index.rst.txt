@@ -1,0 +1,44 @@
+app.emails
+==========
+
+.. py:module:: app.emails
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   app.emails.ts
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   app.emails.send_email_to_reset_password
+   app.emails.send_email_with_code
+   app.emails.send_email_about_subscription_confirmation
+   app.emails.send_email_about_subscription_cancellation
+   app.emails.send_email_about_subscription_deletion
+   app.emails.send_async_email
+
+
+Module Contents
+---------------
+
+.. py:data:: ts
+
+.. py:function:: send_email_to_reset_password(email)
+
+.. py:function:: send_email_with_code(user)
+
+.. py:function:: send_email_about_subscription_confirmation(user, tier_name)
+
+.. py:function:: send_email_about_subscription_cancellation(user, tier_name, cancellation_date)
+
+.. py:function:: send_email_about_subscription_deletion(user, tier_name)
+
+.. py:function:: send_async_email(msg)
+

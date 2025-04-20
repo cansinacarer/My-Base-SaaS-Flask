@@ -1,0 +1,387 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>app.models &mdash; Cansin&#39;s Base SaaS (Flask) v1.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d29a5c0e"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Cansin's Base SaaS (Flask)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/index.html">Auto Generated Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Cansin's Base SaaS (Flask)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../app.html">app</a></li>
+      <li class="breadcrumb-item active">app.models</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for app.models</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">email.policy</span><span class="w"> </span><span class="kn">import</span> <span class="n">default</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hashlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">md5</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyotp</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">flask_login</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserMixin</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">app</span><span class="w"> </span><span class="kn">import</span> <span class="n">app</span><span class="p">,</span> <span class="n">db</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">app.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">s3</span><span class="p">,</span> <span class="n">appTimezone</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">app.utilities.object_storage</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_download_link</span><span class="p">,</span> <span class="n">user_folder_size</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">app.utilities.qr</span><span class="w"> </span><span class="kn">import</span> <span class="n">qrcode_img_src</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">app.utilities.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">readable_file_size</span>
+
+
+<div class="viewcode-block" id="Tiers">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Tiers">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Tiers</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">&quot;Tiers&quot;</span>
+
+<div class="viewcode-block" id="Tiers.id">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Tiers.id">[docs]</a>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Tiers.name">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Tiers.name">[docs]</a>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">120</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Tiers.label">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Tiers.label">[docs]</a>
+    <span class="n">label</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">120</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Tiers.stripe_price_id">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Tiers.stripe_price_id">[docs]</a>
+    <span class="n">stripe_price_id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">120</span><span class="p">))</span></div>
+
+
+    <span class="c1"># We use this to access the users object from the tier object</span>
+<div class="viewcode-block" id="Tiers.users">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Tiers.users">[docs]</a>
+    <span class="n">users</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">relationship</span><span class="p">(</span><span class="s2">&quot;Users&quot;</span><span class="p">,</span> <span class="n">back_populates</span><span class="o">=</span><span class="s2">&quot;tier&quot;</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span></div>
+
+
+
+<div class="viewcode-block" id="Users">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Users">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Users</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">,</span> <span class="n">UserMixin</span><span class="p">):</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">&quot;Users&quot;</span>
+
+<div class="viewcode-block" id="Users.id">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Users.id">[docs]</a>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Users.email">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Users.email">[docs]</a>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">120</span><span class="p">),</span> <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Users.password">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Users.password">[docs]</a>
+    <span class="n">password</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">500</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Users.role">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Users.role">[docs]</a>
+    <span class="n">role</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;user&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Users.stripe_customer_id">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Users.stripe_customer_id">[docs]</a>
+    <span class="n">stripe_customer_id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">50</span><span class="p">))</span></div>
+
+
+    <span class="c1"># Define the Foreign Key</span>
+<div class="viewcode-block" id="Users.tier_id">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Users.tier_id">[docs]</a>
+    <span class="n">tier_id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s2">&quot;Tiers.id&quot;</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="Users.credits">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Users.credits">[docs]</a>
+    <span class="n">credits</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">BigInteger</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+
+
+    <span class="c1"># We use this to access the tier object from the user object</span>
+    <span class="c1"># E.g. current_user.tier.name</span>
+<div class="viewcode-block" id="Users.tier">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Users.tier">[docs]</a>
+    <span class="n">tier</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">relationship</span><span class="p">(</span><span class="s2">&quot;Tiers&quot;</span><span class="p">,</span> <span class="n">back_populates</span><span class="o">=</span><span class="s2">&quot;users&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Users.cancel_at">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Users.cancel_at">[docs]</a>
+    <span class="n">cancel_at</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">DateTime</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="Users.firstName">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Users.firstName">[docs]</a>
+    <span class="n">firstName</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">120</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Users.lastName">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Users.lastName">[docs]</a>
+    <span class="n">lastName</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">120</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="Users.newsletter">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Users.newsletter">[docs]</a>
+    <span class="n">newsletter</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Users.member_since">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Users.member_since">[docs]</a>
+    <span class="n">member_since</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">DateTime</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="Users.last_login">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Users.last_login">[docs]</a>
+    <span class="n">last_login</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">DateTime</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="Users.email_confirmation_code">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Users.email_confirmation_code">[docs]</a>
+    <span class="n">email_confirmation_code</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">20</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Users.last_confirmation_codes_sent">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Users.last_confirmation_codes_sent">[docs]</a>
+    <span class="n">last_confirmation_codes_sent</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">DateTime</span><span class="p">(),</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span>
+    <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Users.number_of_email_confirmation_codes_sent">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Users.number_of_email_confirmation_codes_sent">[docs]</a>
+    <span class="n">number_of_email_confirmation_codes_sent</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Users.email_confirmed">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Users.email_confirmed">[docs]</a>
+    <span class="n">email_confirmed</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Users.google_avatar_url">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Users.google_avatar_url">[docs]</a>
+    <span class="n">google_avatar_url</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">500</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Users.avatar_uploaded">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Users.avatar_uploaded">[docs]</a>
+    <span class="n">avatar_uploaded</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Boolean</span><span class="p">(),</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Users.totp_secret">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Users.totp_secret">[docs]</a>
+    <span class="n">totp_secret</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">32</span><span class="p">),</span> <span class="n">default</span><span class="o">=</span><span class="n">pyotp</span><span class="o">.</span><span class="n">random_base32</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="Users.totp_enabled">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Users.totp_enabled">[docs]</a>
+    <span class="n">totp_enabled</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">email</span><span class="p">,</span>
+        <span class="n">password</span><span class="p">,</span>
+        <span class="n">tier_id</span><span class="p">,</span>
+        <span class="n">firstName</span><span class="p">,</span>
+        <span class="n">lastName</span><span class="p">,</span>
+        <span class="n">newsletter</span><span class="p">,</span>
+        <span class="n">member_since</span><span class="p">,</span>
+        <span class="n">last_login</span><span class="p">,</span>
+        <span class="n">email_confirmation_code</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="n">email</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">password</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tier_id</span> <span class="o">=</span> <span class="n">tier_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">firstName</span> <span class="o">=</span> <span class="n">firstName</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lastName</span> <span class="o">=</span> <span class="n">lastName</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">newsletter</span> <span class="o">=</span> <span class="n">newsletter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">member_since</span> <span class="o">=</span> <span class="n">member_since</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_login</span> <span class="o">=</span> <span class="n">last_login</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">email_confirmation_code</span> <span class="o">=</span> <span class="n">email_confirmation_code</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; - &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Users.save">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Users.save">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># inject self into db session</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="c1"># commit change and save the object</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="Users.avatar">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Users.avatar">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">avatar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">256</span><span class="p">):</span>
+        <span class="c1"># If the user has uploaded an avatar, we return the s3 link</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">avatar_uploaded</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="n">generate_download_link</span><span class="p">(</span>
+                <span class="n">bucket_name</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;S3_BUCKET_NAME&quot;</span><span class="p">],</span>
+                <span class="n">key</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;profile-pictures/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">.png&quot;</span><span class="p">,</span>
+                <span class="n">s3</span><span class="o">=</span><span class="n">s3</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="c1"># If the user has a google avatar, we return that</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">google_avatar_url</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">google_avatar_url</span>
+
+        <span class="c1"># Otherwise we return a gravatar</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">email_hashed</span> <span class="o">=</span> <span class="n">md5</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">email</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://www.gravatar.com/avatar/</span><span class="si">{</span><span class="n">email_hashed</span><span class="si">}</span><span class="s2">?d=mp&amp;s=</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">size</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="n">url</span></div>
+
+
+<div class="viewcode-block" id="Users.is_connected_google">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Users.is_connected_google">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_connected_google</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">google_avatar_url</span> <span class="o">!=</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="Users.totp">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Users.totp">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">totp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">secret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">totp_secret</span>
+        <span class="n">totp</span> <span class="o">=</span> <span class="n">pyotp</span><span class="o">.</span><span class="n">TOTP</span><span class="p">(</span><span class="n">secret</span><span class="p">)</span>
+
+        <span class="c1"># The provisioning url</span>
+        <span class="n">provisioning_url</span> <span class="o">=</span> <span class="n">totp</span><span class="o">.</span><span class="n">provisioning_uri</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="n">issuer_name</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Return the secret and the qr code url:</span>
+        <span class="k">return</span> <span class="n">secret</span><span class="p">,</span> <span class="n">qrcode_img_src</span><span class="p">(</span><span class="n">provisioning_url</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Users.totp_match">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Users.totp_match">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">totp_match</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">):</span>
+        <span class="n">totp</span> <span class="o">=</span> <span class="n">pyotp</span><span class="o">.</span><span class="n">TOTP</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">totp_secret</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">totp</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="n">code</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Users.totp_reset_secret">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Users.totp_reset_secret">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">totp_reset_secret</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">totp_secret</span> <span class="o">=</span> <span class="n">pyotp</span><span class="o">.</span><span class="n">random_base32</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Users.folder_size">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Users.folder_size">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">folder_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="n">user_folder_size</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">readable_file_size</span><span class="p">(</span><span class="n">size</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Users.folder_quota">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Users.folder_quota">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">folder_quota</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">readable_file_size</span><span class="p">(</span><span class="mi">500</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Users.folder_usage_percentage">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Users.folder_usage_percentage">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">folder_usage_percentage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">user_folder_size</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">500</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Users.add_credits">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Users.add_credits">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_credits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amount</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">credits</span> <span class="o">+=</span> <span class="n">amount</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Users.deduct_credits">
+<a class="viewcode-back" href="../../autoapi/app/models/index.html#app.models.Users.deduct_credits">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">deduct_credits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amount</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">credits</span> <span class="o">-=</span> <span class="n">amount</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Cansin Acarer.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

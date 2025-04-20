@@ -1,0 +1,19 @@
+app.utilities.user_registration_actions
+=======================================
+
+.. py:module:: app.utilities.user_registration_actions
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   app.utilities.user_registration_actions.new_user_actions_for_email_confirmed
+
+
+Module Contents
+---------------
+
+.. py:function:: new_user_actions_for_email_confirmed(user)
+

@@ -1,0 +1,596 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>app.views_private &mdash; Cansin&#39;s Base SaaS (Flask) v1.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d29a5c0e"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Cansin's Base SaaS (Flask)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/index.html">Auto Generated Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Cansin's Base SaaS (Flask)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../app.html">app</a></li>
+      <li class="breadcrumb-item active">app.views_private</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for app.views_private</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Flask modules</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">flask</span><span class="w"> </span><span class="kn">import</span> <span class="n">Blueprint</span><span class="p">,</span> <span class="n">render_template</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">url_for</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">flash</span><span class="p">,</span> <span class="n">jsonify</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">flask_login</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">login_required</span><span class="p">,</span>
+    <span class="n">current_user</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jinja2</span><span class="w"> </span><span class="kn">import</span> <span class="n">TemplateNotFound</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+
+<span class="c1"># Stripe</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">stripe</span>
+
+<span class="c1"># App modules</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">app</span><span class="w"> </span><span class="kn">import</span> <span class="n">app</span><span class="p">,</span> <span class="n">csrf</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">app.forms</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProfileDetailsForm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">app.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Users</span><span class="p">,</span> <span class="n">Tiers</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">app.utilities.object_storage</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_upload_link_profile_picture</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">app.utilities.error_handlers</span><span class="w"> </span><span class="kn">import</span> <span class="n">error_page</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">app.utilities.stripe_event_handler</span><span class="w"> </span><span class="kn">import</span> <span class="n">handle_stripe_event</span>
+
+<span class="c1"># Instantiate the Blueprint</span>
+<div class="viewcode-block" id="app_private">
+<a class="viewcode-back" href="../../autoapi/app/views_private/index.html#app.views_private.app_private">[docs]</a>
+<span class="n">app_private</span> <span class="o">=</span> <span class="n">Blueprint</span><span class="p">(</span><span class="s2">&quot;views_private&quot;</span><span class="p">,</span> <span class="vm">__name__</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># Custom date format filter</span>
+<span class="c1"># In Jinja, we can use this filter like: {{ charge.created | dateformat }}</span>
+<div class="viewcode-block" id="dateformat">
+<a class="viewcode-back" href="../../autoapi/app/views_private/index.html#app.views_private.dateformat">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">dateformat</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;%B </span><span class="si">%d</span><span class="s2">, %Y&quot;</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="nb">format</span><span class="p">)</span></div>
+
+
+
+<span class="n">app</span><span class="o">.</span><span class="n">jinja_env</span><span class="o">.</span><span class="n">filters</span><span class="p">[</span><span class="s2">&quot;dateformat&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dateformat</span>
+
+
+<div class="viewcode-block" id="timeformat">
+<a class="viewcode-back" href="../../autoapi/app/views_private/index.html#app.views_private.timeformat">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">timeformat</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;%I:%M %p&quot;</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="nb">format</span><span class="p">)</span></div>
+
+
+
+<span class="n">app</span><span class="o">.</span><span class="n">jinja_env</span><span class="o">.</span><span class="n">filters</span><span class="p">[</span><span class="s2">&quot;timeformat&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">timeformat</span>
+
+
+<span class="c1"># Webhook endpoints for external services to give us updates</span>
+<span class="nd">@app_private</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/webhook/&lt;path&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="nd">@csrf</span><span class="o">.</span><span class="n">exempt</span>
+<div class="viewcode-block" id="webhook">
+<a class="viewcode-back" href="../../autoapi/app/views_private/index.html#app.views_private.webhook">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">webhook</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">match</span> <span class="n">path</span><span class="p">:</span>
+            <span class="c1"># The endpoint where stripe sends the webhook events</span>
+            <span class="k">case</span> <span class="s2">&quot;stripe&quot;</span><span class="p">:</span>
+                <span class="c1"># Verify that the incoming request is from Stripe</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">event</span> <span class="o">=</span> <span class="n">stripe</span><span class="o">.</span><span class="n">webhook</span><span class="o">.</span><span class="n">Webhook</span><span class="o">.</span><span class="n">construct_event</span><span class="p">(</span>
+                        <span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span>
+                        <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Stripe-Signature&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                        <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;STRIPE_WEBHOOK_SECRET&quot;</span><span class="p">],</span>
+                    <span class="p">)</span>
+                    <span class="n">handle_stripe_event</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+
+                <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">error_page</span><span class="p">(</span><span class="mi">400</span><span class="p">)</span>
+
+                <span class="k">except</span> <span class="n">stripe</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">SignatureVerificationError</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="s2">&quot;Requests with invalid signature are hitting the stripe webhook!&quot;</span>
+                    <span class="p">)</span>
+                    <span class="k">return</span> <span class="n">error_page</span><span class="p">(</span><span class="mi">400</span><span class="p">)</span>
+
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Unhandled error while processing Stripe webhook request: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+                    <span class="k">return</span> <span class="n">error_page</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span>
+
+                <span class="c1"># Return a response to acknowledge the receipt of the event</span>
+                <span class="k">finally</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">jsonify</span><span class="p">(</span><span class="s2">&quot;success=True&quot;</span><span class="p">),</span> <span class="mi">200</span>
+
+            <span class="c1"># Non-existent webhook path</span>
+            <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">error_page</span><span class="p">(</span><span class="mi">404</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error when processing a webhook request: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">error_page</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># Billing pages routing</span>
+<span class="nd">@app_private</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/billing&quot;</span><span class="p">,</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;billing&quot;</span><span class="p">},</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="nd">@app_private</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/billing/&lt;path&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="nd">@login_required</span>
+<div class="viewcode-block" id="billing">
+<a class="viewcode-back" href="../../autoapi/app/views_private/index.html#app.views_private.billing">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">billing</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="c1"># Redirect to email confirmation</span>
+    <span class="k">if</span> <span class="n">current_user</span><span class="o">.</span><span class="n">email_confirmed</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">flash</span><span class="p">(</span>
+            <span class="s2">&quot;Please confirm your email address first by entering the confirmation code we have emailed you.&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;error&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;email_confirmation_by_code&quot;</span><span class="p">))</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">match</span> <span class="n">path</span><span class="p">:</span>
+            <span class="k">case</span> <span class="s2">&quot;success&quot;</span><span class="p">:</span>
+                <span class="c1"># This is only informational, we process the membership change with the webhook events</span>
+                <span class="n">flash</span><span class="p">(</span><span class="s2">&quot;Your payment has been successful.&quot;</span><span class="p">,</span> <span class="s2">&quot;success&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span>
+                    <span class="n">url_for</span><span class="p">(</span>
+                        <span class="s2">&quot;views_private.billing&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+
+            <span class="k">case</span> <span class="s2">&quot;cancel&quot;</span><span class="p">:</span>
+                <span class="c1"># This is only informational, we process the membership change with the webhook events</span>
+                <span class="n">flash</span><span class="p">(</span><span class="s2">&quot;Your payment has been canceled.&quot;</span><span class="p">,</span> <span class="s2">&quot;danger&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span>
+                    <span class="n">url_for</span><span class="p">(</span>
+                        <span class="s2">&quot;views_private.billing&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+
+            <span class="c1"># Redirect to the Stripe for purchase</span>
+            <span class="k">case</span> <span class="s2">&quot;purchase-credits&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">!=</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">error_page</span><span class="p">(</span><span class="mi">400</span><span class="p">)</span>
+
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="c1"># If the user doesn&#39;t have a stripe_customer_id, create a new customer</span>
+                    <span class="k">if</span> <span class="n">current_user</span><span class="o">.</span><span class="n">stripe_customer_id</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">customer</span> <span class="o">=</span> <span class="n">stripe</span><span class="o">.</span><span class="n">Customer</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                            <span class="n">email</span><span class="o">=</span><span class="n">current_user</span><span class="o">.</span><span class="n">email</span><span class="p">,</span>
+                            <span class="n">name</span><span class="o">=</span><span class="n">current_user</span><span class="o">.</span><span class="n">firstName</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">current_user</span><span class="o">.</span><span class="n">lastName</span><span class="p">,</span>
+                        <span class="p">)</span>
+                        <span class="n">current_user</span><span class="o">.</span><span class="n">stripe_customer_id</span> <span class="o">=</span> <span class="n">customer</span><span class="o">.</span><span class="n">id</span>
+                        <span class="n">current_user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+                    <span class="c1"># Based on the tier selected, select the price</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">creditsRequested</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;numberOfCredits&quot;</span><span class="p">)</span>
+
+                        <span class="c1"># Validate the number of credits</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">creditsRequested</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+                            <span class="n">flash</span><span class="p">(</span><span class="s2">&quot;Invalid number of credits selected.&quot;</span><span class="p">,</span> <span class="s2">&quot;danger&quot;</span><span class="p">)</span>
+                            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;views_private.billing&quot;</span><span class="p">))</span>
+
+                    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error while parsing the numberOfCredits requested: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="n">flash</span><span class="p">(</span><span class="s2">&quot;Invalid tier selected.&quot;</span><span class="p">,</span> <span class="s2">&quot;danger&quot;</span><span class="p">)</span>
+                        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">referrer</span><span class="p">)</span>
+
+                    <span class="n">checkout_session</span> <span class="o">=</span> <span class="n">stripe</span><span class="o">.</span><span class="n">checkout</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                        <span class="n">customer</span><span class="o">=</span><span class="n">current_user</span><span class="o">.</span><span class="n">stripe_customer_id</span><span class="p">,</span>
+                        <span class="n">line_items</span><span class="o">=</span><span class="p">[</span>
+                            <span class="p">{</span>
+                                <span class="s2">&quot;price_data&quot;</span><span class="p">:</span> <span class="p">{</span>
+                                    <span class="s2">&quot;unit_amount&quot;</span><span class="p">:</span> <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span>
+                                        <span class="s2">&quot;STRIPE_CREDIT_UNIT_COST&quot;</span>
+                                    <span class="p">],</span>
+                                    <span class="s2">&quot;currency&quot;</span><span class="p">:</span> <span class="s2">&quot;usd&quot;</span><span class="p">,</span>
+                                    <span class="s2">&quot;product&quot;</span><span class="p">:</span> <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span>
+                                        <span class="s2">&quot;STRIPE_PRODUCT_ID_FOR_CREDITS&quot;</span>
+                                    <span class="p">],</span>
+                                <span class="p">},</span>
+                                <span class="s2">&quot;quantity&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">creditsRequested</span><span class="p">),</span>
+                            <span class="p">}</span>
+                        <span class="p">],</span>
+                        <span class="n">metadata</span><span class="o">=</span><span class="p">{</span>
+                            <span class="c1"># Save the number of credits requested in the metadata</span>
+                            <span class="c1"># So that we can update the user&#39;s credits in the webhook</span>
+                            <span class="c1"># Otherwise, Stripe doesn&#39;t tell us how many credits were purchased</span>
+                            <span class="s2">&quot;quantity&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">creditsRequested</span><span class="p">),</span>
+                        <span class="p">},</span>
+                        <span class="n">payment_intent_data</span><span class="o">=</span><span class="p">{</span>
+                            <span class="c1"># The description shown in the list of charges</span>
+                            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Purchase of </span><span class="si">{</span><span class="n">creditsRequested</span><span class="si">}</span><span class="s2"> credits&quot;</span><span class="p">,</span>
+                        <span class="p">},</span>
+                        <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;payment&quot;</span><span class="p">,</span>
+                        <span class="n">payment_method_types</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;card&quot;</span><span class="p">],</span>
+                        <span class="n">success_url</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">]</span>
+                        <span class="o">+</span> <span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;views_private.billing&quot;</span><span class="p">)</span>
+                        <span class="o">+</span> <span class="s2">&quot;/success&quot;</span><span class="p">,</span>
+                        <span class="n">cancel_url</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">]</span>
+                        <span class="o">+</span> <span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;views_private.billing&quot;</span><span class="p">)</span>
+                        <span class="o">+</span> <span class="s2">&quot;/cancel&quot;</span><span class="p">,</span>
+                        <span class="n">automatic_tax</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;enabled&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+                        <span class="n">customer_update</span><span class="o">=</span><span class="p">{</span>
+                            <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>  <span class="c1"># Automatically update the customer&#39;s address</span>
+                        <span class="p">},</span>
+                    <span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="n">flash</span><span class="p">(</span>
+                        <span class="s2">&quot;An error occurred while processing your payment. Please try again later.&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;danger&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;An error occurred while creating the Stripe checkout session:</span><span class="se">\n</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+                    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span>
+                        <span class="n">url_for</span><span class="p">(</span>
+                            <span class="s2">&quot;views_private.billing&quot;</span><span class="p">,</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+
+                <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">checkout_session</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="mi">303</span><span class="p">)</span>
+
+            <span class="c1"># Redirect to the Stripe for subscription</span>
+            <span class="k">case</span> <span class="s2">&quot;billing-portal&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">!=</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">error_page</span><span class="p">(</span><span class="mi">400</span><span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">checkout_session</span> <span class="o">=</span> <span class="n">stripe</span><span class="o">.</span><span class="n">billing_portal</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                        <span class="n">customer</span><span class="o">=</span><span class="n">current_user</span><span class="o">.</span><span class="n">stripe_customer_id</span><span class="p">,</span>
+                        <span class="n">return_url</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">referrer</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="n">flash</span><span class="p">(</span>
+                        <span class="s2">&quot;An error occurred while processing your payment. Please try again later.&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;danger&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;An error occurred while creating the Stripe billing_portal session:</span><span class="se">\n</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+                    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span>
+                        <span class="n">url_for</span><span class="p">(</span>
+                            <span class="s2">&quot;views_private.billing&quot;</span><span class="p">,</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+
+                <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">checkout_session</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="mi">303</span><span class="p">)</span>
+
+            <span class="c1"># Redirect to the Stripe checkout page</span>
+            <span class="k">case</span> <span class="s2">&quot;checkout&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">!=</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">error_page</span><span class="p">(</span><span class="mi">400</span><span class="p">)</span>
+
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="c1"># If the user doesn&#39;t have a stripe_customer_id, create a new customer</span>
+                    <span class="k">if</span> <span class="n">current_user</span><span class="o">.</span><span class="n">stripe_customer_id</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">customer</span> <span class="o">=</span> <span class="n">stripe</span><span class="o">.</span><span class="n">Customer</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                            <span class="n">email</span><span class="o">=</span><span class="n">current_user</span><span class="o">.</span><span class="n">email</span><span class="p">,</span>
+                            <span class="n">name</span><span class="o">=</span><span class="n">current_user</span><span class="o">.</span><span class="n">firstName</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">current_user</span><span class="o">.</span><span class="n">lastName</span><span class="p">,</span>
+                        <span class="p">)</span>
+                        <span class="n">current_user</span><span class="o">.</span><span class="n">stripe_customer_id</span> <span class="o">=</span> <span class="n">customer</span><span class="o">.</span><span class="n">id</span>
+                        <span class="n">current_user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+                    <span class="c1"># Based on the tier selected, select the price</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">tierRequested</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tier&quot;</span><span class="p">)</span>
+                        <span class="n">tierMatched</span> <span class="o">=</span> <span class="n">Tiers</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">tierRequested</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+                        <span class="n">price_id</span> <span class="o">=</span> <span class="n">tierMatched</span><span class="o">.</span><span class="n">stripe_price_id</span>
+                    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error while matching the tier: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="n">flash</span><span class="p">(</span><span class="s2">&quot;Invalid tier selected.&quot;</span><span class="p">,</span> <span class="s2">&quot;danger&quot;</span><span class="p">)</span>
+                        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">referrer</span><span class="p">)</span>
+
+                    <span class="n">checkout_session</span> <span class="o">=</span> <span class="n">stripe</span><span class="o">.</span><span class="n">checkout</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                        <span class="n">customer</span><span class="o">=</span><span class="n">current_user</span><span class="o">.</span><span class="n">stripe_customer_id</span><span class="p">,</span>
+                        <span class="n">line_items</span><span class="o">=</span><span class="p">[</span>
+                            <span class="p">{</span>
+                                <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="n">price_id</span><span class="p">,</span>
+                                <span class="s2">&quot;quantity&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                            <span class="p">}</span>
+                        <span class="p">],</span>
+                        <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;subscription&quot;</span><span class="p">,</span>
+                        <span class="n">payment_method_types</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;card&quot;</span><span class="p">],</span>
+                        <span class="n">success_url</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">]</span>
+                        <span class="o">+</span> <span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;views_private.billing&quot;</span><span class="p">)</span>
+                        <span class="o">+</span> <span class="s2">&quot;/success&quot;</span><span class="p">,</span>
+                        <span class="n">cancel_url</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">]</span>
+                        <span class="o">+</span> <span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;views_private.billing&quot;</span><span class="p">)</span>
+                        <span class="o">+</span> <span class="s2">&quot;/cancel&quot;</span><span class="p">,</span>
+                        <span class="n">automatic_tax</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;enabled&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+                        <span class="n">customer_update</span><span class="o">=</span><span class="p">{</span>
+                            <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>  <span class="c1"># Automatically update the customer&#39;s address</span>
+                        <span class="p">},</span>
+                    <span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="n">flash</span><span class="p">(</span>
+                        <span class="s2">&quot;An error occurred while processing your payment. Please try again later.&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;danger&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;An error occurred while creating the Stripe checkout session:</span><span class="se">\n</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+                    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span>
+                        <span class="n">url_for</span><span class="p">(</span>
+                            <span class="s2">&quot;views_private.billing&quot;</span><span class="p">,</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+
+                <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">checkout_session</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="mi">303</span><span class="p">)</span>
+
+            <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
+                <span class="n">customer_id</span> <span class="o">=</span> <span class="n">current_user</span><span class="o">.</span><span class="n">stripe_customer_id</span>
+                <span class="n">charges</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">if</span> <span class="n">customer_id</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">charges</span> <span class="o">=</span> <span class="n">stripe</span><span class="o">.</span><span class="n">Charge</span><span class="o">.</span><span class="n">list</span><span class="p">(</span>
+                        <span class="n">customer</span><span class="o">=</span><span class="n">customer_id</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="s2">&quot;succeeded&quot;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">100</span>
+                    <span class="p">)</span>
+
+                <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;private/billing/</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">.html&quot;</span><span class="p">,</span>
+                    <span class="n">user</span><span class="o">=</span><span class="n">current_user</span><span class="p">,</span>
+                    <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+                    <span class="n">tiers</span><span class="o">=</span><span class="n">Tiers</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span>
+                    <span class="n">charges</span><span class="o">=</span><span class="n">charges</span><span class="p">,</span>
+                <span class="p">)</span>
+    <span class="k">except</span> <span class="n">TemplateNotFound</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">error_page</span><span class="p">(</span><span class="mi">404</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ERROR 500: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">error_page</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># Account pages routing</span>
+<span class="nd">@app_private</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/account&quot;</span><span class="p">,</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;account&quot;</span><span class="p">},</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="nd">@app_private</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/account/&lt;path&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="nd">@login_required</span>
+<div class="viewcode-block" id="account">
+<a class="viewcode-back" href="../../autoapi/app/views_private/index.html#app.views_private.account">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">account</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="c1"># Redirect to email confirmation</span>
+    <span class="k">if</span> <span class="n">current_user</span><span class="o">.</span><span class="n">email_confirmed</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">flash</span><span class="p">(</span>
+            <span class="s2">&quot;Please confirm your email address first by entering the confirmation code we have emailed you.&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;error&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;email_confirmation_by_code&quot;</span><span class="p">))</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Declare the registration form</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">ProfileDetailsForm</span><span class="p">()</span>
+        <span class="k">match</span> <span class="n">path</span><span class="p">:</span>
+            <span class="k">case</span> <span class="s2">&quot;upload-profile-pic&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">generate_upload_link_profile_picture</span><span class="p">(</span>
+                    <span class="n">current_user</span><span class="p">,</span>
+                    <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;file_type&quot;</span><span class="p">),</span>
+                <span class="p">)</span>
+
+            <span class="k">case</span> <span class="s2">&quot;enable_totp&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+                    <span class="n">otp</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;otp&quot;</span><span class="p">]</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Checking code (</span><span class="si">{</span><span class="n">otp</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">current_user</span><span class="o">.</span><span class="n">totp_match</span><span class="p">(</span><span class="n">otp</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">current_user</span><span class="o">.</span><span class="n">totp_match</span><span class="p">(</span><span class="n">otp</span><span class="p">):</span>
+                        <span class="n">current_user</span><span class="o">.</span><span class="n">totp_enabled</span> <span class="o">=</span> <span class="mi">1</span>
+                        <span class="n">current_user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                        <span class="n">flash</span><span class="p">(</span><span class="s2">&quot;Two-factor authentication has been enabled.&quot;</span><span class="p">,</span> <span class="s2">&quot;info&quot;</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">flash</span><span class="p">(</span><span class="s2">&quot;Invalid code. Please try again.&quot;</span><span class="p">,</span> <span class="s2">&quot;danger&quot;</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">referrer</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+
+            <span class="k">case</span> <span class="s2">&quot;disable_totp&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">current_user</span><span class="o">.</span><span class="n">totp_enabled</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">current_user</span><span class="o">.</span><span class="n">totp_reset_secret</span><span class="p">()</span>
+                        <span class="n">current_user</span><span class="o">.</span><span class="n">totp_enabled</span> <span class="o">=</span> <span class="mi">0</span>
+                        <span class="n">current_user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                        <span class="n">flash</span><span class="p">(</span><span class="s2">&quot;Two-factor authentication has been disabled.&quot;</span><span class="p">,</span> <span class="s2">&quot;info&quot;</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">flash</span><span class="p">(</span>
+                            <span class="s2">&quot;Two-factor authentication is already disabled.&quot;</span><span class="p">,</span> <span class="s2">&quot;danger&quot;</span>
+                        <span class="p">)</span>
+                    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">referrer</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+
+            <span class="k">case</span> <span class="s2">&quot;&quot;</span> <span class="o">|</span> <span class="s2">&quot;account&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+                    <span class="c1"># If bucket upload request returns 200, JS calls this endpoint</span>
+                    <span class="c1"># Then we set the avatar_uploaded flag to True,</span>
+                    <span class="c1"># so that user.avatar() serves the image from the bucket</span>
+                    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;profile-pic-updated&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;yes&quot;</span><span class="p">:</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">current_user</span><span class="o">.</span><span class="n">avatar_uploaded</span> <span class="o">=</span> <span class="kc">True</span>
+                            <span class="n">current_user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                            <span class="k">return</span> <span class="s2">&quot;success&quot;</span><span class="p">,</span> <span class="mi">200</span>
+                        <span class="k">except</span><span class="p">:</span>
+                            <span class="k">return</span> <span class="s2">&quot;failed&quot;</span><span class="p">,</span> <span class="mi">500</span>
+
+                    <span class="c1"># If the profile details form is submitted</span>
+                    <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">validate_on_submit</span><span class="p">():</span>
+                        <span class="n">current_user</span><span class="o">.</span><span class="n">firstName</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                            <span class="s2">&quot;firstName&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span>
+                        <span class="p">)</span>
+                        <span class="n">current_user</span><span class="o">.</span><span class="n">lastName</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                            <span class="s2">&quot;lastName&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span>
+                        <span class="p">)</span>
+                        <span class="n">current_user</span><span class="o">.</span><span class="n">newsletter</span> <span class="o">=</span> <span class="p">(</span>
+                            <span class="mi">1</span> <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;newsletter&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;y&quot;</span> <span class="k">else</span> <span class="mi">0</span>
+                        <span class="p">)</span>
+                        <span class="n">current_user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+                <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;private/account/</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">.html&quot;</span><span class="p">,</span>
+                    <span class="n">user</span><span class="o">=</span><span class="n">current_user</span><span class="p">,</span>
+                    <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">,</span>
+                    <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;private/account/</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">.html&quot;</span><span class="p">,</span>
+                    <span class="n">user</span><span class="o">=</span><span class="n">current_user</span><span class="p">,</span>
+                    <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">,</span>
+                    <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+                <span class="p">)</span>
+    <span class="k">except</span> <span class="n">TemplateNotFound</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">error_page</span><span class="p">(</span><span class="mi">404</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ERROR 500: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">error_page</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># Admin pages routing</span>
+<span class="nd">@app_private</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/admin&quot;</span><span class="p">,</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;admin&quot;</span><span class="p">},</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="c1"># path:path is to catch all paths, including those with multiple slashes (/)</span>
+<span class="nd">@app_private</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/admin/&lt;path:path&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<div class="viewcode-block" id="admin">
+<a class="viewcode-back" href="../../autoapi/app/views_private/index.html#app.views_private.admin">[docs]</a>
+<span class="nd">@login_required</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">admin</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="c1"># If this user is not admin, return 403</span>
+    <span class="k">if</span> <span class="n">current_user</span><span class="o">.</span><span class="n">role</span> <span class="o">!=</span> <span class="s2">&quot;admin&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">error_page</span><span class="p">(</span><span class="mi">403</span><span class="p">)</span>
+
+    <span class="c1"># If this is an email rendering path</span>
+    <span class="k">if</span> <span class="n">path</span><span class="p">[:</span><span class="mi">6</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;email/&quot;</span><span class="p">:</span>
+        <span class="c1"># Try to render the email template</span>
+        <span class="n">email_template</span> <span class="o">=</span> <span class="n">path</span><span class="p">[</span><span class="mi">6</span><span class="p">:]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;emails/</span><span class="si">{</span><span class="n">email_template</span><span class="si">}</span><span class="s2">.html&quot;</span><span class="p">,</span>
+                <span class="n">user</span><span class="o">=</span><span class="n">current_user</span><span class="p">,</span>
+                <span class="n">appName</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">],</span>
+                <span class="n">appHome</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">],</span>
+                <span class="n">resetLink</span><span class="o">=</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;set_new_password&quot;</span><span class="p">,</span> <span class="n">_external</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;/dummyToken&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="n">TemplateNotFound</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;Email template not found.&quot;</span><span class="p">,</span> <span class="mi">404</span>
+
+    <span class="c1"># Try to find the matching admin page template</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># If the path matches a template, return the template</span>
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;private/admin/</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">.html&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">current_user</span>
+        <span class="p">)</span>
+
+    <span class="k">except</span> <span class="n">TemplateNotFound</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">error_page</span><span class="p">(</span><span class="mi">404</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ERROR 500: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">error_page</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># Generic private pages routing</span>
+<span class="nd">@app_private</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;index&quot;</span><span class="p">})</span>
+<span class="nd">@app_private</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/&lt;path&gt;&quot;</span><span class="p">)</span>
+<span class="nd">@login_required</span>
+<div class="viewcode-block" id="private_index">
+<a class="viewcode-back" href="../../autoapi/app/views_private/index.html#app.views_private.private_index">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">private_index</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="c1"># Redirect to email confirmation</span>
+    <span class="k">if</span> <span class="n">current_user</span><span class="o">.</span><span class="n">email_confirmed</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">flash</span><span class="p">(</span>
+            <span class="s2">&quot;Please confirm your email address first by entering the confirmation code we have emailed you.&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;error&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;email_confirmation_by_code&quot;</span><span class="p">))</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Serve the file (if exists) from app/templates/private/PATH.html</span>
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;private/</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">.html&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">current_user</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="n">TemplateNotFound</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">error_page</span><span class="p">(</span><span class="mi">404</span><span class="p">)</span>
+
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">error_page</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Cansin Acarer.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

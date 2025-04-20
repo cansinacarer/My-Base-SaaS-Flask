@@ -1,0 +1,19 @@
+app.utilities.qr
+================
+
+.. py:module:: app.utilities.qr
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   app.utilities.qr.qrcode_img_src
+
+
+Module Contents
+---------------
+
+.. py:function:: qrcode_img_src(qr_string)
+

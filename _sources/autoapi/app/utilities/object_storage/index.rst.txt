@@ -1,0 +1,58 @@
+app.utilities.object_storage
+============================
+
+.. py:module:: app.utilities.object_storage
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   app.utilities.object_storage.upload_file
+   app.utilities.object_storage.download_file
+   app.utilities.object_storage.delete_file
+   app.utilities.object_storage.list_objects
+   app.utilities.object_storage.copy_file
+   app.utilities.object_storage.prevent_public_access
+   app.utilities.object_storage.create_bucket
+   app.utilities.object_storage.generate_download_link
+   app.utilities.object_storage.generate_upload_link
+   app.utilities.object_storage.folder_size
+   app.utilities.object_storage.generate_remote_file
+   app.utilities.object_storage.generate_upload_link_profile_picture
+   app.utilities.object_storage.generate_user_folder
+   app.utilities.object_storage.user_folder_size
+
+
+Module Contents
+---------------
+
+.. py:function:: upload_file(bucket_name, directory, file, s3, s3path=None)
+
+.. py:function:: download_file(bucket_name, directory, local_name, key_name, s3)
+
+.. py:function:: delete_file(bucket_name, keys, s3)
+
+.. py:function:: list_objects(bucket, s3)
+
+.. py:function:: copy_file(source_bucket, destination_bucket, source_key, destination_key, s3)
+
+.. py:function:: prevent_public_access(bucket, s3)
+
+.. py:function:: create_bucket(name, s3, secure=False)
+
+.. py:function:: generate_download_link(bucket_name, key, s3, expiration_in_seconds=60)
+
+.. py:function:: generate_upload_link(bucket_name, file_name, file_type, s3, expiration_in_seconds=60)
+
+.. py:function:: folder_size(bucket_name, folder_path, s3)
+
+.. py:function:: generate_remote_file(bucket_name, folder_path, file_name, s3, content)
+
+.. py:function:: generate_upload_link_profile_picture(user, file_type)
+
+.. py:function:: generate_user_folder(user)
+
+.. py:function:: user_folder_size(user)
+

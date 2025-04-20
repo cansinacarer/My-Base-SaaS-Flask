@@ -1,0 +1,56 @@
+app.views
+=========
+
+.. py:module:: app.views
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   app.views.limiter
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   app.views.inject_globals
+   app.views.remove_trailing_slash
+   app.views.load_user
+   app.views.page_not_found
+   app.views.page_not_found
+   app.views.page_not_found
+   app.views.rate_limited
+   app.views.server_error
+   app.views.favicon
+   app.views.index
+
+
+Module Contents
+---------------
+
+.. py:function:: inject_globals()
+
+.. py:function:: remove_trailing_slash()
+
+.. py:function:: load_user(user_id)
+
+.. py:function:: page_not_found(e)
+
+.. py:function:: page_not_found(e)
+
+.. py:function:: page_not_found(e)
+
+.. py:function:: rate_limited(e)
+
+.. py:function:: server_error(e)
+
+.. py:data:: limiter
+
+.. py:function:: favicon()
+
+.. py:function:: index(path)
+

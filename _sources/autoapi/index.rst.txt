@@ -1,0 +1,8 @@
+Auto Generated Documentation
+=============
+
+This page contains the auto-generated documentation [#f1]_.
+.. toctree::
+   :titlesonly:
+   /autoapi/app/index
+.. [#f1] Created with `sphinx-autoapi <https://github.com/readthedocs/sphinx-autoapi>`_

@@ -1,0 +1,19 @@
+app.utilities.error_handlers
+============================
+
+.. py:module:: app.utilities.error_handlers
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   app.utilities.error_handlers.error_page
+
+
+Module Contents
+---------------
+
+.. py:function:: error_page(code)
+

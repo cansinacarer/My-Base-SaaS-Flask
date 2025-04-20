@@ -1,0 +1,286 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>app.config &mdash; Cansin&#39;s Base SaaS (Flask) v1.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d29a5c0e"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Cansin's Base SaaS (Flask)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/index.html">Auto Generated Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Cansin's Base SaaS (Flask)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../app.html">app</a></li>
+      <li class="breadcrumb-item active">app.config</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for app.config</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">decouple</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pytz</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">boto3</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+
+<span class="c1"># Timezone used in this app</span>
+<div class="viewcode-block" id="appTimezoneStr">
+<a class="viewcode-back" href="../../autoapi/app/config/index.html#app.config.appTimezoneStr">[docs]</a>
+<span class="n">appTimezoneStr</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="s2">&quot;TIMEZONE&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="appTimezone">
+<a class="viewcode-back" href="../../autoapi/app/config/index.html#app.config.appTimezone">[docs]</a>
+<span class="n">appTimezone</span> <span class="o">=</span> <span class="n">pytz</span><span class="o">.</span><span class="n">timezone</span><span class="p">(</span><span class="n">appTimezoneStr</span><span class="p">)</span></div>
+
+
+<span class="c1"># S3 resource to be imported in other modules</span>
+<span class="c1"># Use s3.meta.client if client object is needed</span>
+<div class="viewcode-block" id="s3">
+<a class="viewcode-back" href="../../autoapi/app/config/index.html#app.config.s3">[docs]</a>
+<span class="n">s3</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span>
+    <span class="s2">&quot;s3&quot;</span><span class="p">,</span>
+    <span class="n">endpoint_url</span><span class="o">=</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;S3_ENDPOINT&quot;</span><span class="p">),</span>
+    <span class="n">aws_access_key_id</span><span class="o">=</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;S3_KEY&quot;</span><span class="p">),</span>
+    <span class="n">aws_secret_access_key</span><span class="o">=</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;S3_SECRET&quot;</span><span class="p">),</span>
+<span class="p">)</span></div>
+
+
+
+<span class="c1"># Flask app configuration</span>
+<div class="viewcode-block" id="Config">
+<a class="viewcode-back" href="../../autoapi/app/config/index.html#app.config.Config">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Config</span><span class="p">:</span>
+    <span class="c1"># Grabs the folder where the script runs</span>
+<div class="viewcode-block" id="Config.BASEDIR">
+<a class="viewcode-back" href="../../autoapi/app/config/index.html#app.config.Config.BASEDIR">[docs]</a>
+    <span class="n">BASEDIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span></div>
+
+
+    <span class="c1"># Enable protection against Cross-site Request Forgery</span>
+<div class="viewcode-block" id="Config.CSRF_ENABLED">
+<a class="viewcode-back" href="../../autoapi/app/config/index.html#app.config.Config.CSRF_ENABLED">[docs]</a>
+    <span class="n">CSRF_ENABLED</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+
+    <span class="c1"># Application Details</span>
+<div class="viewcode-block" id="Config.APP_NAME">
+<a class="viewcode-back" href="../../autoapi/app/config/index.html#app.config.Config.APP_NAME">[docs]</a>
+    <span class="n">APP_NAME</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Config.APP_ROOT_URL">
+<a class="viewcode-back" href="../../autoapi/app/config/index.html#app.config.Config.APP_ROOT_URL">[docs]</a>
+    <span class="n">APP_ROOT_URL</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">,</span> <span class="s2">&quot;https://localhost:5000/&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Config.TIMEZONE">
+<a class="viewcode-back" href="../../autoapi/app/config/index.html#app.config.Config.TIMEZONE">[docs]</a>
+    <span class="n">TIMEZONE</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="s2">&quot;TIMEZONE&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Config.FLASK_DEBUG">
+<a class="viewcode-back" href="../../autoapi/app/config/index.html#app.config.Config.FLASK_DEBUG">[docs]</a>
+    <span class="n">FLASK_DEBUG</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="s2">&quot;FLASK_DEBUG&quot;</span><span class="p">,</span> <span class="n">cast</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span></div>
+
+
+    <span class="c1"># Self signed certificates for local development</span>
+    <span class="c1"># Only used when FLASK_DEBUG is True</span>
+    <span class="k">if</span> <span class="n">FLASK_DEBUG</span><span class="p">:</span>
+<div class="viewcode-block" id="Config.FLASK_RUN_CERT">
+<a class="viewcode-back" href="../../autoapi/app/config/index.html#app.config.Config.FLASK_RUN_CERT">[docs]</a>
+        <span class="n">FLASK_RUN_CERT</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="s2">&quot;FLASK_RUN_CERT&quot;</span><span class="p">)</span></div>
+
+        <span class="n">FLASK_RUN_KEY</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="s2">&quot;FLASK_RUN_KEY&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Database</span>
+<div class="viewcode-block" id="Config.SQLALCHEMY_DATABASE_URI">
+<a class="viewcode-back" href="../../autoapi/app/config/index.html#app.config.Config.SQLALCHEMY_DATABASE_URI">[docs]</a>
+    <span class="n">SQLALCHEMY_DATABASE_URI</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span>
+        <span class="s2">&quot;DATABASE_CONNECTION_STRING&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;sqlite:///</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">BASEDIR</span><span class="p">),</span><span class="w"> </span><span class="s1">&#39;database.db&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Config.SECRET_KEY">
+<a class="viewcode-back" href="../../autoapi/app/config/index.html#app.config.Config.SECRET_KEY">[docs]</a>
+    <span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="s2">&quot;DATABASE_SECRET_KEY&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Config.SQLALCHEMY_ENGINE_OPTIONS">
+<a class="viewcode-back" href="../../autoapi/app/config/index.html#app.config.Config.SQLALCHEMY_ENGINE_OPTIONS">[docs]</a>
+    <span class="n">SQLALCHEMY_ENGINE_OPTIONS</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;pool_size&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="s2">&quot;pool_recycle&quot;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span>
+        <span class="c1"># To handle disconnects as described here: https://docs.sqlalchemy.org/en/14/core/pooling.html#pool-disconnects</span>
+        <span class="s2">&quot;pool_pre_ping&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">}</span></div>
+
+<div class="viewcode-block" id="Config.SQLALCHEMY_TRACK_MODIFICATIONS">
+<a class="viewcode-back" href="../../autoapi/app/config/index.html#app.config.Config.SQLALCHEMY_TRACK_MODIFICATIONS">[docs]</a>
+    <span class="n">SQLALCHEMY_TRACK_MODIFICATIONS</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+
+    <span class="c1"># Object Storage</span>
+<div class="viewcode-block" id="Config.S3_BUCKET_NAME">
+<a class="viewcode-back" href="../../autoapi/app/config/index.html#app.config.Config.S3_BUCKET_NAME">[docs]</a>
+    <span class="n">S3_BUCKET_NAME</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="s2">&quot;S3_BUCKET_NAME&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Config.S3_ENDPOINT">
+<a class="viewcode-back" href="../../autoapi/app/config/index.html#app.config.Config.S3_ENDPOINT">[docs]</a>
+    <span class="n">S3_ENDPOINT</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="s2">&quot;S3_ENDPOINT&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Config.S3_KEY">
+<a class="viewcode-back" href="../../autoapi/app/config/index.html#app.config.Config.S3_KEY">[docs]</a>
+    <span class="n">S3_KEY</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="s2">&quot;S3_KEY&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Config.S3_SECRET">
+<a class="viewcode-back" href="../../autoapi/app/config/index.html#app.config.Config.S3_SECRET">[docs]</a>
+    <span class="n">S3_SECRET</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="s2">&quot;S3_SECRET&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1"># Email</span>
+<div class="viewcode-block" id="Config.MAIL_FROM">
+<a class="viewcode-back" href="../../autoapi/app/config/index.html#app.config.Config.MAIL_FROM">[docs]</a>
+    <span class="n">MAIL_FROM</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="s2">&quot;MAIL_FROM&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Config.MAIL_SERVER">
+<a class="viewcode-back" href="../../autoapi/app/config/index.html#app.config.Config.MAIL_SERVER">[docs]</a>
+    <span class="n">MAIL_SERVER</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="s2">&quot;MAIL_SERVER&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Config.MAIL_PORT">
+<a class="viewcode-back" href="../../autoapi/app/config/index.html#app.config.Config.MAIL_PORT">[docs]</a>
+    <span class="n">MAIL_PORT</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="s2">&quot;MAIL_PORT&quot;</span><span class="p">,</span> <span class="n">cast</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Config.MAIL_USE_TLS">
+<a class="viewcode-back" href="../../autoapi/app/config/index.html#app.config.Config.MAIL_USE_TLS">[docs]</a>
+    <span class="n">MAIL_USE_TLS</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="s2">&quot;MAIL_USE_TLS&quot;</span><span class="p">,</span> <span class="n">cast</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Config.MAIL_USE_SSL">
+<a class="viewcode-back" href="../../autoapi/app/config/index.html#app.config.Config.MAIL_USE_SSL">[docs]</a>
+    <span class="n">MAIL_USE_SSL</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="s2">&quot;MAIL_USE_SSL&quot;</span><span class="p">,</span> <span class="n">cast</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Config.MAIL_USERNAME">
+<a class="viewcode-back" href="../../autoapi/app/config/index.html#app.config.Config.MAIL_USERNAME">[docs]</a>
+    <span class="n">MAIL_USERNAME</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="s2">&quot;MAIL_USERNAME&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Config.MAIL_PASSWORD">
+<a class="viewcode-back" href="../../autoapi/app/config/index.html#app.config.Config.MAIL_PASSWORD">[docs]</a>
+    <span class="n">MAIL_PASSWORD</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="s2">&quot;MAIL_PASSWORD&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Config.MAIL_DEBUG">
+<a class="viewcode-back" href="../../autoapi/app/config/index.html#app.config.Config.MAIL_DEBUG">[docs]</a>
+    <span class="n">MAIL_DEBUG</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="s2">&quot;MAIL_DEBUG&quot;</span><span class="p">,</span> <span class="n">cast</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span></div>
+
+
+    <span class="c1"># OAuth</span>
+<div class="viewcode-block" id="Config.GOOGLE_CLIENT_ID">
+<a class="viewcode-back" href="../../autoapi/app/config/index.html#app.config.Config.GOOGLE_CLIENT_ID">[docs]</a>
+    <span class="n">GOOGLE_CLIENT_ID</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="s2">&quot;GOOGLE_CLIENT_ID&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Config.GOOGLE_CLIENT_SECRET">
+<a class="viewcode-back" href="../../autoapi/app/config/index.html#app.config.Config.GOOGLE_CLIENT_SECRET">[docs]</a>
+    <span class="n">GOOGLE_CLIENT_SECRET</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="s2">&quot;GOOGLE_CLIENT_SECRET&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1"># Stripe</span>
+<div class="viewcode-block" id="Config.STRIPE_PUBLISHABLE_KEY">
+<a class="viewcode-back" href="../../autoapi/app/config/index.html#app.config.Config.STRIPE_PUBLISHABLE_KEY">[docs]</a>
+    <span class="n">STRIPE_PUBLISHABLE_KEY</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="s2">&quot;STRIPE_PUBLISHABLE_KEY&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Config.STRIPE_SECRET_KEY">
+<a class="viewcode-back" href="../../autoapi/app/config/index.html#app.config.Config.STRIPE_SECRET_KEY">[docs]</a>
+    <span class="n">STRIPE_SECRET_KEY</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="s2">&quot;STRIPE_SECRET_KEY&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Config.STRIPE_WEBHOOK_SECRET">
+<a class="viewcode-back" href="../../autoapi/app/config/index.html#app.config.Config.STRIPE_WEBHOOK_SECRET">[docs]</a>
+    <span class="n">STRIPE_WEBHOOK_SECRET</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="s2">&quot;STRIPE_WEBHOOK_SECRET&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Config.STRIPE_PRODUCT_ID_FOR_CREDITS">
+<a class="viewcode-back" href="../../autoapi/app/config/index.html#app.config.Config.STRIPE_PRODUCT_ID_FOR_CREDITS">[docs]</a>
+    <span class="n">STRIPE_PRODUCT_ID_FOR_CREDITS</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="s2">&quot;STRIPE_PRODUCT_ID_FOR_CREDITS&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Config.STRIPE_CREDIT_UNIT_COST">
+<a class="viewcode-back" href="../../autoapi/app/config/index.html#app.config.Config.STRIPE_CREDIT_UNIT_COST">[docs]</a>
+    <span class="n">STRIPE_CREDIT_UNIT_COST</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="s2">&quot;STRIPE_CREDIT_UNIT_COST&quot;</span><span class="p">,</span> <span class="n">cast</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Cansin Acarer.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

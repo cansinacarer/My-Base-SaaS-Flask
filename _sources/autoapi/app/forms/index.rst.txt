@@ -1,0 +1,130 @@
+app.forms
+=========
+
+.. py:module:: app.forms
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   app.forms.LoginForm
+   app.forms.RegisterForm
+   app.forms.EmailConfirmationForm
+   app.forms.ResetPassword
+   app.forms.SetNewPassword
+   app.forms.ProfileDetailsForm
+   app.forms.TwoFactorAuthenticationForm
+
+
+Module Contents
+---------------
+
+.. py:class:: LoginForm
+
+   Bases: :py:obj:`flask_wtf.FlaskForm`
+
+
+   .. py:attribute:: email
+
+
+   .. py:attribute:: password
+
+
+.. py:class:: RegisterForm
+
+   Bases: :py:obj:`flask_wtf.FlaskForm`
+
+
+   .. py:attribute:: email
+
+
+   .. py:attribute:: password
+
+
+   .. py:attribute:: firstName
+
+
+   .. py:attribute:: lastName
+
+
+   .. py:attribute:: newsletter
+
+
+.. py:class:: EmailConfirmationForm
+
+   Bases: :py:obj:`flask_wtf.FlaskForm`
+
+
+   .. py:attribute:: code0
+
+
+   .. py:attribute:: code1
+
+
+   .. py:attribute:: code2
+
+
+   .. py:attribute:: code3
+
+
+   .. py:attribute:: code4
+
+
+   .. py:attribute:: code5
+
+
+.. py:class:: ResetPassword
+
+   Bases: :py:obj:`flask_wtf.FlaskForm`
+
+
+   .. py:attribute:: email
+
+
+.. py:class:: SetNewPassword
+
+   Bases: :py:obj:`flask_wtf.FlaskForm`
+
+
+   .. py:attribute:: password
+
+
+.. py:class:: ProfileDetailsForm
+
+   Bases: :py:obj:`flask_wtf.FlaskForm`
+
+
+   .. py:attribute:: firstName
+
+
+   .. py:attribute:: lastName
+
+
+   .. py:attribute:: newsletter
+
+
+.. py:class:: TwoFactorAuthenticationForm
+
+   Bases: :py:obj:`flask_wtf.FlaskForm`
+
+
+   .. py:attribute:: code0
+
+
+   .. py:attribute:: code1
+
+
+   .. py:attribute:: code2
+
+
+   .. py:attribute:: code3
+
+
+   .. py:attribute:: code4
+
+
+   .. py:attribute:: code5
+
+

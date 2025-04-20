@@ -1,0 +1,131 @@
+app.config
+==========
+
+.. py:module:: app.config
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   app.config.appTimezoneStr
+   app.config.appTimezone
+   app.config.s3
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   app.config.Config
+
+
+Module Contents
+---------------
+
+.. py:data:: appTimezoneStr
+
+.. py:data:: appTimezone
+
+.. py:data:: s3
+
+.. py:class:: Config
+
+   .. py:attribute:: BASEDIR
+      :value: b'.'
+
+
+
+   .. py:attribute:: CSRF_ENABLED
+      :value: True
+
+
+
+   .. py:attribute:: APP_NAME
+
+
+   .. py:attribute:: APP_ROOT_URL
+
+
+   .. py:attribute:: TIMEZONE
+
+
+   .. py:attribute:: FLASK_DEBUG
+
+
+   .. py:attribute:: FLASK_RUN_CERT
+
+
+   .. py:attribute:: SQLALCHEMY_DATABASE_URI
+
+
+   .. py:attribute:: SECRET_KEY
+
+
+   .. py:attribute:: SQLALCHEMY_ENGINE_OPTIONS
+
+
+   .. py:attribute:: SQLALCHEMY_TRACK_MODIFICATIONS
+      :value: False
+
+
+
+   .. py:attribute:: S3_BUCKET_NAME
+
+
+   .. py:attribute:: S3_ENDPOINT
+
+
+   .. py:attribute:: S3_KEY
+
+
+   .. py:attribute:: S3_SECRET
+
+
+   .. py:attribute:: MAIL_FROM
+
+
+   .. py:attribute:: MAIL_SERVER
+
+
+   .. py:attribute:: MAIL_PORT
+
+
+   .. py:attribute:: MAIL_USE_TLS
+
+
+   .. py:attribute:: MAIL_USE_SSL
+
+
+   .. py:attribute:: MAIL_USERNAME
+
+
+   .. py:attribute:: MAIL_PASSWORD
+
+
+   .. py:attribute:: MAIL_DEBUG
+
+
+   .. py:attribute:: GOOGLE_CLIENT_ID
+
+
+   .. py:attribute:: GOOGLE_CLIENT_SECRET
+
+
+   .. py:attribute:: STRIPE_PUBLISHABLE_KEY
+
+
+   .. py:attribute:: STRIPE_SECRET_KEY
+
+
+   .. py:attribute:: STRIPE_WEBHOOK_SECRET
+
+
+   .. py:attribute:: STRIPE_PRODUCT_ID_FOR_CREDITS
+
+
+   .. py:attribute:: STRIPE_CREDIT_UNIT_COST
+
+

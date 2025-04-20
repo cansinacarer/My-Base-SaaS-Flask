@@ -1,0 +1,19 @@
+app.decorators
+==============
+
+.. py:module:: app.decorators
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   app.decorators.asyncr
+
+
+Module Contents
+---------------
+
+.. py:function:: asyncr(f)
+

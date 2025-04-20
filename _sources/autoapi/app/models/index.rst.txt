@@ -1,0 +1,142 @@
+app.models
+==========
+
+.. py:module:: app.models
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   app.models.Tiers
+   app.models.Users
+
+
+Module Contents
+---------------
+
+.. py:class:: Tiers
+
+   Bases: :py:obj:`app.db.Model`
+
+
+   .. py:attribute:: id
+
+
+   .. py:attribute:: name
+
+
+   .. py:attribute:: label
+
+
+   .. py:attribute:: stripe_price_id
+
+
+   .. py:attribute:: users
+
+
+.. py:class:: Users(email, password, tier_id, firstName, lastName, newsletter, member_since, last_login, email_confirmation_code)
+
+   Bases: :py:obj:`app.db.Model`, :py:obj:`flask_login.UserMixin`
+
+
+   .. py:attribute:: id
+
+
+   .. py:attribute:: email
+
+
+   .. py:attribute:: password
+
+
+   .. py:attribute:: role
+
+
+   .. py:attribute:: stripe_customer_id
+
+
+   .. py:attribute:: tier_id
+
+
+   .. py:attribute:: credits
+
+
+   .. py:attribute:: tier
+
+
+   .. py:attribute:: cancel_at
+
+
+   .. py:attribute:: firstName
+
+
+   .. py:attribute:: lastName
+
+
+   .. py:attribute:: newsletter
+
+
+   .. py:attribute:: member_since
+
+
+   .. py:attribute:: last_login
+
+
+   .. py:attribute:: email_confirmation_code
+
+
+   .. py:attribute:: last_confirmation_codes_sent
+
+
+   .. py:attribute:: number_of_email_confirmation_codes_sent
+
+
+   .. py:attribute:: email_confirmed
+
+
+   .. py:attribute:: google_avatar_url
+
+
+   .. py:attribute:: avatar_uploaded
+
+
+   .. py:attribute:: totp_secret
+
+
+   .. py:attribute:: totp_enabled
+
+
+   .. py:method:: save()
+
+
+   .. py:method:: avatar(size=256)
+
+
+   .. py:method:: is_connected_google()
+
+
+   .. py:method:: totp()
+
+
+   .. py:method:: totp_match(code)
+
+
+   .. py:method:: totp_reset_secret()
+
+
+   .. py:method:: folder_size()
+
+
+   .. py:method:: folder_quota()
+
+
+   .. py:method:: folder_usage_percentage()
+
+
+   .. py:method:: add_credits(amount)
+
+
+   .. py:method:: deduct_credits(amount)
+
+

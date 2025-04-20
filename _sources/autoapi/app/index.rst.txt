@@ -1,0 +1,57 @@
+app
+===
+
+.. py:module:: app
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/app/config/index
+   /autoapi/app/decorators/index
+   /autoapi/app/emails/index
+   /autoapi/app/forms/index
+   /autoapi/app/models/index
+   /autoapi/app/utilities/index
+   /autoapi/app/views/index
+   /autoapi/app/views_auth/index
+   /autoapi/app/views_private/index
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   app.app
+   app.mail
+   app.db
+   app.bc
+   app.lm
+   app.csrf
+   app.sslify
+   app.default_tier
+
+
+Package Contents
+----------------
+
+.. py:data:: app
+
+.. py:data:: mail
+
+.. py:data:: db
+
+.. py:data:: bc
+
+.. py:data:: lm
+
+.. py:data:: csrf
+
+.. py:data:: sslify
+
+.. py:data:: default_tier
+

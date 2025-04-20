@@ -1,0 +1,31 @@
+app.utilities.stripe_event_handler
+==================================
+
+.. py:module:: app.utilities.stripe_event_handler
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   app.utilities.stripe_event_handler.is_subscription_event
+   app.utilities.stripe_event_handler.is_checkout_completed_event
+   app.utilities.stripe_event_handler.user_from_stripe_customer_id
+   app.utilities.stripe_event_handler.tier_from_stripe_price_id
+   app.utilities.stripe_event_handler.handle_stripe_event
+
+
+Module Contents
+---------------
+
+.. py:function:: is_subscription_event(event)
+
+.. py:function:: is_checkout_completed_event(event)
+
+.. py:function:: user_from_stripe_customer_id(customer_id)
+
+.. py:function:: tier_from_stripe_price_id(price_id)
+
+.. py:function:: handle_stripe_event(event)
+

@@ -1,0 +1,254 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>app.forms &mdash; Cansin&#39;s Base SaaS (Flask) v1.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d29a5c0e"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Cansin's Base SaaS (Flask)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/index.html">Auto Generated Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Cansin's Base SaaS (Flask)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../app.html">app</a></li>
+      <li class="breadcrumb-item active">app.forms</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for app.forms</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">flask_wtf</span><span class="w"> </span><span class="kn">import</span> <span class="n">FlaskForm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">flask_wtf.file</span><span class="w"> </span><span class="kn">import</span> <span class="n">FileField</span><span class="p">,</span> <span class="n">FileRequired</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">wtforms</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">StringField</span><span class="p">,</span>
+    <span class="n">TextAreaField</span><span class="p">,</span>
+    <span class="n">SubmitField</span><span class="p">,</span>
+    <span class="n">PasswordField</span><span class="p">,</span>
+    <span class="n">DateField</span><span class="p">,</span>
+    <span class="n">IntegerField</span><span class="p">,</span>
+    <span class="n">BooleanField</span><span class="p">,</span>
+    <span class="n">RadioField</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">wtforms.validators</span><span class="w"> </span><span class="kn">import</span> <span class="n">Email</span><span class="p">,</span> <span class="n">NumberRange</span><span class="p">,</span> <span class="n">InputRequired</span><span class="p">,</span> <span class="n">DataRequired</span><span class="p">,</span> <span class="n">Length</span>
+
+
+<div class="viewcode-block" id="LoginForm">
+<a class="viewcode-back" href="../../autoapi/app/forms/index.html#app.forms.LoginForm">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">LoginForm</span><span class="p">(</span><span class="n">FlaskForm</span><span class="p">):</span>
+<div class="viewcode-block" id="LoginForm.email">
+<a class="viewcode-back" href="../../autoapi/app/forms/index.html#app.forms.LoginForm.email">[docs]</a>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s2">&quot;Email&quot;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">DataRequired</span><span class="p">(),</span> <span class="n">Email</span><span class="p">()])</span></div>
+
+<div class="viewcode-block" id="LoginForm.password">
+<a class="viewcode-back" href="../../autoapi/app/forms/index.html#app.forms.LoginForm.password">[docs]</a>
+    <span class="n">password</span> <span class="o">=</span> <span class="n">PasswordField</span><span class="p">(</span><span class="s2">&quot;Password&quot;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">DataRequired</span><span class="p">()])</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="RegisterForm">
+<a class="viewcode-back" href="../../autoapi/app/forms/index.html#app.forms.RegisterForm">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RegisterForm</span><span class="p">(</span><span class="n">FlaskForm</span><span class="p">):</span>
+<div class="viewcode-block" id="RegisterForm.email">
+<a class="viewcode-back" href="../../autoapi/app/forms/index.html#app.forms.RegisterForm.email">[docs]</a>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s2">&quot;Email&quot;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">DataRequired</span><span class="p">(),</span> <span class="n">Email</span><span class="p">()])</span></div>
+
+<div class="viewcode-block" id="RegisterForm.password">
+<a class="viewcode-back" href="../../autoapi/app/forms/index.html#app.forms.RegisterForm.password">[docs]</a>
+    <span class="n">password</span> <span class="o">=</span> <span class="n">PasswordField</span><span class="p">(</span><span class="s2">&quot;Password&quot;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">DataRequired</span><span class="p">()])</span></div>
+
+<div class="viewcode-block" id="RegisterForm.firstName">
+<a class="viewcode-back" href="../../autoapi/app/forms/index.html#app.forms.RegisterForm.firstName">[docs]</a>
+    <span class="n">firstName</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s2">&quot;First Name&quot;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">DataRequired</span><span class="p">()])</span></div>
+
+<div class="viewcode-block" id="RegisterForm.lastName">
+<a class="viewcode-back" href="../../autoapi/app/forms/index.html#app.forms.RegisterForm.lastName">[docs]</a>
+    <span class="n">lastName</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s2">&quot;Last Name&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RegisterForm.newsletter">
+<a class="viewcode-back" href="../../autoapi/app/forms/index.html#app.forms.RegisterForm.newsletter">[docs]</a>
+    <span class="n">newsletter</span> <span class="o">=</span> <span class="n">BooleanField</span><span class="p">(</span><span class="s2">&quot;Subscribe&quot;</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="EmailConfirmationForm">
+<a class="viewcode-back" href="../../autoapi/app/forms/index.html#app.forms.EmailConfirmationForm">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">EmailConfirmationForm</span><span class="p">(</span><span class="n">FlaskForm</span><span class="p">):</span>
+<div class="viewcode-block" id="EmailConfirmationForm.code0">
+<a class="viewcode-back" href="../../autoapi/app/forms/index.html#app.forms.EmailConfirmationForm.code0">[docs]</a>
+    <span class="n">code0</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s2">&quot;code0&quot;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">InputRequired</span><span class="p">()])</span></div>
+
+<div class="viewcode-block" id="EmailConfirmationForm.code1">
+<a class="viewcode-back" href="../../autoapi/app/forms/index.html#app.forms.EmailConfirmationForm.code1">[docs]</a>
+    <span class="n">code1</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s2">&quot;code1&quot;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">InputRequired</span><span class="p">()])</span></div>
+
+<div class="viewcode-block" id="EmailConfirmationForm.code2">
+<a class="viewcode-back" href="../../autoapi/app/forms/index.html#app.forms.EmailConfirmationForm.code2">[docs]</a>
+    <span class="n">code2</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s2">&quot;code2&quot;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">InputRequired</span><span class="p">()])</span></div>
+
+<div class="viewcode-block" id="EmailConfirmationForm.code3">
+<a class="viewcode-back" href="../../autoapi/app/forms/index.html#app.forms.EmailConfirmationForm.code3">[docs]</a>
+    <span class="n">code3</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s2">&quot;code3&quot;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">InputRequired</span><span class="p">()])</span></div>
+
+<div class="viewcode-block" id="EmailConfirmationForm.code4">
+<a class="viewcode-back" href="../../autoapi/app/forms/index.html#app.forms.EmailConfirmationForm.code4">[docs]</a>
+    <span class="n">code4</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s2">&quot;code4&quot;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">InputRequired</span><span class="p">()])</span></div>
+
+<div class="viewcode-block" id="EmailConfirmationForm.code5">
+<a class="viewcode-back" href="../../autoapi/app/forms/index.html#app.forms.EmailConfirmationForm.code5">[docs]</a>
+    <span class="n">code5</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s2">&quot;code5&quot;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">InputRequired</span><span class="p">()])</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ResetPassword">
+<a class="viewcode-back" href="../../autoapi/app/forms/index.html#app.forms.ResetPassword">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ResetPassword</span><span class="p">(</span><span class="n">FlaskForm</span><span class="p">):</span>
+<div class="viewcode-block" id="ResetPassword.email">
+<a class="viewcode-back" href="../../autoapi/app/forms/index.html#app.forms.ResetPassword.email">[docs]</a>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s2">&quot;Email&quot;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">DataRequired</span><span class="p">(),</span> <span class="n">Email</span><span class="p">()])</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="SetNewPassword">
+<a class="viewcode-back" href="../../autoapi/app/forms/index.html#app.forms.SetNewPassword">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SetNewPassword</span><span class="p">(</span><span class="n">FlaskForm</span><span class="p">):</span>
+<div class="viewcode-block" id="SetNewPassword.password">
+<a class="viewcode-back" href="../../autoapi/app/forms/index.html#app.forms.SetNewPassword.password">[docs]</a>
+    <span class="n">password</span> <span class="o">=</span> <span class="n">PasswordField</span><span class="p">(</span><span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">DataRequired</span><span class="p">()])</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ProfileDetailsForm">
+<a class="viewcode-back" href="../../autoapi/app/forms/index.html#app.forms.ProfileDetailsForm">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ProfileDetailsForm</span><span class="p">(</span><span class="n">FlaskForm</span><span class="p">):</span>
+<div class="viewcode-block" id="ProfileDetailsForm.firstName">
+<a class="viewcode-back" href="../../autoapi/app/forms/index.html#app.forms.ProfileDetailsForm.firstName">[docs]</a>
+    <span class="n">firstName</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s2">&quot;First Name&quot;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">DataRequired</span><span class="p">()])</span></div>
+
+<div class="viewcode-block" id="ProfileDetailsForm.lastName">
+<a class="viewcode-back" href="../../autoapi/app/forms/index.html#app.forms.ProfileDetailsForm.lastName">[docs]</a>
+    <span class="n">lastName</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s2">&quot;Last Name&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ProfileDetailsForm.newsletter">
+<a class="viewcode-back" href="../../autoapi/app/forms/index.html#app.forms.ProfileDetailsForm.newsletter">[docs]</a>
+    <span class="n">newsletter</span> <span class="o">=</span> <span class="n">BooleanField</span><span class="p">(</span><span class="s2">&quot;Subscribe&quot;</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="TwoFactorAuthenticationForm">
+<a class="viewcode-back" href="../../autoapi/app/forms/index.html#app.forms.TwoFactorAuthenticationForm">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">TwoFactorAuthenticationForm</span><span class="p">(</span><span class="n">FlaskForm</span><span class="p">):</span>
+<div class="viewcode-block" id="TwoFactorAuthenticationForm.code0">
+<a class="viewcode-back" href="../../autoapi/app/forms/index.html#app.forms.TwoFactorAuthenticationForm.code0">[docs]</a>
+    <span class="n">code0</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s2">&quot;code0&quot;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">InputRequired</span><span class="p">()])</span></div>
+
+<div class="viewcode-block" id="TwoFactorAuthenticationForm.code1">
+<a class="viewcode-back" href="../../autoapi/app/forms/index.html#app.forms.TwoFactorAuthenticationForm.code1">[docs]</a>
+    <span class="n">code1</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s2">&quot;code1&quot;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">InputRequired</span><span class="p">()])</span></div>
+
+<div class="viewcode-block" id="TwoFactorAuthenticationForm.code2">
+<a class="viewcode-back" href="../../autoapi/app/forms/index.html#app.forms.TwoFactorAuthenticationForm.code2">[docs]</a>
+    <span class="n">code2</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s2">&quot;code2&quot;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">InputRequired</span><span class="p">()])</span></div>
+
+<div class="viewcode-block" id="TwoFactorAuthenticationForm.code3">
+<a class="viewcode-back" href="../../autoapi/app/forms/index.html#app.forms.TwoFactorAuthenticationForm.code3">[docs]</a>
+    <span class="n">code3</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s2">&quot;code3&quot;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">InputRequired</span><span class="p">()])</span></div>
+
+<div class="viewcode-block" id="TwoFactorAuthenticationForm.code4">
+<a class="viewcode-back" href="../../autoapi/app/forms/index.html#app.forms.TwoFactorAuthenticationForm.code4">[docs]</a>
+    <span class="n">code4</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s2">&quot;code4&quot;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">InputRequired</span><span class="p">()])</span></div>
+
+<div class="viewcode-block" id="TwoFactorAuthenticationForm.code5">
+<a class="viewcode-back" href="../../autoapi/app/forms/index.html#app.forms.TwoFactorAuthenticationForm.code5">[docs]</a>
+    <span class="n">code5</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s2">&quot;code5&quot;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">InputRequired</span><span class="p">()])</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Cansin Acarer.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
