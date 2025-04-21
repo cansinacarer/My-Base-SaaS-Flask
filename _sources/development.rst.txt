@@ -17,7 +17,7 @@ The release process is automated with GitHub Actions. When a new tag is pushed, 
 Developing in Dev Containers
 -------------------------------
 
-Dev Containers are a the recommended way to develop this project. You simply clone this repository and open it in VS Code. Make sure that the Docker daemon is running, then use `>Dev Containers: Reopen in Container` command in VS Code. This will create containers with the following applications:
+Dev Containers are a the recommended way to develop this project. You simply clone this repository and open it in VS Code. Make sure that the Docker daemon is running, then use ``>Dev Containers: Reopen in Container`` command in VS Code. This will create containers with the following applications:
 
 - Flask
    - Accessible at ``https://localhost:5000``. It uses the self-signed SSL
