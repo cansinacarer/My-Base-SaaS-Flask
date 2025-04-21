@@ -1,0 +1,306 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Development &mdash; Cansin&#39;s Base SaaS (Flask) v1.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d29a5c0e"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Continuous Integration and Continuous Deployment" href="ci-cd.html" />
+    <link rel="prev" title="Features" href="features.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Cansin's Base SaaS (Flask)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#code-quality-conventional-commits-and-releases">Code Quality, Conventional Commits, and Releases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#developing-in-dev-containers">Developing in Dev Containers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#debugging">Debugging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#testing-stripe-webhooks">Testing Stripe Webhooks</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#developing-in-a-virtual-environment">Developing in a Virtual Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-build-on-top-of-this-app">How to Build On Top of This App</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#adding-new-pages">Adding New Pages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#defining-more-configuration-variables">Defining More Configuration Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#updating-dependencies">Updating Dependencies</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ci-cd.html">Continuous Integration and Continuous Deployment</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ci-cd.html#pre-commit-hooks">Pre-Commit Hooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci-cd.html#run-tests">Run Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci-cd.html#semantic-release">Semantic Release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci-cd.html#build-deploy">Build &amp; Deploy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci-cd.html#build-deploy-sphinx-docs">Build &amp; Deploy Sphinx Docs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="deployment.html">Deployment to Production</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="deployment.html#a-pitfall-for-cloudflare-proxy">A Pitfall for Cloudflare Proxy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">Auto Generated Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/app/index.html">app</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/app/index.html#submodules">Submodules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/app/config/index.html">app.config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/app/decorators/index.html">app.decorators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/app/emails/index.html">app.emails</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/app/forms/index.html">app.forms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/app/models/index.html">app.models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/app/utilities/index.html">app.utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/app/views/index.html">app.views</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/app/views_auth/index.html">app.views_auth</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/app/views_private/index.html">app.views_private</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/app/index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/app/index.html#package-contents">Package Contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/app/index.html#app.app"><code class="docutils literal notranslate"><span class="pre">app</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/app/index.html#app.mail"><code class="docutils literal notranslate"><span class="pre">mail</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/app/index.html#app.db"><code class="docutils literal notranslate"><span class="pre">db</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/app/index.html#app.bc"><code class="docutils literal notranslate"><span class="pre">bc</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/app/index.html#app.lm"><code class="docutils literal notranslate"><span class="pre">lm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/app/index.html#app.csrf"><code class="docutils literal notranslate"><span class="pre">csrf</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/app/index.html#app.sslify"><code class="docutils literal notranslate"><span class="pre">sslify</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/app/index.html#app.default_tier"><code class="docutils literal notranslate"><span class="pre">default_tier</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Additional Resources:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact the Developer</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Cansin's Base SaaS (Flask)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Development</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/development.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="development">
+<h1>Development<a class="headerlink" href="#development" title="Link to this heading"></a></h1>
+<section id="code-quality-conventional-commits-and-releases">
+<h2>Code Quality, Conventional Commits, and Releases<a class="headerlink" href="#code-quality-conventional-commits-and-releases" title="Link to this heading"></a></h2>
+<p>Code quality is maintained by <em>pre-commit</em> hooks and <code class="docutils literal notranslate"><span class="pre">.vscode/settings.json</span></code> locally; then also enforced with GitHub Actions in the remote repository.</p>
+<ul class="simple">
+<li><p>Python scripts are required to follow <code class="docutils literal notranslate"><span class="pre">black</span></code> code style.</p></li>
+<li><p>HTML, CSS, and Javascript files are checked with <code class="docutils literal notranslate"><span class="pre">prettier</span></code>.</p></li>
+<li><p>Markdown files are checked with <code class="docutils literal notranslate"><span class="pre">markdownlint</span></code>.</p></li>
+</ul>
+<p>Commit messages are required to follow the conventional commits standard. This is enforced by the <code class="docutils literal notranslate"><span class="pre">commitlint</span></code> pre-commit hook and the CI/CD pipeline.</p>
+<p>The release process is automated with GitHub Actions. When a new tag is pushed, the CI/CD pipeline will automatically build and deploy the app to the production server based on the semantic release standards, and create a Changelog file with the changes since the last release.</p>
+</section>
+<section id="developing-in-dev-containers">
+<h2>Developing in Dev Containers<a class="headerlink" href="#developing-in-dev-containers" title="Link to this heading"></a></h2>
+<p>Dev Containers are a the recommended way to develop this project. You simply clone this repository and open it in VS Code. This will create containers with the following applications:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Flask</dt><dd><ul>
+<li><p>Accessible at <code class="docutils literal notranslate"><span class="pre">https://localhost:5000</span></code>. It uses the self-signed SSL
+certificate generated in <code class="docutils literal notranslate"><span class="pre">.devcontainer/ssl</span></code>. Never use these certificates for production!</p></li>
+<li><p>This is where the app runs. It is based on the official Python image
+with the packages from <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> installed.</p></li>
+<li><p>It also has additional packages installed for development, such as
+<code class="docutils literal notranslate"><span class="pre">black</span></code>, <code class="docutils literal notranslate"><span class="pre">pytest</span></code>, and <code class="docutils literal notranslate"><span class="pre">pre-commit</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>pgAdmin</dt><dd><ul>
+<li><p>Accessible at <code class="docutils literal notranslate"><span class="pre">http://localhost:5002</span></code>. You can use this to manage the
+Postgres database.</p></li>
+<li><p>It is already configured to connect to the Postgres container. When prompted
+for the database password, use <code class="docutils literal notranslate"><span class="pre">password</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Postgres</dt><dd><ul>
+<li><p>When Flask is initialized, it will create the tables in this database.</p></li>
+<li><p>If you need to access the database, it is available at <code class="docutils literal notranslate"><span class="pre">localhost:5432</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<section id="debugging">
+<h3>Debugging<a class="headerlink" href="#debugging" title="Link to this heading"></a></h3>
+<p>The configuration in <code class="docutils literal notranslate"><span class="pre">.vscode/launch.json</span></code> allows us to use the VSCode debugger to set breakpoints and inspect variables. The Flask instance run this way will be available at <code class="docutils literal notranslate"><span class="pre">http://localhost:5001</span></code>.</p>
+</section>
+<section id="testing-stripe-webhooks">
+<h3>Testing Stripe Webhooks<a class="headerlink" href="#testing-stripe-webhooks" title="Link to this heading"></a></h3>
+<p>For testing with Stripe, you’ll need to get the webhook secret (<code class="docutils literal notranslate"><span class="pre">whsec_...</span></code>) using this Stripe CLI command:</p>
+<p><code class="docutils literal notranslate"><span class="pre">stripe</span> <span class="pre">listen</span> <span class="pre">--forward-to</span> <span class="pre">https://localhost:5000/app/webhook</span> <span class="pre">--skip-verify</span></code></p>
+<p>If you want to test subscription events used by this app, run the
+following to make stripe CLI listen and forward the following events:</p>
+<ul class="simple">
+<li><p>customer.subscription.updated</p></li>
+<li><p>customer.subscription.deleted</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">stripe</span> <span class="pre">listen</span> <span class="pre">-e</span> <span class="pre">customer.subscription.updated,customer.subscription.deleted,checkout.session.completed</span> <span class="pre">--forward-to</span> <span class="pre">https://localhost:5000/app/webhook/stripe</span> <span class="pre">--skip-verify</span></code></p>
+<p>This returns the webhook signing secret we use to verify that Stripe
+is the one sending webhook requests. This secret needs to be saved in
+the <code class="docutils literal notranslate"><span class="pre">.env</span></code> file as shown in <code class="docutils literal notranslate"><span class="pre">.env.template</span></code>.</p>
+</section>
+</section>
+<section id="developing-in-a-virtual-environment">
+<h2>Developing in a Virtual Environment<a class="headerlink" href="#developing-in-a-virtual-environment" title="Link to this heading"></a></h2>
+<p>I do not recommend using a virtual environment for development, but here is the legacy documentation I had for it before I switched to devcontainers.</p>
+<ol class="arabic">
+<li><p>Clone the repo, navigate to the repo directory,</p></li>
+<li><p>Create a virtual environment: <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">venv</span> <span class="pre">env</span></code></p></li>
+<li><p>Activate the virtual environment:</p>
+<ul>
+<li><p>For Windows:</p>
+<p><code class="docutils literal notranslate"><span class="pre">env\Scripts\activate</span></code></p>
+</li>
+<li><p>For macOS/Linux:</p>
+<p><code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">env/bin/activate</span></code></p>
+</li>
+</ul>
+</li>
+<li><p>Install the dependencies inside the virtual environment:</p>
+<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-r</span> <span class="pre">requirements.txt</span></code></p>
+</li>
+<li><p>Set the environment variables listed in the <code class="docutils literal notranslate"><span class="pre">.env.template</span></code> file</p></li>
+<li><p>Generate a self signed SSL certificate for using https locally. On
+Linux or with WSL in the root path:</p>
+<p><code class="docutils literal notranslate"><span class="pre">openssl</span> <span class="pre">req</span> <span class="pre">-x509</span> <span class="pre">-newkey</span> <span class="pre">rsa:4096</span> <span class="pre">-keyout</span> <span class="pre">key.pem</span> <span class="pre">-out</span> <span class="pre">cert.pem</span> <span class="pre">-days</span> <span class="pre">365</span> <span class="pre">-nodes</span></code></p>
+</li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">flask</span> <span class="pre">run</span></code></p></li>
+</ol>
+</section>
+<section id="how-to-build-on-top-of-this-app">
+<h2>How to Build On Top of This App<a class="headerlink" href="#how-to-build-on-top-of-this-app" title="Link to this heading"></a></h2>
+<section id="adding-new-pages">
+<h3>Adding New Pages<a class="headerlink" href="#adding-new-pages" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>In both <code class="docutils literal notranslate"><span class="pre">public</span></code> and <code class="docutils literal notranslate"><span class="pre">private</span></code> directories, you can copy the
+<code class="docutils literal notranslate"><span class="pre">sample-page.html</span></code> as a starter and rename it (e.g. <code class="docutils literal notranslate"><span class="pre">test.html</span></code>).
+The generic routing in <code class="docutils literal notranslate"><span class="pre">views.py</span></code> will automatically be served at
+<code class="docutils literal notranslate"><span class="pre">/test</span></code> directory.</p></li>
+<li><p>Update the page title at <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">set</span> <span class="pre">page_title</span> <span class="pre">=</span> <span class="pre">&quot;Sample</span> <span class="pre">Page&quot;</span> <span class="pre">%}</span></code>.</p></li>
+<li><p>Insert a link to this page in <code class="docutils literal notranslate"><span class="pre">components/header/nav-menu.html</span></code>.
+For the active page highlighting, we also need to update the path for
+active link condition in this class:
+<code class="docutils literal notranslate"><span class="pre">class=&quot;nav-link</span> <span class="pre">{%</span> <span class="pre">if</span> <span class="pre">path</span> <span class="pre">==</span> <span class="pre">'sample-page'</span> <span class="pre">%}active{%</span> <span class="pre">endif</span> <span class="pre">%}&quot;</span></code>.</p></li>
+<li><p>Insert content between <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">block</span> <span class="pre">content</span> <span class="pre">%}</span></code> and
+<code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">endblock</span> <span class="pre">content</span> <span class="pre">%}</span></code> as needed.</p></li>
+</ol>
+<p>Note that URLs with trailing slashes (e.g. <code class="docutils literal notranslate"><span class="pre">/test/</span></code>) are redirected to
+the alternatives without one (e.g. <code class="docutils literal notranslate"><span class="pre">/test</span></code>).</p>
+</section>
+<section id="defining-more-configuration-variables">
+<h3>Defining More Configuration Variables<a class="headerlink" href="#defining-more-configuration-variables" title="Link to this heading"></a></h3>
+<p>If you need to have more config variables (e.g. credentials for a new
+OAuth provider):</p>
+<ol class="arabic simple">
+<li><p>Define environment variables for them both in your local <code class="docutils literal notranslate"><span class="pre">.env</span></code>
+file and in prod,</p></li>
+<li><p>In <code class="docutils literal notranslate"><span class="pre">app/config.py</span></code>, add a new attribute for the <code class="docutils literal notranslate"><span class="pre">Config</span></code> class.
+Use the <code class="docutils literal notranslate"><span class="pre">config</span></code> method from decouple.</p></li>
+<li><p>You can then call the config value anywhere in the app as
+<code class="docutils literal notranslate"><span class="pre">app.config[&quot;&quot;]</span></code>.</p></li>
+</ol>
+</section>
+<section id="updating-dependencies">
+<h3>Updating Dependencies<a class="headerlink" href="#updating-dependencies" title="Link to this heading"></a></h3>
+<p>To include new Python packages, you can first install them in your local
+virtual environment during development. Before pushing a change with a
+new package, also update the dependencies using
+<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">freeze</span> <span class="pre">&gt;</span> <span class="pre">requirements.txt</span></code>.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="features.html" class="btn btn-neutral float-left" title="Features" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ci-cd.html" class="btn btn-neutral float-right" title="Continuous Integration and Continuous Deployment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Cansin Acarer.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

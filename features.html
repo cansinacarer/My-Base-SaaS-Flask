@@ -20,8 +20,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Getting Started" href="getting-started.html" />
-    <link rel="prev" title="Cansin’s Base SaaS (Flask) Documentation" href="index.html" /> 
+    <link rel="next" title="Development" href="development.html" />
+    <link rel="prev" title="Cansin’s Base SaaS (Flask)" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -46,8 +46,64 @@
               <p class="caption" role="heading"><span class="caption-text">Documentation:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Features</a></li>
-<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting Started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">Auto Generated Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="development.html#code-quality-conventional-commits-and-releases">Code Quality, Conventional Commits, and Releases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development.html#developing-in-dev-containers">Developing in Dev Containers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="development.html#debugging">Debugging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="development.html#testing-stripe-webhooks">Testing Stripe Webhooks</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="development.html#developing-in-a-virtual-environment">Developing in a Virtual Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development.html#how-to-build-on-top-of-this-app">How to Build On Top of This App</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="development.html#adding-new-pages">Adding New Pages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="development.html#defining-more-configuration-variables">Defining More Configuration Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="development.html#updating-dependencies">Updating Dependencies</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ci-cd.html">Continuous Integration and Continuous Deployment</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ci-cd.html#pre-commit-hooks">Pre-Commit Hooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci-cd.html#run-tests">Run Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci-cd.html#semantic-release">Semantic Release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci-cd.html#build-deploy">Build &amp; Deploy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci-cd.html#build-deploy-sphinx-docs">Build &amp; Deploy Sphinx Docs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="deployment.html">Deployment to Production</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="deployment.html#a-pitfall-for-cloudflare-proxy">A Pitfall for Cloudflare Proxy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">Auto Generated Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/app/index.html">app</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/app/index.html#submodules">Submodules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/app/config/index.html">app.config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/app/decorators/index.html">app.decorators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/app/emails/index.html">app.emails</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/app/forms/index.html">app.forms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/app/models/index.html">app.models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/app/utilities/index.html">app.utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/app/views/index.html">app.views</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/app/views_auth/index.html">app.views_auth</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/app/views_private/index.html">app.views_private</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/app/index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/app/index.html#package-contents">Package Contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/app/index.html#app.app"><code class="docutils literal notranslate"><span class="pre">app</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/app/index.html#app.mail"><code class="docutils literal notranslate"><span class="pre">mail</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/app/index.html#app.db"><code class="docutils literal notranslate"><span class="pre">db</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/app/index.html#app.bc"><code class="docutils literal notranslate"><span class="pre">bc</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/app/index.html#app.lm"><code class="docutils literal notranslate"><span class="pre">lm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/app/index.html#app.csrf"><code class="docutils literal notranslate"><span class="pre">csrf</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/app/index.html#app.sslify"><code class="docutils literal notranslate"><span class="pre">sslify</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/app/index.html#app.default_tier"><code class="docutils literal notranslate"><span class="pre">default_tier</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Additional Resources:</span></p>
 <ul>
@@ -80,15 +136,119 @@
              
   <section id="features">
 <h1>Features<a class="headerlink" href="#features" title="Link to this heading"></a></h1>
-<p>test content</p>
+<ul>
+<li><p>💳 Stripe checkout flows:</p>
+<ul class="simple">
+<li><p>Subscriptions,</p>
+<ul>
+<li><p>Different subscription tiers,</p></li>
+<li><p>Billing page with Invoices,</p></li>
+<li><p>Integration mechanism:</p>
+<ul>
+<li><p>To begin a subscription, we send the user to Stripe with a
+checkout session,</p></li>
+<li><p>Then listen to Stripe webhook events to process the results,</p></li>
+<li><p>We set the Products in Stripe, then insert their prices into
+the Tiers table.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>One-off credit purchases for pre-paid metered usage.</p></li>
+</ul>
+</li>
+<li><p>🔒 Authentication,</p>
+<ul class="simple">
+<li><p>Sign up flow,</p>
+<ul>
+<li><p>Sign up with Google option,</p></li>
+<li><p>Email validation requirement,</p></li>
+</ul>
+</li>
+<li><p>Two factor authentication (TOTP only),</p></li>
+<li><p>Forgot password flow,</p></li>
+<li><p>Account details page where the user can:</p>
+<ul>
+<li><p>Upload a profile picture (stored in S3),</p></li>
+<li><p>Change profile details like first &amp; last name.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>📧 Transactional emails sent over SMTP:</p>
+<ul class="simple">
+<li><p>About Stripe subscription changes:</p>
+<ul>
+<li><p>Confirmation,</p></li>
+<li><p>Cancellation,</p></li>
+<li><p>Expiration.</p></li>
+</ul>
+</li>
+<li><p>Email verification on registration,</p></li>
+<li><p>Forgot password.</p></li>
+</ul>
+</li>
+<li><p>🗄️ Database model with ORM, automatically created on first run to
+accommodate the features above,</p></li>
+<li><p>🚨 Security measures:</p>
+<ul class="simple">
+<li><p>CSRF (Cross-Site Request Forgery) protection in all forms,</p></li>
+<li><p>Rate limiting: App-wide and form specific limits.</p></li>
+</ul>
+</li>
+<li><p>🐳 Dockerized for stateless continuous deployment,</p></li>
+<li><p>🔔 UI components ready to use:</p>
+<ul>
+<li><p>Toast notifications</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">showToast</span><span class="p">(</span>
+<span class="w">    </span><span class="s2">&quot;This is a test toast notification!&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;Toast Title&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;success&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nx">autohide</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="p">}</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Modals</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">showAlert</span><span class="p">(</span>
+<span class="w">    </span><span class="s2">&quot;Title&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;This is a test modal dialog!&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;Back&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;info&quot;</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">flash()</span></code> messages of Flask styled as Bootstrap 5 alerts,</p></li>
+</ul>
+</li>
+<li><p>🌐 HTML templates:</p>
+<ul class="simple">
+<li><p>Email templates for the email validation, password reset,</p></li>
+<li><p>2 sets of page templates,</p>
+<ul>
+<li><p>Public pages (<code class="docutils literal notranslate"><span class="pre">templates/public</span></code>),</p>
+<ul>
+<li><p>Login/sign up pages,</p></li>
+</ul>
+</li>
+<li><p>Backend (auth required) pages (<code class="docutils literal notranslate"><span class="pre">templates/private</span></code>),</p></li>
+</ul>
+</li>
+<li><p>Utilizes the new ootb Bootstrap 5 components like floating form
+labels,</p></li>
+<li><p>Last, but not least: User configurable dark mode. 😎</p></li>
+</ul>
+</li>
+</ul>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="Cansin’s Base SaaS (Flask) Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="getting-started.html" class="btn btn-neutral float-right" title="Getting Started" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Cansin’s Base SaaS (Flask)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="development.html" class="btn btn-neutral float-right" title="Development" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

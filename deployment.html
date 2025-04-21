@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cansin’s Base SaaS (Flask) &mdash; Cansin&#39;s Base SaaS (Flask) v1.0.1 documentation</title>
+  <title>Deployment to Production &mdash; Cansin&#39;s Base SaaS (Flask) v1.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
@@ -20,7 +20,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Features" href="features.html" /> 
+    <link rel="next" title="Auto Generated Documentation" href="autoapi/index.html" />
+    <link rel="prev" title="Continuous Integration and Continuous Deployment" href="ci-cd.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -31,7 +32,7 @@
 
           
           
-          <a href="#" class="icon icon-home">
+          <a href="index.html" class="icon icon-home">
             Cansin's Base SaaS (Flask)
           </a>
 <div role="search">
@@ -43,7 +44,7 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Documentation:</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="development.html">Development</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="development.html#code-quality-conventional-commits-and-releases">Code Quality, Conventional Commits, and Releases</a></li>
@@ -69,8 +70,8 @@
 <li class="toctree-l2"><a class="reference internal" href="ci-cd.html#build-deploy-sphinx-docs">Build &amp; Deploy Sphinx Docs</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="deployment.html">Deployment to Production</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="deployment.html#a-pitfall-for-cloudflare-proxy">A Pitfall for Cloudflare Proxy</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Deployment to Production</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#a-pitfall-for-cloudflare-proxy">A Pitfall for Cloudflare Proxy</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">Auto Generated Documentation</a><ul>
@@ -115,17 +116,17 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">Cansin's Base SaaS (Flask)</a>
+          <a href="index.html">Cansin's Base SaaS (Flask)</a>
       </nav>
 
       <div class="wy-nav-content">
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Cansin’s Base SaaS (Flask)</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Deployment to Production</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/deployment.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -133,87 +134,18 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="cansin-s-base-saas-flask">
-<h1>Cansin’s Base SaaS (Flask)<a class="headerlink" href="#cansin-s-base-saas-flask" title="Link to this heading"></a></h1>
-<p><img alt="Uptime" src="https://uptime.apps.cansin.net/api/badge/5/uptime" /> <a class="reference external" href="https://uptime.apps.cansin.net/status/base-saas-flask-demo"><img alt="Test Coverage" src="https://raw.githubusercontent.com/cansinacarer/My-Base-SaaS-Flask/main/tests/coverage/coverage-badge.svg" /></a> <img alt="Last Commit" src="https://img.shields.io/github/last-commit/cansinacarer/My-Base-SaaS-Flask?color=blue" /> <a class="reference external" href="https://github.com/psf/black"><img alt="Code Style" src="https://img.shields.io/badge/code%20style-black-000000" /></a></p>
-<p>Welcome! 👋 This is the documentation for the starter SaaS framework I built with Flask for my side projects with paid subscriptions.</p>
-<p>– <a class="reference external" href="contact.html">Cansin Acarer</a></p>
-<section id="related-links">
-<h2>Related links:<a class="headerlink" href="#related-links" title="Link to this heading"></a></h2>
-<ul class="simple">
-<li><p><a class="reference external" href="https://base-saas-flask.apps.cansin.net/">Try the Live Demo</a></p></li>
-<li><p><a class="reference external" href="https://github.com/cansinacarer/My-Base-SaaS-Flask">Find this project on GitHub</a></p></li>
-</ul>
-<div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Documentation:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
-<li class="toctree-l1"><a class="reference internal" href="development.html">Development</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="development.html#code-quality-conventional-commits-and-releases">Code Quality, Conventional Commits, and Releases</a></li>
-<li class="toctree-l2"><a class="reference internal" href="development.html#developing-in-dev-containers">Developing in Dev Containers</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="development.html#debugging">Debugging</a></li>
-<li class="toctree-l3"><a class="reference internal" href="development.html#testing-stripe-webhooks">Testing Stripe Webhooks</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="development.html#developing-in-a-virtual-environment">Developing in a Virtual Environment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="development.html#how-to-build-on-top-of-this-app">How to Build On Top of This App</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="development.html#adding-new-pages">Adding New Pages</a></li>
-<li class="toctree-l3"><a class="reference internal" href="development.html#defining-more-configuration-variables">Defining More Configuration Variables</a></li>
-<li class="toctree-l3"><a class="reference internal" href="development.html#updating-dependencies">Updating Dependencies</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="ci-cd.html">Continuous Integration and Continuous Deployment</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="ci-cd.html#pre-commit-hooks">Pre-Commit Hooks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ci-cd.html#run-tests">Run Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ci-cd.html#semantic-release">Semantic Release</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ci-cd.html#build-deploy">Build &amp; Deploy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ci-cd.html#build-deploy-sphinx-docs">Build &amp; Deploy Sphinx Docs</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="deployment.html">Deployment to Production</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="deployment.html#a-pitfall-for-cloudflare-proxy">A Pitfall for Cloudflare Proxy</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">Auto Generated Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="autoapi/app/index.html">app</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/app/index.html#submodules">Submodules</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/app/config/index.html">app.config</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/app/decorators/index.html">app.decorators</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/app/emails/index.html">app.emails</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/app/forms/index.html">app.forms</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/app/models/index.html">app.models</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/app/utilities/index.html">app.utilities</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/app/views/index.html">app.views</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/app/views_auth/index.html">app.views_auth</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/app/views_private/index.html">app.views_private</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/app/index.html#attributes">Attributes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/app/index.html#package-contents">Package Contents</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/app/index.html#app.app"><code class="docutils literal notranslate"><span class="pre">app</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/app/index.html#app.mail"><code class="docutils literal notranslate"><span class="pre">mail</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/app/index.html#app.db"><code class="docutils literal notranslate"><span class="pre">db</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/app/index.html#app.bc"><code class="docutils literal notranslate"><span class="pre">bc</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/app/index.html#app.lm"><code class="docutils literal notranslate"><span class="pre">lm</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/app/index.html#app.csrf"><code class="docutils literal notranslate"><span class="pre">csrf</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/app/index.html#app.sslify"><code class="docutils literal notranslate"><span class="pre">sslify</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/app/index.html#app.default_tier"><code class="docutils literal notranslate"><span class="pre">default_tier</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Additional Resources:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact the Developer</a></li>
-</ul>
-</div>
+  <section id="deployment-to-production">
+<h1>Deployment to Production<a class="headerlink" href="#deployment-to-production" title="Link to this heading"></a></h1>
+<p>This app is containerized and intended to be deployed in a Docker. This means you can deploy it anywhere from fully managed PaaS services to container hosting services and custom self-hosted solutions.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code> will install the dependencies from the <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> in the container and will run Flask with Gunicorn. Depending on your traffic and server resources, you will want to adjust the number of workers in the <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code>.</p>
+<p>For reference, the live demo website is running on a cheap VPS with <a class="reference external" href="https://caprover.com/">CapRover</a> installed. CapRover is a self-hosted PaaS built as a layer on Docker. It simplifies
+setting environment variables, routing traffic to containers nginx
+reverse proxy, and SSL set up. I use <a class="reference external" href="https://github.com/cansinacarer/My-Base-SaaS-Flask/actions/workflows/deploy.yml">this GitHub Actions
+workflow</a> for continuous deployment.</p>
+<p>Here is a Medium article I wrote about <a class="reference external" href="https://betterprogramming.pub/migrate-from-heroku-to-aws-ec2-756328d8e58a">configuring a server instance with CapRover</a>.</p>
+<section id="a-pitfall-for-cloudflare-proxy">
+<h2>A Pitfall for Cloudflare Proxy<a class="headerlink" href="#a-pitfall-for-cloudflare-proxy" title="Link to this heading"></a></h2>
+<p>If the domain is proxied over Cloudflare, set SSL to Full (strict) to prevent ERR_TOO_MANY_REDIRECTS error.</p>
 </section>
 </section>
 
@@ -221,7 +153,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="features.html" class="btn btn-neutral float-right" title="Features" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="ci-cd.html" class="btn btn-neutral float-left" title="Continuous Integration and Continuous Deployment" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="autoapi/index.html" class="btn btn-neutral float-right" title="Auto Generated Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
