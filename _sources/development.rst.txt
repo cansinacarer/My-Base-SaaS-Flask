@@ -62,6 +62,8 @@ This returns the webhook signing secret we use to verify that Stripe
 is the one sending webhook requests. This secret needs to be saved in
 the ``.env`` file as shown in ``.env.template``.
 
+.. HINT::
+   Some of the functionality will not work in your local development environment without having this listener forward the events from Stripe to the local instance of this app. For example, the account balance will not increment as this depends on the event from Stripe.
 
 Developing in a Virtual Environment
 --------------------------------------

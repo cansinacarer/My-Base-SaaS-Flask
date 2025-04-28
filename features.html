@@ -45,7 +45,20 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Documentation:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Features</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Features</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#developer-experience">🧑‍💻 Developer Experience</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#deployment">☁️ Deployment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#stripe-integrations">💳 Stripe Integrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#authentication">🔒 Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#transactional-emails-with-smtp">📧 Transactional Emails with SMTP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#security">🚨 Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ui">🎨 UI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#notifications">🔔 Notifications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bootstrap-html-templates">🌐 Bootstrap HTML templates</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="development.html">Development</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="development.html#code-quality-conventional-commits-and-releases">Code Quality, Conventional Commits, and Releases</a></li>
 <li class="toctree-l2"><a class="reference internal" href="development.html#developing-in-dev-containers">Developing in Dev Containers</a><ul>
@@ -135,9 +148,48 @@
              
   <section id="features">
 <h1>Features<a class="headerlink" href="#features" title="Link to this heading"></a></h1>
-<ul>
-<li><p>💳 Stripe checkout flows:</p>
+<section id="developer-experience">
+<h2>🧑‍💻 Developer Experience<a class="headerlink" href="#developer-experience" title="Link to this heading"></a></h2>
 <ul class="simple">
+<li><p>Dev containers:</p>
+<ul>
+<li><p><strong>Flask</strong> container with pre-configured with:</p>
+<ul>
+<li><p>VSCode launch.json for debugging the Flask app,</p></li>
+<li><p>Prettier for HTML, CSS, and JS formatting,</p></li>
+<li><p>Pre-commit hooks for code quality checks,</p></li>
+<li><p>Markdownlint for Markdown formatting,</p></li>
+<li><p>Black for Python code formatting,</p></li>
+<li><p>Commitlint for commit message linting.</p></li>
+</ul>
+</li>
+<li><p><strong>Postgres</strong> as a development database,</p></li>
+<li><p><strong>pgAdmin</strong> pre-connected to the development.</p></li>
+</ul>
+</li>
+<li><p>CI/CD pipelines with GitHub Actions to:</p>
+<ul>
+<li><p>Run pre-commit hooks,</p></li>
+<li><p>Run tests,</p></li>
+<li><p>Automate semantic release for versioning and changelog generation,</p></li>
+<li><p>Build and deploy the documentation,</p></li>
+<li><p>Build and deploy the app to production.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="deployment">
+<h2>☁️ Deployment<a class="headerlink" href="#deployment" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>🐳 Dockerized Flask for stateless continuous deployment for scalability,</p></li>
+<li><p>🗄️ Database model abstracted with ORM,</p></li>
+<li><p>📦 S3 object storage with pre-signed URLs.</p></li>
+</ul>
+</section>
+<section id="stripe-integrations">
+<h2>💳 Stripe Integrations<a class="headerlink" href="#stripe-integrations" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
 <li><p>Subscriptions,</p>
 <ul>
 <li><p>Different subscription tiers,</p></li>
@@ -155,9 +207,12 @@ the Tiers table.</p></li>
 </li>
 <li><p>One-off credit purchases for pre-paid metered usage.</p></li>
 </ul>
-</li>
-<li><p>🔒 Authentication,</p>
-<ul class="simple">
+</div></blockquote>
+</section>
+<section id="authentication">
+<h2>🔒 Authentication<a class="headerlink" href="#authentication" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
 <li><p>Sign up flow,</p>
 <ul>
 <li><p>Sign up with Google option,</p></li>
@@ -173,9 +228,12 @@ the Tiers table.</p></li>
 </ul>
 </li>
 </ul>
-</li>
-<li><p>📧 Transactional emails sent over SMTP:</p>
-<ul class="simple">
+</div></blockquote>
+</section>
+<section id="transactional-emails-with-smtp">
+<h2>📧 Transactional Emails with SMTP<a class="headerlink" href="#transactional-emails-with-smtp" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
 <li><p>About Stripe subscription changes:</p>
 <ul>
 <li><p>Confirmation,</p></li>
@@ -186,17 +244,23 @@ the Tiers table.</p></li>
 <li><p>Email verification on registration,</p></li>
 <li><p>Forgot password.</p></li>
 </ul>
-</li>
-<li><p>🗄️ Database model with ORM, automatically created on first run to
-accommodate the features above,</p></li>
-<li><p>🚨 Security measures:</p>
-<ul class="simple">
-<li><p>CSRF (Cross-Site Request Forgery) protection in all forms,</p></li>
-<li><p>Rate limiting: App-wide and form specific limits.</p></li>
+</div></blockquote>
+</section>
+<section id="security">
+<h2>🚨 Security<a class="headerlink" href="#security" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>Cross-Site Request Forgery (CSRF) protection in all forms,</p></li>
+<li><p>Rate limiting: App-wide and form specific limits,</p></li>
+<li><p>Cross-Site Scripting (XSS) protection,</p></li>
+<li><p>Cross-Origin Resource Sharing (CORS) protection.</p></li>
 </ul>
-</li>
-<li><p>🐳 Dockerized for stateless continuous deployment,</p></li>
-<li><p>🔔 UI components ready to use:</p>
+</div></blockquote>
+</section>
+<section id="ui">
+<h2>🎨 UI<a class="headerlink" href="#ui" title="Link to this heading"></a></h2>
+<section id="notifications">
+<h3>🔔 Notifications<a class="headerlink" href="#notifications" title="Link to this heading"></a></h3>
 <ul>
 <li><p>Toast notifications</p>
 <div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">showToast</span><span class="p">(</span>
@@ -218,28 +282,27 @@ accommodate the features above,</p></li>
 </pre></div>
 </div>
 </li>
-<li><p><code class="docutils literal notranslate"><span class="pre">flash()</span></code> messages of Flask styled as Bootstrap 5 alerts,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">flash()</span></code> messages from Flask styled as Bootstrap 5 alerts,</p></li>
 </ul>
-</li>
-<li><p>🌐 HTML templates:</p>
-<ul class="simple">
+</section>
+<section id="bootstrap-html-templates">
+<h3>🌐 Bootstrap HTML templates<a class="headerlink" href="#bootstrap-html-templates" title="Link to this heading"></a></h3>
+<ul>
 <li><p>Email templates for the email validation, password reset,</p></li>
-<li><p>2 sets of page templates,</p>
-<ul>
-<li><p>Public pages (<code class="docutils literal notranslate"><span class="pre">templates/public</span></code>),</p>
-<ul>
-<li><p>Login/sign up pages,</p></li>
+<li><p>2 sets of page templates and Flask Blueprints:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Public pages (<code class="docutils literal notranslate"><span class="pre">templates/public/</span></code>),</p></li>
+<li><p>Auth pages for login, sign up, and password reset, 2FA (<code class="docutils literal notranslate"><span class="pre">templates/auth/</span></code>),</p></li>
+<li><p>Backend (auth required) pages (<code class="docutils literal notranslate"><span class="pre">templates/private/</span></code>).</p></li>
 </ul>
+</div></blockquote>
 </li>
-<li><p>Backend (auth required) pages (<code class="docutils literal notranslate"><span class="pre">templates/private</span></code>),</p></li>
-</ul>
-</li>
-<li><p>Utilizes the new ootb Bootstrap 5 components like floating form
-labels,</p></li>
+<li><p>Utilizes the new ootb Bootstrap 5 components like floating form labels,</p></li>
 <li><p>Last, but not least: User configurable dark mode. 😎</p></li>
 </ul>
-</li>
-</ul>
+</section>
+</section>
 </section>
 
 

@@ -18,7 +18,6 @@ Related links:
    :caption: Documentation:
    
    features
-   getting-started
    development
    ci-cd
    deployment
