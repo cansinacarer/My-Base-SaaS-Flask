@@ -4,14 +4,6 @@ app.emails
 .. py:module:: app.emails
 
 
-Attributes
-----------
-
-.. autoapisummary::
-
-   app.emails.ts
-
-
 Functions
 ---------
 
@@ -28,8 +20,6 @@ Functions
 Module Contents
 ---------------
 
-.. py:data:: ts
-
 .. py:function:: send_email_to_reset_password(email)
 
 .. py:function:: send_email_with_code(user)
@@ -40,5 +30,5 @@ Module Contents
 
 .. py:function:: send_email_about_subscription_deletion(user, tier_name)
 
-.. py:function:: send_async_email(msg)
+.. py:function:: send_async_email(msg, app)
 

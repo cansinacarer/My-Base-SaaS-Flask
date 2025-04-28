@@ -86,15 +86,14 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/app/index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/app/index.html#functions">Functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/app/index.html#package-contents">Package Contents</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/app/index.html#app.app"><code class="docutils literal notranslate"><span class="pre">app</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/app/index.html#app.mail"><code class="docutils literal notranslate"><span class="pre">mail</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/app/index.html#app.db"><code class="docutils literal notranslate"><span class="pre">db</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/app/index.html#app.bc"><code class="docutils literal notranslate"><span class="pre">bc</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/app/index.html#app.lm"><code class="docutils literal notranslate"><span class="pre">lm</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/app/index.html#app.csrf"><code class="docutils literal notranslate"><span class="pre">csrf</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/app/index.html#app.sslify"><code class="docutils literal notranslate"><span class="pre">sslify</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/app/index.html#app.default_tier"><code class="docutils literal notranslate"><span class="pre">default_tier</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/app/index.html#app.create_app"><code class="docutils literal notranslate"><span class="pre">create_app()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -171,8 +170,6 @@
         <li><a href="autoapi/app/index.html#module-app">module</a>
 </li>
       </ul></li>
-      <li><a href="autoapi/app/index.html#app.app">app (in module app)</a>
-</li>
       <li>
     app.config
 
@@ -280,11 +277,7 @@
         <li><a href="autoapi/app/views_private/index.html#module-app.views_private">module</a>
 </li>
       </ul></li>
-      <li><a href="autoapi/app/views_auth/index.html#app.views_auth.app_auth">app_auth (in module app.views_auth)</a>
-</li>
       <li><a href="autoapi/app/config/index.html#app.config.Config.APP_NAME">APP_NAME (app.config.Config attribute)</a>
-</li>
-      <li><a href="autoapi/app/views_private/index.html#app.views_private.app_private">app_private (in module app.views_private)</a>
 </li>
       <li><a href="autoapi/app/config/index.html#app.config.Config.APP_ROOT_URL">APP_ROOT_URL (app.config.Config attribute)</a>
 </li>
@@ -293,6 +286,8 @@
       <li><a href="autoapi/app/config/index.html#app.config.appTimezoneStr">appTimezoneStr (in module app.config)</a>
 </li>
       <li><a href="autoapi/app/decorators/index.html#app.decorators.asyncr">asyncr() (in module app.decorators)</a>
+</li>
+      <li><a href="autoapi/app/views_auth/index.html#app.views_auth.auth_bp">auth_bp (in module app.views_auth)</a>
 </li>
       <li><a href="autoapi/app/models/index.html#app.models.Users.avatar">avatar() (app.models.Users method)</a>
 </li>
@@ -344,14 +339,14 @@
         <li><a href="autoapi/app/forms/index.html#app.forms.TwoFactorAuthenticationForm.code3">(app.forms.TwoFactorAuthenticationForm attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="autoapi/app/forms/index.html#app.forms.EmailConfirmationForm.code4">code4 (app.forms.EmailConfirmationForm attribute)</a>
 
       <ul>
         <li><a href="autoapi/app/forms/index.html#app.forms.TwoFactorAuthenticationForm.code4">(app.forms.TwoFactorAuthenticationForm attribute)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="autoapi/app/forms/index.html#app.forms.EmailConfirmationForm.code5">code5 (app.forms.EmailConfirmationForm attribute)</a>
 
       <ul>
@@ -361,6 +356,8 @@
       <li><a href="autoapi/app/config/index.html#app.config.Config">Config (class in app.config)</a>
 </li>
       <li><a href="autoapi/app/utilities/object_storage/index.html#app.utilities.object_storage.copy_file">copy_file() (in module app.utilities.object_storage)</a>
+</li>
+      <li><a href="autoapi/app/index.html#app.create_app">create_app() (in module app)</a>
 </li>
       <li><a href="autoapi/app/utilities/object_storage/index.html#app.utilities.object_storage.create_bucket">create_bucket() (in module app.utilities.object_storage)</a>
 </li>
@@ -376,16 +373,12 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="autoapi/app/views_private/index.html#app.views_private.dateformat">dateformat() (in module app.views_private)</a>
-</li>
       <li><a href="autoapi/app/index.html#app.db">db (in module app)</a>
 </li>
       <li><a href="autoapi/app/models/index.html#app.models.Users.deduct_credits">deduct_credits() (app.models.Users method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="autoapi/app/index.html#app.default_tier">default_tier (in module app)</a>
-</li>
       <li><a href="autoapi/app/utilities/object_storage/index.html#app.utilities.object_storage.delete_file">delete_file() (in module app.utilities.object_storage)</a>
 </li>
       <li><a href="autoapi/app/utilities/object_storage/index.html#app.utilities.object_storage.download_file">download_file() (in module app.utilities.object_storage)</a>
@@ -474,8 +467,6 @@
 </li>
       <li><a href="autoapi/app/models/index.html#app.models.Users.google_avatar_url">google_avatar_url (app.models.Users attribute)</a>
 </li>
-      <li><a href="autoapi/app/views_auth/index.html#app.views_auth.google_client">google_client (in module app.views_auth)</a>
-</li>
       <li><a href="autoapi/app/config/index.html#app.config.Config.GOOGLE_CLIENT_ID">GOOGLE_CLIENT_ID (app.config.Config attribute)</a>
 </li>
       <li><a href="autoapi/app/config/index.html#app.config.Config.GOOGLE_CLIENT_SECRET">GOOGLE_CLIENT_SECRET (app.config.Config attribute)</a>
@@ -504,8 +495,6 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="autoapi/app/views/index.html#app.views.inject_globals">inject_globals() (in module app.views)</a>
-</li>
       <li><a href="autoapi/app/utilities/stripe_event_handler/index.html#app.utilities.stripe_event_handler.is_checkout_completed_event">is_checkout_completed_event() (in module app.utilities.stripe_event_handler)</a>
 </li>
       <li><a href="autoapi/app/models/index.html#app.models.Users.is_connected_google">is_connected_google() (app.models.Users method)</a>
@@ -657,17 +646,21 @@
         <li><a href="autoapi/app/models/index.html#app.models.Users.password">(app.models.Users attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="autoapi/app/views_auth/index.html#app.views_auth.password_reset">password_reset() (in module app.views_auth)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="autoapi/app/views_auth/index.html#app.views_auth.password_reset_requested">password_reset_requested() (in module app.views_auth)</a>
 </li>
       <li><a href="autoapi/app/utilities/object_storage/index.html#app.utilities.object_storage.prevent_public_access">prevent_public_access() (in module app.utilities.object_storage)</a>
 </li>
+      <li><a href="autoapi/app/views_private/index.html#app.views_private.private_bp">private_bp (in module app.views_private)</a>
+</li>
       <li><a href="autoapi/app/views_private/index.html#app.views_private.private_index">private_index() (in module app.views_private)</a>
 </li>
       <li><a href="autoapi/app/forms/index.html#app.forms.ProfileDetailsForm">ProfileDetailsForm (class in app.forms)</a>
+</li>
+      <li><a href="autoapi/app/views/index.html#app.views.public_bp">public_bp (in module app.views)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -692,8 +685,6 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="autoapi/app/forms/index.html#app.forms.RegisterForm">RegisterForm (class in app.forms)</a>
-</li>
-      <li><a href="autoapi/app/views/index.html#app.views.remove_trailing_slash">remove_trailing_slash() (in module app.views)</a>
 </li>
       <li><a href="autoapi/app/forms/index.html#app.forms.ResetPassword">ResetPassword (class in app.forms)</a>
 </li>
@@ -745,8 +736,6 @@
 </li>
       <li><a href="autoapi/app/config/index.html#app.config.Config.SQLALCHEMY_TRACK_MODIFICATIONS">SQLALCHEMY_TRACK_MODIFICATIONS (app.config.Config attribute)</a>
 </li>
-      <li><a href="autoapi/app/index.html#app.sslify">sslify (in module app)</a>
-</li>
       <li><a href="autoapi/app/config/index.html#app.config.Config.STRIPE_CREDIT_UNIT_COST">STRIPE_CREDIT_UNIT_COST (app.config.Config attribute)</a>
 </li>
       <li><a href="autoapi/app/models/index.html#app.models.Users.stripe_customer_id">stripe_customer_id (app.models.Users attribute)</a>
@@ -775,8 +764,6 @@
 </li>
       <li><a href="autoapi/app/models/index.html#app.models.Tiers">Tiers (class in app.models)</a>
 </li>
-      <li><a href="autoapi/app/views_private/index.html#app.views_private.timeformat">timeformat() (in module app.views_private)</a>
-</li>
       <li><a href="autoapi/app/config/index.html#app.config.Config.TIMEZONE">TIMEZONE (app.config.Config attribute)</a>
 </li>
       <li><a href="autoapi/app/models/index.html#app.models.Users.totp">totp() (app.models.Users method)</a>
@@ -790,8 +777,6 @@
       <li><a href="autoapi/app/models/index.html#app.models.Users.totp_reset_secret">totp_reset_secret() (app.models.Users method)</a>
 </li>
       <li><a href="autoapi/app/models/index.html#app.models.Users.totp_secret">totp_secret (app.models.Users attribute)</a>
-</li>
-      <li><a href="autoapi/app/emails/index.html#app.emails.ts">ts (in module app.emails)</a>
 </li>
       <li><a href="autoapi/app/views_auth/index.html#app.views_auth.two_factor">two_factor() (in module app.views_auth)</a>
 </li>

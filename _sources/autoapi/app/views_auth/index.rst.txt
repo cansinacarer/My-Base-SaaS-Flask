@@ -9,8 +9,7 @@ Attributes
 
 .. autoapisummary::
 
-   app.views_auth.app_auth
-   app.views_auth.google_client
+   app.views_auth.auth_bp
 
 
 Functions
@@ -35,11 +34,9 @@ Functions
 Module Contents
 ---------------
 
-.. py:data:: app_auth
+.. py:data:: auth_bp
 
 .. py:function:: load_user(user_id)
-
-.. py:data:: google_client
 
 .. py:function:: unauthorized_callback()
 

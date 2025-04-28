@@ -26,20 +26,23 @@ Attributes
 
 .. autoapisummary::
 
-   app.app
    app.mail
    app.db
    app.bc
    app.lm
    app.csrf
-   app.sslify
-   app.default_tier
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   app.create_app
 
 
 Package Contents
 ----------------
-
-.. py:data:: app
 
 .. py:data:: mail
 
@@ -51,7 +54,5 @@ Package Contents
 
 .. py:data:: csrf
 
-.. py:data:: sslify
-
-.. py:data:: default_tier
+.. py:function:: create_app(config_class='app.config.Config', test_config=False)
 

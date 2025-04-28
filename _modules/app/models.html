@@ -86,15 +86,14 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/app/index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/app/index.html#functions">Functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/app/index.html#package-contents">Package Contents</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.app"><code class="docutils literal notranslate"><span class="pre">app</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.mail"><code class="docutils literal notranslate"><span class="pre">mail</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.db"><code class="docutils literal notranslate"><span class="pre">db</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.bc"><code class="docutils literal notranslate"><span class="pre">bc</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.lm"><code class="docutils literal notranslate"><span class="pre">lm</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.csrf"><code class="docutils literal notranslate"><span class="pre">csrf</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.sslify"><code class="docutils literal notranslate"><span class="pre">sslify</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.default_tier"><code class="docutils literal notranslate"><span class="pre">default_tier</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.create_app"><code class="docutils literal notranslate"><span class="pre">create_app()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -138,9 +137,10 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">hashlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">md5</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pyotp</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">flask</span><span class="w"> </span><span class="kn">import</span> <span class="n">current_app</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">flask_login</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserMixin</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">app</span><span class="w"> </span><span class="kn">import</span> <span class="n">app</span><span class="p">,</span> <span class="n">db</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">app</span><span class="w"> </span><span class="kn">import</span> <span class="n">db</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">app.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">s3</span><span class="p">,</span> <span class="n">appTimezone</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">app.utilities.object_storage</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_download_link</span><span class="p">,</span> <span class="n">user_folder_size</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">app.utilities.qr</span><span class="w"> </span><span class="kn">import</span> <span class="n">qrcode_img_src</span>
@@ -333,7 +333,7 @@
         <span class="c1"># If the user has uploaded an avatar, we return the s3 link</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">avatar_uploaded</span><span class="p">:</span>
             <span class="n">url</span> <span class="o">=</span> <span class="n">generate_download_link</span><span class="p">(</span>
-                <span class="n">bucket_name</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;S3_BUCKET_NAME&quot;</span><span class="p">],</span>
+                <span class="n">bucket_name</span><span class="o">=</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;S3_BUCKET_NAME&quot;</span><span class="p">],</span>
                 <span class="n">key</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;profile-pictures/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">.png&quot;</span><span class="p">,</span>
                 <span class="n">s3</span><span class="o">=</span><span class="n">s3</span><span class="p">,</span>
             <span class="p">)</span>
@@ -363,7 +363,7 @@
 
         <span class="c1"># The provisioning url</span>
         <span class="n">provisioning_url</span> <span class="o">=</span> <span class="n">totp</span><span class="o">.</span><span class="n">provisioning_uri</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="n">issuer_name</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">]</span>
+            <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="n">issuer_name</span><span class="o">=</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">]</span>
         <span class="p">)</span>
 
         <span class="c1"># Return the secret and the qr code url:</span>

@@ -89,15 +89,14 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functions">Functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#package-contents">Package Contents</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#app.app"><code class="docutils literal notranslate"><span class="pre">app</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#app.mail"><code class="docutils literal notranslate"><span class="pre">mail</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#app.db"><code class="docutils literal notranslate"><span class="pre">db</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#app.bc"><code class="docutils literal notranslate"><span class="pre">bc</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#app.lm"><code class="docutils literal notranslate"><span class="pre">lm</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#app.csrf"><code class="docutils literal notranslate"><span class="pre">csrf</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#app.sslify"><code class="docutils literal notranslate"><span class="pre">sslify</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#app.default_tier"><code class="docutils literal notranslate"><span class="pre">default_tier</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.create_app"><code class="docutils literal notranslate"><span class="pre">create_app()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -157,28 +156,29 @@
 <h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#app.app" title="app.app"><code class="xref py py-obj docutils literal notranslate"><span class="pre">app</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#app.mail" title="app.mail"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mail</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#app.mail" title="app.mail"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mail</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#app.db" title="app.db"><code class="xref py py-obj docutils literal notranslate"><span class="pre">db</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#app.db" title="app.db"><code class="xref py py-obj docutils literal notranslate"><span class="pre">db</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#app.bc" title="app.bc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bc</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#app.bc" title="app.bc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bc</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#app.lm" title="app.lm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lm</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#app.lm" title="app.lm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lm</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#app.csrf" title="app.csrf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">csrf</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#app.csrf" title="app.csrf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">csrf</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#app.sslify" title="app.sslify"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sslify</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#app.default_tier" title="app.default_tier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_tier</span></code></a></p></td>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#app.create_app" title="app.create_app"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_app</span></code></a>([config_class, test_config])</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -186,11 +186,6 @@
 </section>
 <section id="package-contents">
 <h2>Package Contents<a class="headerlink" href="#package-contents" title="Link to this heading"></a></h2>
-<dl class="py data">
-<dt class="sig sig-object py" id="app.app">
-<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">app</span></span><a class="reference internal" href="../../_modules/app.html#app"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.app" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
 <dl class="py data">
 <dt class="sig sig-object py" id="app.mail">
 <span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">mail</span></span><a class="reference internal" href="../../_modules/app.html#mail"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.mail" title="Link to this definition"></a></dt>
@@ -216,14 +211,9 @@
 <span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">csrf</span></span><a class="reference internal" href="../../_modules/app.html#csrf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.csrf" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
-<dl class="py data">
-<dt class="sig sig-object py" id="app.sslify">
-<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">sslify</span></span><a class="reference internal" href="../../_modules/app.html#sslify"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.sslify" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="app.default_tier">
-<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">default_tier</span></span><a class="reference internal" href="../../_modules/app.html#default_tier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.default_tier" title="Link to this definition"></a></dt>
+<dl class="py function">
+<dt class="sig sig-object py" id="app.create_app">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">create_app</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'app.config.Config'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/app.html#create_app"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.create_app" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </section>

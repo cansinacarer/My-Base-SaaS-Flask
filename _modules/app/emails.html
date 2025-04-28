@@ -86,15 +86,14 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/app/index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/app/index.html#functions">Functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/app/index.html#package-contents">Package Contents</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.app"><code class="docutils literal notranslate"><span class="pre">app</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.mail"><code class="docutils literal notranslate"><span class="pre">mail</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.db"><code class="docutils literal notranslate"><span class="pre">db</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.bc"><code class="docutils literal notranslate"><span class="pre">bc</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.lm"><code class="docutils literal notranslate"><span class="pre">lm</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.csrf"><code class="docutils literal notranslate"><span class="pre">csrf</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.sslify"><code class="docutils literal notranslate"><span class="pre">sslify</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.default_tier"><code class="docutils literal notranslate"><span class="pre">default_tier</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.create_app"><code class="docutils literal notranslate"><span class="pre">create_app()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -136,18 +135,13 @@
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span><span class="p">,</span> <span class="n">timedelta</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">itsdangerous</span><span class="w"> </span><span class="kn">import</span> <span class="n">URLSafeTimedSerializer</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">flask</span><span class="w"> </span><span class="kn">import</span> <span class="n">flash</span><span class="p">,</span> <span class="n">render_template</span><span class="p">,</span> <span class="n">url_for</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">flask</span><span class="w"> </span><span class="kn">import</span> <span class="n">flash</span><span class="p">,</span> <span class="n">render_template</span><span class="p">,</span> <span class="n">url_for</span><span class="p">,</span> <span class="n">current_app</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">flask_mail</span><span class="w"> </span><span class="kn">import</span> <span class="n">Message</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">app</span><span class="w"> </span><span class="kn">import</span> <span class="n">app</span><span class="p">,</span> <span class="n">mail</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">app</span><span class="w"> </span><span class="kn">import</span> <span class="n">mail</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">app.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">appTimezone</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">app.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">asyncr</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">app.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Users</span>
-
-<div class="viewcode-block" id="ts">
-<a class="viewcode-back" href="../../autoapi/app/emails/index.html#app.emails.ts">[docs]</a>
-<span class="n">ts</span> <span class="o">=</span> <span class="n">URLSafeTimedSerializer</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;SECRET_KEY&quot;</span><span class="p">])</span></div>
-
 
 
 <span class="c1"># Sends an email with the password reset link</span>
@@ -155,30 +149,31 @@
 <a class="viewcode-back" href="../../autoapi/app/emails/index.html#app.emails.send_email_to_reset_password">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">send_email_to_reset_password</span><span class="p">(</span><span class="n">email</span><span class="p">):</span>
     <span class="c1"># Tokenize the email address</span>
+    <span class="n">ts</span> <span class="o">=</span> <span class="n">URLSafeTimedSerializer</span><span class="p">(</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;SECRET_KEY&quot;</span><span class="p">])</span>
     <span class="n">token</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">salt</span><span class="o">=</span><span class="s2">&quot;recover-key&quot;</span><span class="p">)</span>
-    <span class="n">resetLink</span> <span class="o">=</span> <span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;set_new_password&quot;</span><span class="p">,</span> <span class="n">_external</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">token</span>
+    <span class="n">resetLink</span> <span class="o">=</span> <span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;auth_bp.set_new_password&quot;</span><span class="p">,</span> <span class="n">_external</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">token</span>
 
     <span class="n">user</span> <span class="o">=</span> <span class="n">Users</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="n">email</span><span class="p">)</span><span class="o">.</span><span class="n">first_or_404</span><span class="p">()</span>
 
     <span class="c1"># Email with this information:</span>
     <span class="n">msg</span> <span class="o">=</span> <span class="n">Message</span><span class="p">(</span><span class="s2">&quot;Password Reset&quot;</span><span class="p">)</span>
     <span class="n">msg</span><span class="o">.</span><span class="n">add_recipient</span><span class="p">(</span><span class="n">email</span><span class="p">)</span>
-    <span class="n">msg</span><span class="o">.</span><span class="n">sender</span> <span class="o">=</span> <span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">],</span> <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;MAIL_FROM&quot;</span><span class="p">])</span>
+    <span class="n">msg</span><span class="o">.</span><span class="n">sender</span> <span class="o">=</span> <span class="p">(</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">],</span> <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;MAIL_FROM&quot;</span><span class="p">])</span>
     <span class="n">msg</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="n">render_template</span><span class="p">(</span>
         <span class="s2">&quot;emails/password-reset.txt&quot;</span><span class="p">,</span>
         <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span>
-        <span class="n">appName</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">],</span>
-        <span class="n">appHome</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">],</span>
+        <span class="n">appName</span><span class="o">=</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">],</span>
+        <span class="n">appHome</span><span class="o">=</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">],</span>
         <span class="n">resetLink</span><span class="o">=</span><span class="n">resetLink</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">msg</span><span class="o">.</span><span class="n">html</span> <span class="o">=</span> <span class="n">render_template</span><span class="p">(</span>
         <span class="s2">&quot;emails/password-reset.html&quot;</span><span class="p">,</span>
         <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span>
-        <span class="n">appName</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">],</span>
-        <span class="n">appHome</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">],</span>
+        <span class="n">appName</span><span class="o">=</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">],</span>
+        <span class="n">appHome</span><span class="o">=</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">],</span>
         <span class="n">resetLink</span><span class="o">=</span><span class="n">resetLink</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">send_async_email</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+    <span class="n">send_async_email</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">current_app</span><span class="o">.</span><span class="n">_get_current_object</span><span class="p">())</span></div>
 
 
 
@@ -198,20 +193,20 @@
         <span class="c1"># Email with this information:</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="n">Message</span><span class="p">(</span><span class="s2">&quot;Verification Code&quot;</span><span class="p">)</span>
         <span class="n">msg</span><span class="o">.</span><span class="n">add_recipient</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">)</span>
-        <span class="n">msg</span><span class="o">.</span><span class="n">sender</span> <span class="o">=</span> <span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">],</span> <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;MAIL_FROM&quot;</span><span class="p">])</span>
+        <span class="n">msg</span><span class="o">.</span><span class="n">sender</span> <span class="o">=</span> <span class="p">(</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">],</span> <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;MAIL_FROM&quot;</span><span class="p">])</span>
         <span class="n">msg</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="n">render_template</span><span class="p">(</span>
             <span class="s2">&quot;emails/email-verification-code.txt&quot;</span><span class="p">,</span>
             <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span>
-            <span class="n">appName</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">],</span>
-            <span class="n">appHome</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">],</span>
+            <span class="n">appName</span><span class="o">=</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">],</span>
+            <span class="n">appHome</span><span class="o">=</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">],</span>
         <span class="p">)</span>
         <span class="n">msg</span><span class="o">.</span><span class="n">html</span> <span class="o">=</span> <span class="n">render_template</span><span class="p">(</span>
             <span class="s2">&quot;emails/email-verification-code.html&quot;</span><span class="p">,</span>
             <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span>
-            <span class="n">appName</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">],</span>
-            <span class="n">appHome</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">],</span>
+            <span class="n">appName</span><span class="o">=</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">],</span>
+            <span class="n">appHome</span><span class="o">=</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">],</span>
         <span class="p">)</span>
-        <span class="n">send_async_email</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">send_async_email</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">current_app</span><span class="o">.</span><span class="n">_get_current_object</span><span class="p">())</span>
 
         <span class="n">user</span><span class="o">.</span><span class="n">number_of_email_confirmation_codes_sent</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">user</span><span class="o">.</span><span class="n">last_confirmation_codes_sent</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
@@ -242,22 +237,22 @@
     <span class="c1"># Email with this information:</span>
     <span class="n">msg</span> <span class="o">=</span> <span class="n">Message</span><span class="p">(</span><span class="s2">&quot;Subscription Confirmed&quot;</span><span class="p">)</span>
     <span class="n">msg</span><span class="o">.</span><span class="n">add_recipient</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">)</span>
-    <span class="n">msg</span><span class="o">.</span><span class="n">sender</span> <span class="o">=</span> <span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">],</span> <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;MAIL_FROM&quot;</span><span class="p">])</span>
+    <span class="n">msg</span><span class="o">.</span><span class="n">sender</span> <span class="o">=</span> <span class="p">(</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">],</span> <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;MAIL_FROM&quot;</span><span class="p">])</span>
     <span class="n">msg</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="n">render_template</span><span class="p">(</span>
         <span class="s2">&quot;emails/email-subscription-confirmed.txt&quot;</span><span class="p">,</span>
         <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span>
-        <span class="n">appName</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">],</span>
-        <span class="n">appHome</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">],</span>
+        <span class="n">appName</span><span class="o">=</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">],</span>
+        <span class="n">appHome</span><span class="o">=</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">],</span>
         <span class="n">tier_name</span><span class="o">=</span><span class="n">tier_name</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">msg</span><span class="o">.</span><span class="n">html</span> <span class="o">=</span> <span class="n">render_template</span><span class="p">(</span>
         <span class="s2">&quot;emails/email-subscription-confirmed.html&quot;</span><span class="p">,</span>
         <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span>
-        <span class="n">appName</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">],</span>
-        <span class="n">appHome</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">],</span>
+        <span class="n">appName</span><span class="o">=</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">],</span>
+        <span class="n">appHome</span><span class="o">=</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">],</span>
         <span class="n">tier_name</span><span class="o">=</span><span class="n">tier_name</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">send_async_email</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+    <span class="n">send_async_email</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">current_app</span><span class="o">.</span><span class="n">_get_current_object</span><span class="p">())</span></div>
 
 
 
@@ -268,24 +263,24 @@
     <span class="c1"># Email with this information:</span>
     <span class="n">msg</span> <span class="o">=</span> <span class="n">Message</span><span class="p">(</span><span class="s2">&quot;Subscription Canceled&quot;</span><span class="p">)</span>
     <span class="n">msg</span><span class="o">.</span><span class="n">add_recipient</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">)</span>
-    <span class="n">msg</span><span class="o">.</span><span class="n">sender</span> <span class="o">=</span> <span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">],</span> <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;MAIL_FROM&quot;</span><span class="p">])</span>
+    <span class="n">msg</span><span class="o">.</span><span class="n">sender</span> <span class="o">=</span> <span class="p">(</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">],</span> <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;MAIL_FROM&quot;</span><span class="p">])</span>
     <span class="n">msg</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="n">render_template</span><span class="p">(</span>
         <span class="s2">&quot;emails/email-subscription-canceled.txt&quot;</span><span class="p">,</span>
         <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span>
-        <span class="n">appName</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">],</span>
-        <span class="n">appHome</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">],</span>
+        <span class="n">appName</span><span class="o">=</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">],</span>
+        <span class="n">appHome</span><span class="o">=</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">],</span>
         <span class="n">tier_name</span><span class="o">=</span><span class="n">tier_name</span><span class="p">,</span>
         <span class="n">cancellation_date</span><span class="o">=</span><span class="n">cancellation_date</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">msg</span><span class="o">.</span><span class="n">html</span> <span class="o">=</span> <span class="n">render_template</span><span class="p">(</span>
         <span class="s2">&quot;emails/email-subscription-canceled.html&quot;</span><span class="p">,</span>
         <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span>
-        <span class="n">appName</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">],</span>
-        <span class="n">appHome</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">],</span>
+        <span class="n">appName</span><span class="o">=</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">],</span>
+        <span class="n">appHome</span><span class="o">=</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">],</span>
         <span class="n">tier_name</span><span class="o">=</span><span class="n">tier_name</span><span class="p">,</span>
         <span class="n">cancellation_date</span><span class="o">=</span><span class="n">cancellation_date</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">send_async_email</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+    <span class="n">send_async_email</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">current_app</span><span class="o">.</span><span class="n">_get_current_object</span><span class="p">())</span></div>
 
 
 
@@ -296,22 +291,22 @@
     <span class="c1"># Email with this information:</span>
     <span class="n">msg</span> <span class="o">=</span> <span class="n">Message</span><span class="p">(</span><span class="s2">&quot;Subscription Ended&quot;</span><span class="p">)</span>
     <span class="n">msg</span><span class="o">.</span><span class="n">add_recipient</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">)</span>
-    <span class="n">msg</span><span class="o">.</span><span class="n">sender</span> <span class="o">=</span> <span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">],</span> <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;MAIL_FROM&quot;</span><span class="p">])</span>
+    <span class="n">msg</span><span class="o">.</span><span class="n">sender</span> <span class="o">=</span> <span class="p">(</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">],</span> <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;MAIL_FROM&quot;</span><span class="p">])</span>
     <span class="n">msg</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="n">render_template</span><span class="p">(</span>
         <span class="s2">&quot;emails/email-subscription-deleted.txt&quot;</span><span class="p">,</span>
         <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span>
-        <span class="n">appName</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">],</span>
-        <span class="n">appHome</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">],</span>
+        <span class="n">appName</span><span class="o">=</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">],</span>
+        <span class="n">appHome</span><span class="o">=</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">],</span>
         <span class="n">tier_name</span><span class="o">=</span><span class="n">tier_name</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">msg</span><span class="o">.</span><span class="n">html</span> <span class="o">=</span> <span class="n">render_template</span><span class="p">(</span>
         <span class="s2">&quot;emails/email-subscription-deleted.html&quot;</span><span class="p">,</span>
         <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span>
-        <span class="n">appName</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">],</span>
-        <span class="n">appHome</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">],</span>
+        <span class="n">appName</span><span class="o">=</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">],</span>
+        <span class="n">appHome</span><span class="o">=</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">],</span>
         <span class="n">tier_name</span><span class="o">=</span><span class="n">tier_name</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">send_async_email</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+    <span class="n">send_async_email</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">current_app</span><span class="o">.</span><span class="n">_get_current_object</span><span class="p">())</span></div>
 
 
 
@@ -319,7 +314,7 @@
 <span class="nd">@asyncr</span>
 <div class="viewcode-block" id="send_async_email">
 <a class="viewcode-back" href="../../autoapi/app/emails/index.html#app.emails.send_async_email">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">send_async_email</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">send_async_email</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">app</span><span class="p">):</span>
     <span class="k">with</span> <span class="n">app</span><span class="o">.</span><span class="n">app_context</span><span class="p">():</span>
         <span class="n">mail</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
 

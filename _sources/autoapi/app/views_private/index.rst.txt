@@ -9,7 +9,7 @@ Attributes
 
 .. autoapisummary::
 
-   app.views_private.app_private
+   app.views_private.private_bp
 
 
 Functions
@@ -17,8 +17,6 @@ Functions
 
 .. autoapisummary::
 
-   app.views_private.dateformat
-   app.views_private.timeformat
    app.views_private.webhook
    app.views_private.billing
    app.views_private.account
@@ -29,11 +27,7 @@ Functions
 Module Contents
 ---------------
 
-.. py:data:: app_private
-
-.. py:function:: dateformat(value, format='%B %d, %Y')
-
-.. py:function:: timeformat(value, format='%I:%M %p')
+.. py:data:: private_bp
 
 .. py:function:: webhook(path)
 

@@ -89,15 +89,14 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#functions">Functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../index.html#package-contents">Package Contents</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../index.html#app.app"><code class="docutils literal notranslate"><span class="pre">app</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../index.html#app.mail"><code class="docutils literal notranslate"><span class="pre">mail</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../index.html#app.db"><code class="docutils literal notranslate"><span class="pre">db</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../index.html#app.bc"><code class="docutils literal notranslate"><span class="pre">bc</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../index.html#app.lm"><code class="docutils literal notranslate"><span class="pre">lm</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../index.html#app.csrf"><code class="docutils literal notranslate"><span class="pre">csrf</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../index.html#app.sslify"><code class="docutils literal notranslate"><span class="pre">sslify</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../index.html#app.default_tier"><code class="docutils literal notranslate"><span class="pre">default_tier</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#app.create_app"><code class="docutils literal notranslate"><span class="pre">create_app()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -142,7 +141,10 @@
 <h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#app.views.limiter" title="app.views.limiter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">limiter</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#app.views.public_bp" title="app.views.public_bp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">public_bp</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#app.views.limiter" title="app.views.limiter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">limiter</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -152,12 +154,6 @@
 <h2>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#app.views.inject_globals" title="app.views.inject_globals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inject_globals</span></code></a>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#app.views.remove_trailing_slash" title="app.views.remove_trailing_slash"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_trailing_slash</span></code></a>()</p></td>
-<td><p></p></td>
-</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#app.views.load_user" title="app.views.load_user"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_user</span></code></a>(user_id)</p></td>
 <td><p></p></td>
 </tr>
@@ -187,14 +183,9 @@
 </section>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="app.views.inject_globals">
-<span class="sig-prename descclassname"><span class="pre">app.views.</span></span><span class="sig-name descname"><span class="pre">inject_globals</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/app/views.html#inject_globals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.views.inject_globals" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="app.views.remove_trailing_slash">
-<span class="sig-prename descclassname"><span class="pre">app.views.</span></span><span class="sig-name descname"><span class="pre">remove_trailing_slash</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/app/views.html#remove_trailing_slash"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.views.remove_trailing_slash" title="Link to this definition"></a></dt>
+<dl class="py data">
+<dt class="sig sig-object py" id="app.views.public_bp">
+<span class="sig-prename descclassname"><span class="pre">app.views.</span></span><span class="sig-name descname"><span class="pre">public_bp</span></span><a class="reference internal" href="../../../_modules/app/views.html#public_bp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.views.public_bp" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">

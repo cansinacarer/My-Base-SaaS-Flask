@@ -86,15 +86,14 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../autoapi/app/index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../autoapi/app/index.html#functions">Functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../autoapi/app/index.html#package-contents">Package Contents</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../autoapi/app/index.html#app.app"><code class="docutils literal notranslate"><span class="pre">app</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../autoapi/app/index.html#app.mail"><code class="docutils literal notranslate"><span class="pre">mail</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../autoapi/app/index.html#app.db"><code class="docutils literal notranslate"><span class="pre">db</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../autoapi/app/index.html#app.bc"><code class="docutils literal notranslate"><span class="pre">bc</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../autoapi/app/index.html#app.lm"><code class="docutils literal notranslate"><span class="pre">lm</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../autoapi/app/index.html#app.csrf"><code class="docutils literal notranslate"><span class="pre">csrf</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../autoapi/app/index.html#app.sslify"><code class="docutils literal notranslate"><span class="pre">sslify</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../autoapi/app/index.html#app.default_tier"><code class="docutils literal notranslate"><span class="pre">default_tier</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/app/index.html#app.create_app"><code class="docutils literal notranslate"><span class="pre">create_app()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -132,7 +131,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for app</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">flask</span><span class="w"> </span><span class="kn">import</span> <span class="n">Flask</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">flask</span><span class="w"> </span><span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">redirect</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">flask_sqlalchemy</span><span class="w"> </span><span class="kn">import</span> <span class="n">SQLAlchemy</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">flask_login</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoginManager</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">flask_bcrypt</span><span class="w"> </span><span class="kn">import</span> <span class="n">Bcrypt</span>
@@ -141,41 +140,25 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">flask_cors</span><span class="w"> </span><span class="kn">import</span> <span class="n">CORS</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">flask_wtf.csrf</span><span class="w"> </span><span class="kn">import</span> <span class="n">CSRFProtect</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">decouple</span><span class="w"> </span><span class="kn">import</span> <span class="n">UndefinedValueError</span>
-
-<span class="c1"># Stripe</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">oauthlib.oauth2</span><span class="w"> </span><span class="kn">import</span> <span class="n">WebApplicationClient</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">stripe</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 
 
-<span class="c1"># Initialize the flask app</span>
-<div class="viewcode-block" id="app">
-<a class="viewcode-back" href="../autoapi/app/index.html#app.app">[docs]</a>
-<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span></div>
-
-
-<span class="c1"># Load the Config object</span>
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">app.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
-
-    <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">from_object</span><span class="p">(</span><span class="n">Config</span><span class="p">)</span>
-
-<span class="k">except</span> <span class="n">UndefinedValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Please make sure you have all the required environment variables set.&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
-    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
-
-<span class="c1"># Flask Modules</span>
+<span class="c1"># Initialize the Flask extensions without attaching them to the app</span>
 <div class="viewcode-block" id="mail">
 <a class="viewcode-back" href="../autoapi/app/index.html#app.mail">[docs]</a>
-<span class="n">mail</span> <span class="o">=</span> <span class="n">Mail</span><span class="p">(</span><span class="n">app</span><span class="p">)</span></div>
+<span class="n">mail</span> <span class="o">=</span> <span class="n">Mail</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="db">
 <a class="viewcode-back" href="../autoapi/app/index.html#app.db">[docs]</a>
-<span class="n">db</span> <span class="o">=</span> <span class="n">SQLAlchemy</span><span class="p">(</span><span class="n">app</span><span class="p">)</span></div>
+<span class="n">db</span> <span class="o">=</span> <span class="n">SQLAlchemy</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="bc">
 <a class="viewcode-back" href="../autoapi/app/index.html#app.bc">[docs]</a>
-<span class="n">bc</span> <span class="o">=</span> <span class="n">Bcrypt</span><span class="p">(</span><span class="n">app</span><span class="p">)</span></div>
+<span class="n">bc</span> <span class="o">=</span> <span class="n">Bcrypt</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="lm">
 <a class="viewcode-back" href="../autoapi/app/index.html#app.lm">[docs]</a>
@@ -183,64 +166,113 @@
 
 <div class="viewcode-block" id="csrf">
 <a class="viewcode-back" href="../autoapi/app/index.html#app.csrf">[docs]</a>
-<span class="n">csrf</span> <span class="o">=</span> <span class="n">CSRFProtect</span><span class="p">(</span><span class="n">app</span><span class="p">)</span></div>
-
-<span class="n">lm</span><span class="o">.</span><span class="n">init_app</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
-
-<span class="c1"># SSL</span>
-<div class="viewcode-block" id="sslify">
-<a class="viewcode-back" href="../autoapi/app/index.html#app.sslify">[docs]</a>
-<span class="n">sslify</span> <span class="o">=</span> <span class="n">SSLify</span><span class="p">(</span><span class="n">app</span><span class="p">)</span></div>
+<span class="n">csrf</span> <span class="o">=</span> <span class="n">CSRFProtect</span><span class="p">()</span></div>
 
 
-<span class="c1"># Enable CORS for all routes</span>
-<span class="n">CORS</span><span class="p">(</span>
-    <span class="n">app</span><span class="p">,</span>
-    <span class="n">resources</span><span class="o">=</span><span class="p">{</span><span class="sa">r</span><span class="s2">&quot;/*&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;origins&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">]]}},</span>
-    <span class="n">supports_credentials</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-<span class="p">)</span>
 
-<span class="c1"># Setup database</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">app</span><span class="w"> </span><span class="kn">import</span> <span class="n">models</span>
+<div class="viewcode-block" id="create_app">
+<a class="viewcode-back" href="../autoapi/app/index.html#app.create_app">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_app</span><span class="p">(</span><span class="n">config_class</span><span class="o">=</span><span class="s2">&quot;app.config.Config&quot;</span><span class="p">,</span> <span class="n">test_config</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="c1"># Initialize the flask app</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
-<span class="k">try</span><span class="p">:</span>
-    <span class="k">with</span> <span class="n">app</span><span class="o">.</span><span class="n">app_context</span><span class="p">():</span>
-        <span class="n">db</span><span class="o">.</span><span class="n">create_all</span><span class="p">()</span>
+    <span class="c1"># Load the Config object</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">from_object</span><span class="p">(</span><span class="n">config_class</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">UndefinedValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">&quot;Please make sure you have all the required environment variables set.&quot;</span><span class="p">,</span> <span class="n">e</span>
+        <span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
 
-        <span class="c1"># Create the default tier for all users</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">app.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tiers</span>
+    <span class="c1"># If specified, load the test configuration to override the Config object</span>
+    <span class="k">if</span> <span class="n">test_config</span><span class="p">:</span>
+        <span class="c1"># Use an in-memory SQLite database for testing</span>
+        <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;DATABASE_CONNECTION_STRING&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;sqlite:///:memory:&quot;</span>
 
-        <span class="c1"># If there are no tiers in the database, create the default tiers</span>
-        <span class="k">if</span> <span class="n">Tiers</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-<div class="viewcode-block" id="default_tier">
-<a class="viewcode-back" href="../autoapi/app/index.html#app.default_tier">[docs]</a>
-            <span class="n">default_tier</span> <span class="o">=</span> <span class="n">Tiers</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;free&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Free&quot;</span><span class="p">)</span></div>
+    <span class="c1"># Initialize the Flask extensions for the app instance</span>
+    <span class="n">mail</span><span class="o">.</span><span class="n">init_app</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">init_app</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+    <span class="n">bc</span><span class="o">.</span><span class="n">init_app</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+    <span class="n">lm</span><span class="o">.</span><span class="n">init_app</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+    <span class="n">csrf</span><span class="o">.</span><span class="n">init_app</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+    <span class="n">SSLify</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
 
-            <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">default_tier</span><span class="p">)</span>
-            <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; * Default tiers created successfully.&quot;</span><span class="p">)</span>
+    <span class="c1"># Enable CORS for all routes</span>
+    <span class="n">CORS</span><span class="p">(</span>
+        <span class="n">app</span><span class="p">,</span>
+        <span class="n">resources</span><span class="o">=</span><span class="p">{</span><span class="sa">r</span><span class="s2">&quot;/*&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;origins&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">]]}},</span>
+        <span class="n">supports_credentials</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
 
-<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error creating the database tables.&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+    <span class="c1"># Set up the database tables if they don&#39;t exist</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">app</span><span class="o">.</span><span class="n">app_context</span><span class="p">():</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">create_all</span><span class="p">()</span>
 
-<span class="c1"># Stripe setup</span>
-<span class="n">stripe</span><span class="o">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;STRIPE_SECRET_KEY&quot;</span><span class="p">]</span>
+            <span class="c1"># Create the default tier for all users</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">app.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tiers</span>
 
-<span class="c1"># Import the Blueprints and register them</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">app.views_private</span><span class="w"> </span><span class="kn">import</span> <span class="n">app_private</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">app.views_auth</span><span class="w"> </span><span class="kn">import</span> <span class="n">app_auth</span>
+            <span class="c1"># If there are no tiers in the database, create the default tiers</span>
+            <span class="k">if</span> <span class="n">Tiers</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">default_tier</span> <span class="o">=</span> <span class="n">Tiers</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;free&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Free&quot;</span><span class="p">)</span>
+                <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">default_tier</span><span class="p">)</span>
+                <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; * Default tiers created successfully.&quot;</span><span class="p">)</span>
 
-<span class="n">app</span><span class="o">.</span><span class="n">register_blueprint</span><span class="p">(</span><span class="n">app_private</span><span class="p">,</span> <span class="n">url_prefix</span><span class="o">=</span><span class="s2">&quot;/app&quot;</span><span class="p">)</span>
-<span class="n">app</span><span class="o">.</span><span class="n">register_blueprint</span><span class="p">(</span><span class="n">app_auth</span><span class="p">,</span> <span class="n">url_prefix</span><span class="o">=</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error creating the database tables.&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
 
+    <span class="c1"># Import the Blueprints</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">app.views</span><span class="w"> </span><span class="kn">import</span> <span class="n">public_bp</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">app.views_private</span><span class="w"> </span><span class="kn">import</span> <span class="n">private_bp</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">app.views_auth</span><span class="w"> </span><span class="kn">import</span> <span class="n">auth_bp</span>
 
-<span class="c1"># --- THE FOLLOWING SHOULD REMAIN AT THE END ---</span>
+    <span class="c1"># Register the Blueprints</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">register_blueprint</span><span class="p">(</span><span class="n">public_bp</span><span class="p">,</span> <span class="n">url_prefix</span><span class="o">=</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">register_blueprint</span><span class="p">(</span><span class="n">private_bp</span><span class="p">,</span> <span class="n">url_prefix</span><span class="o">=</span><span class="s2">&quot;/app&quot;</span><span class="p">)</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">register_blueprint</span><span class="p">(</span><span class="n">auth_bp</span><span class="p">,</span> <span class="n">url_prefix</span><span class="o">=</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
 
-<span class="c1"># Import routing, models and start the app</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">app</span><span class="w"> </span><span class="kn">import</span> <span class="n">views</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">app.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tiers</span>
+    <span class="c1"># Variables available in all templates</span>
+    <span class="nd">@app</span><span class="o">.</span><span class="n">context_processor</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">inject_globals</span><span class="p">():</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;APP_NAME&quot;</span><span class="p">:</span> <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;COPYRIGHT&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;2021–</span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;APP_NAME&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="c1"># Redirect pages with trailing slashes to versions without</span>
+    <span class="c1"># Applies to other Blueprints like app_private as well</span>
+    <span class="nd">@app</span><span class="o">.</span><span class="n">before_request</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">remove_trailing_slash</span><span class="p">():</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">path</span> <span class="o">!=</span> <span class="s2">&quot;/&quot;</span>
+            <span class="ow">and</span> <span class="n">request</span><span class="o">.</span><span class="n">path</span> <span class="o">!=</span> <span class="s2">&quot;/app/&quot;</span>
+            <span class="ow">and</span> <span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="c1"># Register a Jinja2 filter for date formatting</span>
+    <span class="nd">@app</span><span class="o">.</span><span class="n">template_filter</span><span class="p">(</span><span class="s2">&quot;dateformat&quot;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dateformat_filter</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;%B </span><span class="si">%d</span><span class="s2">, %Y&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="nb">format</span><span class="p">)</span>
+
+    <span class="c1"># Register a Jinja2 filter for time formatting</span>
+    <span class="nd">@app</span><span class="o">.</span><span class="n">template_filter</span><span class="p">(</span><span class="s2">&quot;timeformat&quot;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">timeformat_filter</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;%I:%M %p&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="nb">format</span><span class="p">)</span>
+
+    <span class="c1"># Google OAuth 2 client configuration</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">google_client</span> <span class="o">=</span> <span class="n">WebApplicationClient</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;GOOGLE_CLIENT_ID&quot;</span><span class="p">])</span>
+
+    <span class="c1"># Stripe setup</span>
+    <span class="n">stripe</span><span class="o">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;STRIPE_SECRET_KEY&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Return the app instance created</span>
+    <span class="k">return</span> <span class="n">app</span></div>
+
 </pre></div>
 
            </div>

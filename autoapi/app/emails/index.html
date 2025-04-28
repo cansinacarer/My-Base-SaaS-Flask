@@ -89,15 +89,14 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#functions">Functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../index.html#package-contents">Package Contents</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../index.html#app.app"><code class="docutils literal notranslate"><span class="pre">app</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../index.html#app.mail"><code class="docutils literal notranslate"><span class="pre">mail</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../index.html#app.db"><code class="docutils literal notranslate"><span class="pre">db</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../index.html#app.bc"><code class="docutils literal notranslate"><span class="pre">bc</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../index.html#app.lm"><code class="docutils literal notranslate"><span class="pre">lm</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../index.html#app.csrf"><code class="docutils literal notranslate"><span class="pre">csrf</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../index.html#app.sslify"><code class="docutils literal notranslate"><span class="pre">sslify</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../index.html#app.default_tier"><code class="docutils literal notranslate"><span class="pre">default_tier</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#app.create_app"><code class="docutils literal notranslate"><span class="pre">create_app()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -138,16 +137,6 @@
              
   <section id="module-app.emails">
 <span id="app-emails"></span><h1>app.emails<a class="headerlink" href="#module-app.emails" title="Link to this heading"></a></h1>
-<section id="attributes">
-<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h2>
-<table class="autosummary longtable docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#app.emails.ts" title="app.emails.ts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ts</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-</tbody>
-</table>
-</section>
 <section id="functions">
 <h2>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
@@ -167,7 +156,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#app.emails.send_email_about_subscription_deletion" title="app.emails.send_email_about_subscription_deletion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">send_email_about_subscription_deletion</span></code></a>(user, tier_name)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#app.emails.send_async_email" title="app.emails.send_async_email"><code class="xref py py-obj docutils literal notranslate"><span class="pre">send_async_email</span></code></a>(msg)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#app.emails.send_async_email" title="app.emails.send_async_email"><code class="xref py py-obj docutils literal notranslate"><span class="pre">send_async_email</span></code></a>(msg, app)</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -175,11 +164,6 @@
 </section>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
-<dl class="py data">
-<dt class="sig sig-object py" id="app.emails.ts">
-<span class="sig-prename descclassname"><span class="pre">app.emails.</span></span><span class="sig-name descname"><span class="pre">ts</span></span><a class="reference internal" href="../../../_modules/app/emails.html#ts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.emails.ts" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
 <dl class="py function">
 <dt class="sig sig-object py" id="app.emails.send_email_to_reset_password">
 <span class="sig-prename descclassname"><span class="pre">app.emails.</span></span><span class="sig-name descname"><span class="pre">send_email_to_reset_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/app/emails.html#send_email_to_reset_password"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.emails.send_email_to_reset_password" title="Link to this definition"></a></dt>
@@ -207,7 +191,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="app.emails.send_async_email">
-<span class="sig-prename descclassname"><span class="pre">app.emails.</span></span><span class="sig-name descname"><span class="pre">send_async_email</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/app/emails.html#send_async_email"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.emails.send_async_email" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">app.emails.</span></span><span class="sig-name descname"><span class="pre">send_async_email</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/app/emails.html#send_async_email"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.emails.send_async_email" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </section>

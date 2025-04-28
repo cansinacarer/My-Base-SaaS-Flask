@@ -86,15 +86,14 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/app/index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/app/index.html#functions">Functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/app/index.html#package-contents">Package Contents</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.app"><code class="docutils literal notranslate"><span class="pre">app</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.mail"><code class="docutils literal notranslate"><span class="pre">mail</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.db"><code class="docutils literal notranslate"><span class="pre">db</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.bc"><code class="docutils literal notranslate"><span class="pre">bc</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.lm"><code class="docutils literal notranslate"><span class="pre">lm</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.csrf"><code class="docutils literal notranslate"><span class="pre">csrf</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.sslify"><code class="docutils literal notranslate"><span class="pre">sslify</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.default_tier"><code class="docutils literal notranslate"><span class="pre">default_tier</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.create_app"><code class="docutils literal notranslate"><span class="pre">create_app()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -135,11 +134,11 @@
   <h1>Source code for app.views_auth</h1><div class="highlight"><pre>
 <span></span><span class="c1"># Python modules</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">oauthlib.oauth2</span><span class="w"> </span><span class="kn">import</span> <span class="n">WebApplicationClient</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">string</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itsdangerous</span><span class="w"> </span><span class="kn">import</span> <span class="n">URLSafeTimedSerializer</span>
 
 <span class="c1"># Flask modules</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">flask</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
@@ -151,6 +150,7 @@
     <span class="n">flash</span><span class="p">,</span>
     <span class="n">abort</span><span class="p">,</span>
     <span class="n">session</span><span class="p">,</span>
+    <span class="n">current_app</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">flask_login</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">login_user</span><span class="p">,</span>
@@ -162,7 +162,7 @@
 
 
 <span class="c1"># App modules</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">app</span><span class="w"> </span><span class="kn">import</span> <span class="n">app</span><span class="p">,</span> <span class="n">lm</span><span class="p">,</span> <span class="n">db</span><span class="p">,</span> <span class="n">bc</span><span class="p">,</span> <span class="n">csrf</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">app</span><span class="w"> </span><span class="kn">import</span> <span class="n">lm</span><span class="p">,</span> <span class="n">db</span><span class="p">,</span> <span class="n">bc</span><span class="p">,</span> <span class="n">csrf</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">app.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Users</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">app.forms</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">LoginForm</span><span class="p">,</span>
@@ -174,14 +174,14 @@
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">app.views</span><span class="w"> </span><span class="kn">import</span> <span class="n">limiter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">app.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">appTimezone</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">app.emails</span><span class="w"> </span><span class="kn">import</span> <span class="n">send_email_with_code</span><span class="p">,</span> <span class="n">send_email_to_reset_password</span><span class="p">,</span> <span class="n">ts</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">app.emails</span><span class="w"> </span><span class="kn">import</span> <span class="n">send_email_with_code</span><span class="p">,</span> <span class="n">send_email_to_reset_password</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">app.utilities.user_registration_actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">new_user_actions_for_email_confirmed</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">app.utilities.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_n_digit_code</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">app.utilities.error_handlers</span><span class="w"> </span><span class="kn">import</span> <span class="n">error_page</span>
 
-<div class="viewcode-block" id="app_auth">
-<a class="viewcode-back" href="../../autoapi/app/views_auth/index.html#app.views_auth.app_auth">[docs]</a>
-<span class="n">app_auth</span> <span class="o">=</span> <span class="n">Blueprint</span><span class="p">(</span><span class="s2">&quot;views_auth&quot;</span><span class="p">,</span> <span class="vm">__name__</span><span class="p">)</span></div>
+<div class="viewcode-block" id="auth_bp">
+<a class="viewcode-back" href="../../autoapi/app/views_auth/index.html#app.views_auth.auth_bp">[docs]</a>
+<span class="n">auth_bp</span> <span class="o">=</span> <span class="n">Blueprint</span><span class="p">(</span><span class="s2">&quot;auth_bp&quot;</span><span class="p">,</span> <span class="vm">__name__</span><span class="p">)</span></div>
 
 
 
@@ -195,13 +195,6 @@
 
 
 
-<span class="c1"># Google OAuth 2 client configuration</span>
-<div class="viewcode-block" id="google_client">
-<a class="viewcode-back" href="../../autoapi/app/views_auth/index.html#app.views_auth.google_client">[docs]</a>
-<span class="n">google_client</span> <span class="o">=</span> <span class="n">WebApplicationClient</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;GOOGLE_CLIENT_ID&quot;</span><span class="p">])</span></div>
-
-
-
 <span class="c1"># 403 cases will be redirected to login</span>
 <span class="nd">@lm</span><span class="o">.</span><span class="n">unauthorized_handler</span>
 <div class="viewcode-block" id="unauthorized_callback">
@@ -212,17 +205,17 @@
 
 
 <span class="c1"># Logout user</span>
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/logout&quot;</span><span class="p">)</span>
+<span class="nd">@auth_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/logout&quot;</span><span class="p">)</span>
 <div class="viewcode-block" id="logout">
 <a class="viewcode-back" href="../../autoapi/app/views_auth/index.html#app.views_auth.logout">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">logout</span><span class="p">():</span>
     <span class="n">logout_user</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;login&quot;</span><span class="p">))</span></div>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;auth_bp.login&quot;</span><span class="p">))</span></div>
 
 
 
 <span class="c1"># Register a new user</span>
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/register&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="nd">@auth_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/register&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <span class="nd">@limiter</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="s2">&quot;10 per day&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <div class="viewcode-block" id="register">
 <a class="viewcode-back" href="../../autoapi/app/views_auth/index.html#app.views_auth.register">[docs]</a>
@@ -287,7 +280,7 @@
     <span class="k">if</span> <span class="n">success</span><span class="p">:</span>
         <span class="n">login_user</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">remember</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">send_email_with_code</span><span class="p">(</span><span class="n">current_user</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;email_confirmation_by_code&quot;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;auth_bp.email_confirmation_by_code&quot;</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span>
             <span class="s2">&quot;public/auth/register.html&quot;</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">,</span> <span class="n">success</span><span class="o">=</span><span class="n">success</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">current_user</span>
@@ -296,7 +289,7 @@
 
 
 <span class="c1"># Authenticate user</span>
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/login&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="nd">@auth_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/login&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <span class="nd">@limiter</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="s2">&quot;10 per day&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <div class="viewcode-block" id="login">
 <a class="viewcode-back" href="../../autoapi/app/views_auth/index.html#app.views_auth.login">[docs]</a>
@@ -314,7 +307,7 @@
             <span class="n">endpoint</span> <span class="o">=</span> <span class="n">google_config</span><span class="p">[</span><span class="s2">&quot;authorization_endpoint&quot;</span><span class="p">]</span>
 
             <span class="c1"># Preserve next url if it exists</span>
-            <span class="n">request_uri</span> <span class="o">=</span> <span class="n">google_client</span><span class="o">.</span><span class="n">prepare_request_uri</span><span class="p">(</span>
+            <span class="n">request_uri</span> <span class="o">=</span> <span class="n">current_app</span><span class="o">.</span><span class="n">google_client</span><span class="o">.</span><span class="n">prepare_request_uri</span><span class="p">(</span>
                 <span class="n">endpoint</span><span class="p">,</span>
                 <span class="n">redirect_uri</span><span class="o">=</span><span class="s2">&quot;https://&quot;</span> <span class="o">+</span> <span class="n">request</span><span class="o">.</span><span class="n">host</span> <span class="o">+</span> <span class="s2">&quot;/login/callback/google&quot;</span><span class="p">,</span>
                 <span class="n">scope</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;openid&quot;</span><span class="p">,</span> <span class="s2">&quot;email&quot;</span><span class="p">,</span> <span class="s2">&quot;profile&quot;</span><span class="p">],</span>
@@ -354,7 +347,7 @@
                 <span class="k">if</span> <span class="s2">&quot;next&quot;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="p">:</span>
                     <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="s2">&quot;next&quot;</span><span class="p">])</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;views_private.private_index&quot;</span><span class="p">))</span>
+                    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;private_bp.private_index&quot;</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">flash</span><span class="p">(</span><span class="s2">&quot;Incorrect username or password. Please try again.&quot;</span><span class="p">,</span> <span class="s2">&quot;danger&quot;</span><span class="p">)</span>
 
@@ -368,7 +361,7 @@
 
 
 <span class="c1"># Authenticate user with the second factor</span>
-<span class="nd">@app_auth</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/two-factor&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="nd">@auth_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/two-factor&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <span class="nd">@limiter</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="s2">&quot;10 per day&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <div class="viewcode-block" id="two_factor">
 <a class="viewcode-back" href="../../autoapi/app/views_auth/index.html#app.views_auth.two_factor">[docs]</a>
@@ -380,14 +373,14 @@
 
     <span class="c1"># If the user isn&#39;t redirected with a successful login</span>
     <span class="k">if</span> <span class="s2">&quot;email&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">session</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;views_auth.login&quot;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;auth_bp.login&quot;</span><span class="p">))</span>
 
     <span class="n">user</span> <span class="o">=</span> <span class="n">Users</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="n">session</span><span class="p">[</span><span class="s2">&quot;email&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
 
     <span class="c1"># This shouldn&#39;t happen but if it does:</span>
     <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">flash</span><span class="p">(</span><span class="s2">&quot;Something went wrong during two factor authentication.&quot;</span><span class="p">,</span> <span class="s2">&quot;danger&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;views_auth.login&quot;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;auth_bp.login&quot;</span><span class="p">))</span>
 
     <span class="c1"># Declare the form</span>
     <span class="n">form</span> <span class="o">=</span> <span class="n">TwoFactorAuthenticationForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">)</span>
@@ -418,7 +411,7 @@
             <span class="k">if</span> <span class="s2">&quot;next&quot;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="s2">&quot;next&quot;</span><span class="p">])</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;views_private.private_index&quot;</span><span class="p">))</span>
+                <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;private_bp.private_index&quot;</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">flash</span><span class="p">(</span><span class="s2">&quot;This code was not correct.&quot;</span><span class="p">,</span> <span class="s2">&quot;danger&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span>
@@ -433,7 +426,7 @@
 
 
 <span class="c1"># Email verification by sending the user an email with a code</span>
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/email-confirmation&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="nd">@auth_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/email-confirmation&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <div class="viewcode-block" id="email_confirmation_by_code">
 <a class="viewcode-back" href="../../autoapi/app/views_auth/index.html#app.views_auth.email_confirmation_by_code">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">email_confirmation_by_code</span><span class="p">():</span>
@@ -442,7 +435,9 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="n">current_user</span><span class="o">.</span><span class="n">is_authenticated</span><span class="p">:</span>
         <span class="n">flash</span><span class="p">(</span><span class="s2">&quot;Please login before verifying your email address.&quot;</span><span class="p">,</span> <span class="s2">&quot;info&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span>
-            <span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;login&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;?next=&quot;</span> <span class="o">+</span> <span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;email_confirmation_by_code&quot;</span><span class="p">)</span>
+            <span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;auth_bp.login&quot;</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">&quot;?next=&quot;</span>
+            <span class="o">+</span> <span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;auth_bp.email_confirmation_by_code&quot;</span><span class="p">)</span>
         <span class="p">)</span>
     <span class="k">elif</span> <span class="n">current_user</span><span class="o">.</span><span class="n">email_confirmed</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="c1"># Verification code</span>
@@ -476,7 +471,7 @@
                     <span class="s2">&quot;Thank you for confirming your email address!&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="s2">&quot;success&quot;</span>
                 <span class="p">)</span>
 
-                <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;views_private.private_index&quot;</span><span class="p">))</span>
+                <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;private_bp.private_index&quot;</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">flash</span><span class="p">(</span><span class="s2">&quot;This code was not correct.&quot;</span><span class="p">,</span> <span class="s2">&quot;danger&quot;</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span>
@@ -489,12 +484,12 @@
             <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">flash</span><span class="p">(</span><span class="s2">&quot;Your email address is already confirmed.&quot;</span><span class="p">,</span> <span class="s2">&quot;info&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;views_private.private_index&quot;</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;private_bp.private_index&quot;</span><span class="p">))</span></div>
 
 
 
 <span class="c1"># Password Reset</span>
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/forgot-password&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="nd">@auth_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/forgot-password&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <span class="nd">@limiter</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="s2">&quot;1 per day&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <div class="viewcode-block" id="password_reset">
 <a class="viewcode-back" href="../../autoapi/app/views_auth/index.html#app.views_auth.password_reset">[docs]</a>
@@ -516,12 +511,12 @@
             <span class="n">send_email_to_reset_password</span><span class="p">(</span><span class="n">email</span><span class="p">)</span>
 
     <span class="c1">#  Whatever happens, redirect to the information page without telling what happened</span>
-    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;password_reset_requested&quot;</span><span class="p">))</span></div>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;auth_bp.password_reset_requested&quot;</span><span class="p">))</span></div>
 
 
 
 <span class="c1"># password reset requested</span>
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/password-reset-requested&quot;</span><span class="p">)</span>
+<span class="nd">@auth_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/password-reset-requested&quot;</span><span class="p">)</span>
 <div class="viewcode-block" id="password_reset_requested">
 <a class="viewcode-back" href="../../autoapi/app/views_auth/index.html#app.views_auth.password_reset_requested">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">password_reset_requested</span><span class="p">():</span>
@@ -532,12 +527,13 @@
 
 
 <span class="c1"># Set new password</span>
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/set-new-password&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">],</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;token&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">})</span>
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/set-new-password/&lt;token&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="nd">@auth_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/set-new-password&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">],</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;token&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">})</span>
+<span class="nd">@auth_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/set-new-password/&lt;token&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <div class="viewcode-block" id="set_new_password">
 <a class="viewcode-back" href="../../autoapi/app/views_auth/index.html#app.views_auth.set_new_password">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">set_new_password</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
+        <span class="n">ts</span> <span class="o">=</span> <span class="n">URLSafeTimedSerializer</span><span class="p">(</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;SECRET_KEY&quot;</span><span class="p">])</span>
         <span class="n">email</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">salt</span><span class="o">=</span><span class="s2">&quot;recover-key&quot;</span><span class="p">,</span> <span class="n">max_age</span><span class="o">=</span><span class="mi">86400</span><span class="p">)</span>
     <span class="k">except</span><span class="p">:</span>
         <span class="n">abort</span><span class="p">(</span><span class="mi">404</span><span class="p">)</span>
@@ -558,7 +554,7 @@
             <span class="s2">&quot;Your password has been reset successfully. Please login with your new password.&quot;</span><span class="p">,</span>
             <span class="s2">&quot;info&quot;</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;login&quot;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;auth_bp.login&quot;</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span>
         <span class="s2">&quot;public/auth/new-password.html&quot;</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">current_user</span>
@@ -575,7 +571,7 @@
 
 
 
-<span class="nd">@app_auth</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/login/callback/google&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="nd">@auth_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/login/callback/google&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <span class="nd">@csrf</span><span class="o">.</span><span class="n">exempt</span>
 <div class="viewcode-block" id="login_callback_google">
 <a class="viewcode-back" href="../../autoapi/app/views_auth/index.html#app.views_auth.login_callback_google">[docs]</a>
@@ -600,7 +596,7 @@
     <span class="n">token_endpoint</span> <span class="o">=</span> <span class="n">google_config</span><span class="p">[</span><span class="s2">&quot;token_endpoint&quot;</span><span class="p">]</span>
 
     <span class="c1"># Prepare and send a request to get tokens!</span>
-    <span class="n">token_url</span><span class="p">,</span> <span class="n">headers</span><span class="p">,</span> <span class="n">body</span> <span class="o">=</span> <span class="n">google_client</span><span class="o">.</span><span class="n">prepare_token_request</span><span class="p">(</span>
+    <span class="n">token_url</span><span class="p">,</span> <span class="n">headers</span><span class="p">,</span> <span class="n">body</span> <span class="o">=</span> <span class="n">current_app</span><span class="o">.</span><span class="n">google_client</span><span class="o">.</span><span class="n">prepare_token_request</span><span class="p">(</span>
         <span class="n">token_endpoint</span><span class="p">,</span>
         <span class="n">authorization_response</span><span class="o">=</span><span class="s2">&quot;https://&quot;</span> <span class="o">+</span> <span class="n">request</span><span class="o">.</span><span class="n">host</span> <span class="o">+</span> <span class="n">request</span><span class="o">.</span><span class="n">full_path</span><span class="p">,</span>
         <span class="n">redirect_url</span><span class="o">=</span><span class="s2">&quot;https://&quot;</span> <span class="o">+</span> <span class="n">request</span><span class="o">.</span><span class="n">host</span> <span class="o">+</span> <span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
@@ -610,14 +606,19 @@
         <span class="n">token_url</span><span class="p">,</span>
         <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
         <span class="n">data</span><span class="o">=</span><span class="n">body</span><span class="p">,</span>
-        <span class="n">auth</span><span class="o">=</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;GOOGLE_CLIENT_ID&quot;</span><span class="p">],</span> <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;GOOGLE_CLIENT_SECRET&quot;</span><span class="p">]),</span>
+        <span class="n">auth</span><span class="o">=</span><span class="p">(</span>
+            <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;GOOGLE_CLIENT_ID&quot;</span><span class="p">],</span>
+            <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;GOOGLE_CLIENT_SECRET&quot;</span><span class="p">],</span>
+        <span class="p">),</span>
     <span class="p">)</span>
 
     <span class="c1"># Parse the tokens</span>
-    <span class="n">google_client</span><span class="o">.</span><span class="n">parse_request_body_response</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">token_response</span><span class="o">.</span><span class="n">json</span><span class="p">()))</span>
+    <span class="n">current_app</span><span class="o">.</span><span class="n">google_client</span><span class="o">.</span><span class="n">parse_request_body_response</span><span class="p">(</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">token_response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+    <span class="p">)</span>
 
     <span class="n">userinfo_endpoint</span> <span class="o">=</span> <span class="n">google_config</span><span class="p">[</span><span class="s2">&quot;userinfo_endpoint&quot;</span><span class="p">]</span>
-    <span class="n">uri</span><span class="p">,</span> <span class="n">headers</span><span class="p">,</span> <span class="n">body</span> <span class="o">=</span> <span class="n">google_client</span><span class="o">.</span><span class="n">add_token</span><span class="p">(</span><span class="n">userinfo_endpoint</span><span class="p">)</span>
+    <span class="n">uri</span><span class="p">,</span> <span class="n">headers</span><span class="p">,</span> <span class="n">body</span> <span class="o">=</span> <span class="n">current_app</span><span class="o">.</span><span class="n">google_client</span><span class="o">.</span><span class="n">add_token</span><span class="p">(</span><span class="n">userinfo_endpoint</span><span class="p">)</span>
     <span class="n">userinfo_response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">body</span><span class="p">)</span>
 
     <span class="c1"># You want to make sure their email is verified.</span>
@@ -706,7 +707,7 @@
             <span class="s2">&quot;Your Google email not available or not verified by Google. Please set up your Google email first or try using a different email address.&quot;</span><span class="p">,</span>
             <span class="s2">&quot;danger&quot;</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;login&quot;</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;auth_bp.login&quot;</span><span class="p">))</span></div>
 
 </pre></div>
 

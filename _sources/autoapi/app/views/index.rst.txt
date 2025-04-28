@@ -9,6 +9,7 @@ Attributes
 
 .. autoapisummary::
 
+   app.views.public_bp
    app.views.limiter
 
 
@@ -17,8 +18,6 @@ Functions
 
 .. autoapisummary::
 
-   app.views.inject_globals
-   app.views.remove_trailing_slash
    app.views.load_user
    app.views.page_not_found
    app.views.page_not_found
@@ -32,9 +31,7 @@ Functions
 Module Contents
 ---------------
 
-.. py:function:: inject_globals()
-
-.. py:function:: remove_trailing_slash()
+.. py:data:: public_bp
 
 .. py:function:: load_user(user_id)
 

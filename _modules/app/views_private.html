@@ -86,15 +86,14 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/app/index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/app/index.html#functions">Functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/app/index.html#package-contents">Package Contents</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.app"><code class="docutils literal notranslate"><span class="pre">app</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.mail"><code class="docutils literal notranslate"><span class="pre">mail</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.db"><code class="docutils literal notranslate"><span class="pre">db</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.bc"><code class="docutils literal notranslate"><span class="pre">bc</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.lm"><code class="docutils literal notranslate"><span class="pre">lm</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.csrf"><code class="docutils literal notranslate"><span class="pre">csrf</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.sslify"><code class="docutils literal notranslate"><span class="pre">sslify</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.default_tier"><code class="docutils literal notranslate"><span class="pre">default_tier</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/app/index.html#app.create_app"><code class="docutils literal notranslate"><span class="pre">create_app()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -134,19 +133,27 @@
              
   <h1>Source code for app.views_private</h1><div class="highlight"><pre>
 <span></span><span class="c1"># Flask modules</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">flask</span><span class="w"> </span><span class="kn">import</span> <span class="n">Blueprint</span><span class="p">,</span> <span class="n">render_template</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">url_for</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">flash</span><span class="p">,</span> <span class="n">jsonify</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">flask</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Blueprint</span><span class="p">,</span>
+    <span class="n">render_template</span><span class="p">,</span>
+    <span class="n">request</span><span class="p">,</span>
+    <span class="n">url_for</span><span class="p">,</span>
+    <span class="n">redirect</span><span class="p">,</span>
+    <span class="n">flash</span><span class="p">,</span>
+    <span class="n">jsonify</span><span class="p">,</span>
+    <span class="n">current_app</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">flask_login</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">login_required</span><span class="p">,</span>
     <span class="n">current_user</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jinja2</span><span class="w"> </span><span class="kn">import</span> <span class="n">TemplateNotFound</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
 
 <span class="c1"># Stripe</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">stripe</span>
 
 <span class="c1"># App modules</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">app</span><span class="w"> </span><span class="kn">import</span> <span class="n">app</span><span class="p">,</span> <span class="n">csrf</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">app</span><span class="w"> </span><span class="kn">import</span> <span class="n">csrf</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">app.forms</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProfileDetailsForm</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">app.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Users</span><span class="p">,</span> <span class="n">Tiers</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">app.utilities.object_storage</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_upload_link_profile_picture</span>
@@ -154,36 +161,14 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">app.utilities.stripe_event_handler</span><span class="w"> </span><span class="kn">import</span> <span class="n">handle_stripe_event</span>
 
 <span class="c1"># Instantiate the Blueprint</span>
-<div class="viewcode-block" id="app_private">
-<a class="viewcode-back" href="../../autoapi/app/views_private/index.html#app.views_private.app_private">[docs]</a>
-<span class="n">app_private</span> <span class="o">=</span> <span class="n">Blueprint</span><span class="p">(</span><span class="s2">&quot;views_private&quot;</span><span class="p">,</span> <span class="vm">__name__</span><span class="p">)</span></div>
+<div class="viewcode-block" id="private_bp">
+<a class="viewcode-back" href="../../autoapi/app/views_private/index.html#app.views_private.private_bp">[docs]</a>
+<span class="n">private_bp</span> <span class="o">=</span> <span class="n">Blueprint</span><span class="p">(</span><span class="s2">&quot;private_bp&quot;</span><span class="p">,</span> <span class="vm">__name__</span><span class="p">)</span></div>
 
-
-
-<span class="c1"># Custom date format filter</span>
-<span class="c1"># In Jinja, we can use this filter like: {{ charge.created | dateformat }}</span>
-<div class="viewcode-block" id="dateformat">
-<a class="viewcode-back" href="../../autoapi/app/views_private/index.html#app.views_private.dateformat">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">dateformat</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;%B </span><span class="si">%d</span><span class="s2">, %Y&quot;</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="nb">format</span><span class="p">)</span></div>
-
-
-
-<span class="n">app</span><span class="o">.</span><span class="n">jinja_env</span><span class="o">.</span><span class="n">filters</span><span class="p">[</span><span class="s2">&quot;dateformat&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dateformat</span>
-
-
-<div class="viewcode-block" id="timeformat">
-<a class="viewcode-back" href="../../autoapi/app/views_private/index.html#app.views_private.timeformat">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">timeformat</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;%I:%M %p&quot;</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="nb">format</span><span class="p">)</span></div>
-
-
-
-<span class="n">app</span><span class="o">.</span><span class="n">jinja_env</span><span class="o">.</span><span class="n">filters</span><span class="p">[</span><span class="s2">&quot;timeformat&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">timeformat</span>
 
 
 <span class="c1"># Webhook endpoints for external services to give us updates</span>
-<span class="nd">@app_private</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/webhook/&lt;path&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="nd">@private_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/webhook/&lt;path&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <span class="nd">@csrf</span><span class="o">.</span><span class="n">exempt</span>
 <div class="viewcode-block" id="webhook">
 <a class="viewcode-back" href="../../autoapi/app/views_private/index.html#app.views_private.webhook">[docs]</a>
@@ -197,7 +182,7 @@
                     <span class="n">event</span> <span class="o">=</span> <span class="n">stripe</span><span class="o">.</span><span class="n">webhook</span><span class="o">.</span><span class="n">Webhook</span><span class="o">.</span><span class="n">construct_event</span><span class="p">(</span>
                         <span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span>
                         <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Stripe-Signature&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-                        <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;STRIPE_WEBHOOK_SECRET&quot;</span><span class="p">],</span>
+                        <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;STRIPE_WEBHOOK_SECRET&quot;</span><span class="p">],</span>
                     <span class="p">)</span>
                     <span class="n">handle_stripe_event</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
 
@@ -231,8 +216,8 @@
 
 
 <span class="c1"># Billing pages routing</span>
-<span class="nd">@app_private</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/billing&quot;</span><span class="p">,</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;billing&quot;</span><span class="p">},</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
-<span class="nd">@app_private</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/billing/&lt;path&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="nd">@private_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/billing&quot;</span><span class="p">,</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;billing&quot;</span><span class="p">},</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="nd">@private_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/billing/&lt;path&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <span class="nd">@login_required</span>
 <div class="viewcode-block" id="billing">
 <a class="viewcode-back" href="../../autoapi/app/views_private/index.html#app.views_private.billing">[docs]</a>
@@ -243,7 +228,7 @@
             <span class="s2">&quot;Please confirm your email address first by entering the confirmation code we have emailed you.&quot;</span><span class="p">,</span>
             <span class="s2">&quot;error&quot;</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;email_confirmation_by_code&quot;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;auth_bp.email_confirmation_by_code&quot;</span><span class="p">))</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="k">match</span> <span class="n">path</span><span class="p">:</span>
@@ -252,7 +237,7 @@
                 <span class="n">flash</span><span class="p">(</span><span class="s2">&quot;Your payment has been successful.&quot;</span><span class="p">,</span> <span class="s2">&quot;success&quot;</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span>
                     <span class="n">url_for</span><span class="p">(</span>
-                        <span class="s2">&quot;views_private.billing&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;private_bp.billing&quot;</span><span class="p">,</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
 
@@ -261,7 +246,7 @@
                 <span class="n">flash</span><span class="p">(</span><span class="s2">&quot;Your payment has been canceled.&quot;</span><span class="p">,</span> <span class="s2">&quot;danger&quot;</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span>
                     <span class="n">url_for</span><span class="p">(</span>
-                        <span class="s2">&quot;views_private.billing&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;private_bp.billing&quot;</span><span class="p">,</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
 
@@ -287,7 +272,7 @@
                         <span class="c1"># Validate the number of credits</span>
                         <span class="k">if</span> <span class="ow">not</span> <span class="n">creditsRequested</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
                             <span class="n">flash</span><span class="p">(</span><span class="s2">&quot;Invalid number of credits selected.&quot;</span><span class="p">,</span> <span class="s2">&quot;danger&quot;</span><span class="p">)</span>
-                            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;views_private.billing&quot;</span><span class="p">))</span>
+                            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;private_bp.billing&quot;</span><span class="p">))</span>
 
                     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error while parsing the numberOfCredits requested: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -299,11 +284,11 @@
                         <span class="n">line_items</span><span class="o">=</span><span class="p">[</span>
                             <span class="p">{</span>
                                 <span class="s2">&quot;price_data&quot;</span><span class="p">:</span> <span class="p">{</span>
-                                    <span class="s2">&quot;unit_amount&quot;</span><span class="p">:</span> <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span>
+                                    <span class="s2">&quot;unit_amount&quot;</span><span class="p">:</span> <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span>
                                         <span class="s2">&quot;STRIPE_CREDIT_UNIT_COST&quot;</span>
                                     <span class="p">],</span>
                                     <span class="s2">&quot;currency&quot;</span><span class="p">:</span> <span class="s2">&quot;usd&quot;</span><span class="p">,</span>
-                                    <span class="s2">&quot;product&quot;</span><span class="p">:</span> <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span>
+                                    <span class="s2">&quot;product&quot;</span><span class="p">:</span> <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span>
                                         <span class="s2">&quot;STRIPE_PRODUCT_ID_FOR_CREDITS&quot;</span>
                                     <span class="p">],</span>
                                 <span class="p">},</span>
@@ -322,11 +307,11 @@
                         <span class="p">},</span>
                         <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;payment&quot;</span><span class="p">,</span>
                         <span class="n">payment_method_types</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;card&quot;</span><span class="p">],</span>
-                        <span class="n">success_url</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">]</span>
-                        <span class="o">+</span> <span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;views_private.billing&quot;</span><span class="p">)</span>
+                        <span class="n">success_url</span><span class="o">=</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">]</span>
+                        <span class="o">+</span> <span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;private_bp.billing&quot;</span><span class="p">)</span>
                         <span class="o">+</span> <span class="s2">&quot;/success&quot;</span><span class="p">,</span>
-                        <span class="n">cancel_url</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">]</span>
-                        <span class="o">+</span> <span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;views_private.billing&quot;</span><span class="p">)</span>
+                        <span class="n">cancel_url</span><span class="o">=</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">]</span>
+                        <span class="o">+</span> <span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;private_bp.billing&quot;</span><span class="p">)</span>
                         <span class="o">+</span> <span class="s2">&quot;/cancel&quot;</span><span class="p">,</span>
                         <span class="n">automatic_tax</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;enabled&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
                         <span class="n">customer_update</span><span class="o">=</span><span class="p">{</span>
@@ -343,7 +328,7 @@
                     <span class="p">)</span>
                     <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span>
                         <span class="n">url_for</span><span class="p">(</span>
-                            <span class="s2">&quot;views_private.billing&quot;</span><span class="p">,</span>
+                            <span class="s2">&quot;private_bp.billing&quot;</span><span class="p">,</span>
                         <span class="p">)</span>
                     <span class="p">)</span>
 
@@ -368,7 +353,7 @@
                     <span class="p">)</span>
                     <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span>
                         <span class="n">url_for</span><span class="p">(</span>
-                            <span class="s2">&quot;views_private.billing&quot;</span><span class="p">,</span>
+                            <span class="s2">&quot;private_bp.billing&quot;</span><span class="p">,</span>
                         <span class="p">)</span>
                     <span class="p">)</span>
 
@@ -409,11 +394,11 @@
                         <span class="p">],</span>
                         <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;subscription&quot;</span><span class="p">,</span>
                         <span class="n">payment_method_types</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;card&quot;</span><span class="p">],</span>
-                        <span class="n">success_url</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">]</span>
-                        <span class="o">+</span> <span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;views_private.billing&quot;</span><span class="p">)</span>
+                        <span class="n">success_url</span><span class="o">=</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">]</span>
+                        <span class="o">+</span> <span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;private_bp.billing&quot;</span><span class="p">)</span>
                         <span class="o">+</span> <span class="s2">&quot;/success&quot;</span><span class="p">,</span>
-                        <span class="n">cancel_url</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">]</span>
-                        <span class="o">+</span> <span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;views_private.billing&quot;</span><span class="p">)</span>
+                        <span class="n">cancel_url</span><span class="o">=</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">]</span>
+                        <span class="o">+</span> <span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;private_bp.billing&quot;</span><span class="p">)</span>
                         <span class="o">+</span> <span class="s2">&quot;/cancel&quot;</span><span class="p">,</span>
                         <span class="n">automatic_tax</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;enabled&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
                         <span class="n">customer_update</span><span class="o">=</span><span class="p">{</span>
@@ -430,7 +415,7 @@
                     <span class="p">)</span>
                     <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span>
                         <span class="n">url_for</span><span class="p">(</span>
-                            <span class="s2">&quot;views_private.billing&quot;</span><span class="p">,</span>
+                            <span class="s2">&quot;private_bp.billing&quot;</span><span class="p">,</span>
                         <span class="p">)</span>
                     <span class="p">)</span>
 
@@ -460,8 +445,8 @@
 
 
 <span class="c1"># Account pages routing</span>
-<span class="nd">@app_private</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/account&quot;</span><span class="p">,</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;account&quot;</span><span class="p">},</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
-<span class="nd">@app_private</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/account/&lt;path&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="nd">@private_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/account&quot;</span><span class="p">,</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;account&quot;</span><span class="p">},</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="nd">@private_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/account/&lt;path&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <span class="nd">@login_required</span>
 <div class="viewcode-block" id="account">
 <a class="viewcode-back" href="../../autoapi/app/views_private/index.html#app.views_private.account">[docs]</a>
@@ -472,7 +457,7 @@
             <span class="s2">&quot;Please confirm your email address first by entering the confirmation code we have emailed you.&quot;</span><span class="p">,</span>
             <span class="s2">&quot;error&quot;</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;email_confirmation_by_code&quot;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;auth_bp.email_confirmation_by_code&quot;</span><span class="p">))</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="c1"># Declare the registration form</span>
         <span class="n">form</span> <span class="o">=</span> <span class="n">ProfileDetailsForm</span><span class="p">()</span>
@@ -560,9 +545,9 @@
 
 
 <span class="c1"># Admin pages routing</span>
-<span class="nd">@app_private</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/admin&quot;</span><span class="p">,</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;admin&quot;</span><span class="p">},</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="nd">@private_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/admin&quot;</span><span class="p">,</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;admin&quot;</span><span class="p">},</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <span class="c1"># path:path is to catch all paths, including those with multiple slashes (/)</span>
-<span class="nd">@app_private</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/admin/&lt;path:path&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="nd">@private_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/admin/&lt;path:path&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <div class="viewcode-block" id="admin">
 <a class="viewcode-back" href="../../autoapi/app/views_private/index.html#app.views_private.admin">[docs]</a>
 <span class="nd">@login_required</span>
@@ -579,9 +564,10 @@
             <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;emails/</span><span class="si">{</span><span class="n">email_template</span><span class="si">}</span><span class="s2">.html&quot;</span><span class="p">,</span>
                 <span class="n">user</span><span class="o">=</span><span class="n">current_user</span><span class="p">,</span>
-                <span class="n">appName</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">],</span>
-                <span class="n">appHome</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">],</span>
-                <span class="n">resetLink</span><span class="o">=</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;set_new_password&quot;</span><span class="p">,</span> <span class="n">_external</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;/dummyToken&quot;</span><span class="p">,</span>
+                <span class="n">appName</span><span class="o">=</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_NAME&quot;</span><span class="p">],</span>
+                <span class="n">appHome</span><span class="o">=</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;APP_ROOT_URL&quot;</span><span class="p">],</span>
+                <span class="n">resetLink</span><span class="o">=</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;auth_bp.set_new_password&quot;</span><span class="p">,</span> <span class="n">_external</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="o">+</span> <span class="s2">&quot;/dummyToken&quot;</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">except</span> <span class="n">TemplateNotFound</span><span class="p">:</span>
             <span class="k">return</span> <span class="s2">&quot;Email template not found.&quot;</span><span class="p">,</span> <span class="mi">404</span>
@@ -602,8 +588,8 @@
 
 
 <span class="c1"># Generic private pages routing</span>
-<span class="nd">@app_private</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;index&quot;</span><span class="p">})</span>
-<span class="nd">@app_private</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/&lt;path&gt;&quot;</span><span class="p">)</span>
+<span class="nd">@private_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;index&quot;</span><span class="p">})</span>
+<span class="nd">@private_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/&lt;path&gt;&quot;</span><span class="p">)</span>
 <span class="nd">@login_required</span>
 <div class="viewcode-block" id="private_index">
 <a class="viewcode-back" href="../../autoapi/app/views_private/index.html#app.views_private.private_index">[docs]</a>
@@ -614,7 +600,7 @@
             <span class="s2">&quot;Please confirm your email address first by entering the confirmation code we have emailed you.&quot;</span><span class="p">,</span>
             <span class="s2">&quot;error&quot;</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;email_confirmation_by_code&quot;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;auth_bp.email_confirmation_by_code&quot;</span><span class="p">))</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="c1"># Serve the file (if exists) from app/templates/private/PATH.html</span>

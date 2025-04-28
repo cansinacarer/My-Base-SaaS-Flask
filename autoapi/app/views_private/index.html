@@ -89,15 +89,14 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#functions">Functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../index.html#package-contents">Package Contents</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../index.html#app.app"><code class="docutils literal notranslate"><span class="pre">app</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../index.html#app.mail"><code class="docutils literal notranslate"><span class="pre">mail</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../index.html#app.db"><code class="docutils literal notranslate"><span class="pre">db</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../index.html#app.bc"><code class="docutils literal notranslate"><span class="pre">bc</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../index.html#app.lm"><code class="docutils literal notranslate"><span class="pre">lm</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../index.html#app.csrf"><code class="docutils literal notranslate"><span class="pre">csrf</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../index.html#app.sslify"><code class="docutils literal notranslate"><span class="pre">sslify</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../index.html#app.default_tier"><code class="docutils literal notranslate"><span class="pre">default_tier</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#app.create_app"><code class="docutils literal notranslate"><span class="pre">create_app()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -142,7 +141,7 @@
 <h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#app.views_private.app_private" title="app.views_private.app_private"><code class="xref py py-obj docutils literal notranslate"><span class="pre">app_private</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#app.views_private.private_bp" title="app.views_private.private_bp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">private_bp</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -152,12 +151,6 @@
 <h2>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#app.views_private.dateformat" title="app.views_private.dateformat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dateformat</span></code></a>(value[, format])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#app.views_private.timeformat" title="app.views_private.timeformat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">timeformat</span></code></a>(value[, format])</p></td>
-<td><p></p></td>
-</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#app.views_private.webhook" title="app.views_private.webhook"><code class="xref py py-obj docutils literal notranslate"><span class="pre">webhook</span></code></a>(path)</p></td>
 <td><p></p></td>
 </tr>
@@ -179,18 +172,8 @@
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
 <dl class="py data">
-<dt class="sig sig-object py" id="app.views_private.app_private">
-<span class="sig-prename descclassname"><span class="pre">app.views_private.</span></span><span class="sig-name descname"><span class="pre">app_private</span></span><a class="reference internal" href="../../../_modules/app/views_private.html#app_private"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.views_private.app_private" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="app.views_private.dateformat">
-<span class="sig-prename descclassname"><span class="pre">app.views_private.</span></span><span class="sig-name descname"><span class="pre">dateformat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'%B</span> <span class="pre">%d,</span> <span class="pre">%Y'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/app/views_private.html#dateformat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.views_private.dateformat" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="app.views_private.timeformat">
-<span class="sig-prename descclassname"><span class="pre">app.views_private.</span></span><span class="sig-name descname"><span class="pre">timeformat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'%I:%M</span> <span class="pre">%p'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/app/views_private.html#timeformat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.views_private.timeformat" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="app.views_private.private_bp">
+<span class="sig-prename descclassname"><span class="pre">app.views_private.</span></span><span class="sig-name descname"><span class="pre">private_bp</span></span><a class="reference internal" href="../../../_modules/app/views_private.html#private_bp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.views_private.private_bp" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
