@@ -47,13 +47,13 @@ Local Endpoints Used by the Dev Containers
 +------------------------+---------------------------------------------------------------------------------+
 | Port                   | Application                                                                     |
 +========================+=================================================================================+
-| https://localhost/5000 | Flask application run with debug mode active                                    |
+| https://localhost:5000 | Flask application run with debug mode active                                    |
 +------------------------+---------------------------------------------------------------------------------+
-| https://localhost/5001 | Flask application run with VSCode debugger                                      |
+| https://localhost:5001 | Flask application run with VSCode debugger                                      |
 +------------------------+---------------------------------------------------------------------------------+
-| http://localhost/5002  | pgAdmin instance connected to the local development database                    |
+| http://localhost:5002  | pgAdmin instance connected to the local development database                    |
 +------------------------+---------------------------------------------------------------------------------+
-| http://localhost/5003  | HTTP service serving the html files of the documentation in ``docs/build/html`` |
+| http://localhost:5003  | HTTP service serving the html files of the documentation in ``docs/build/html`` |
 +------------------------+---------------------------------------------------------------------------------+
 
 
