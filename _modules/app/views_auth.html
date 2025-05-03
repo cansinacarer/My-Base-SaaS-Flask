@@ -199,41 +199,51 @@
 
 
 
-<span class="c1"># provide login manager with load_user callback</span>
-<span class="c1"># This callback is used to reload the user object from the user ID stored in the session.</span>
 <span class="nd">@lm</span><span class="o">.</span><span class="n">user_loader</span>
 <div class="viewcode-block" id="load_user">
 <a class="viewcode-back" href="../../autoapi/app/views_auth/index.html#app.views_auth.load_user">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">load_user</span><span class="p">(</span><span class="n">user_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function is used to load the user object from the user ID stored in the session.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        user_id (str): The ID of the user to load.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Users: The user object from the db corresponding to the user ID.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">Users</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">user_id</span><span class="p">))</span></div>
 
 
 
-<span class="c1"># 403 cases will be redirected to login</span>
 <span class="nd">@lm</span><span class="o">.</span><span class="n">unauthorized_handler</span>
 <div class="viewcode-block" id="unauthorized_callback">
 <a class="viewcode-back" href="../../autoapi/app/views_auth/index.html#app.views_auth.unauthorized_callback">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">unauthorized_callback</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function is used to handle unauthorized access to protected routes.</span>
+
+<span class="sd">    403 cases will be redirected to login</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;/login?next=&quot;</span> <span class="o">+</span> <span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="p">)</span></div>
 
 
 
-<span class="c1"># Logout user</span>
 <span class="nd">@auth_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/logout&quot;</span><span class="p">)</span>
 <div class="viewcode-block" id="logout">
 <a class="viewcode-back" href="../../autoapi/app/views_auth/index.html#app.views_auth.logout">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">logout</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function is used to log out the user and redirect them to the login page.&quot;&quot;&quot;</span>
     <span class="n">logout_user</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;auth_bp.login&quot;</span><span class="p">))</span></div>
 
 
 
-<span class="c1"># Register a new user</span>
 <span class="nd">@auth_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/register&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <span class="nd">@limiter</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="s2">&quot;10 per day&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <div class="viewcode-block" id="register">
 <a class="viewcode-back" href="../../autoapi/app/views_auth/index.html#app.views_auth.register">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">register</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The view function for the registration page.&quot;&quot;&quot;</span>
+
     <span class="c1"># Don&#39;t allow logged in users here</span>
     <span class="k">if</span> <span class="n">current_user</span><span class="o">.</span><span class="n">is_authenticated</span><span class="p">:</span>
         <span class="n">flash</span><span class="p">(</span><span class="s2">&quot;You are already registered.&quot;</span><span class="p">,</span> <span class="s2">&quot;info&quot;</span><span class="p">)</span>
@@ -302,12 +312,13 @@
 
 
 
-<span class="c1"># Authenticate user</span>
 <span class="nd">@auth_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/login&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <span class="nd">@limiter</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="s2">&quot;10 per day&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <div class="viewcode-block" id="login">
 <a class="viewcode-back" href="../../autoapi/app/views_auth/index.html#app.views_auth.login">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">login</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The view function for the login page.&quot;&quot;&quot;</span>
+
     <span class="c1"># Don&#39;t allow logged in users here</span>
     <span class="k">if</span> <span class="n">current_user</span><span class="o">.</span><span class="n">is_authenticated</span><span class="p">:</span>
         <span class="n">flash</span><span class="p">(</span><span class="s2">&quot;You are already logged in.&quot;</span><span class="p">,</span> <span class="s2">&quot;info&quot;</span><span class="p">)</span>
@@ -374,12 +385,13 @@
 
 
 
-<span class="c1"># Authenticate user with the second factor</span>
 <span class="nd">@auth_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/two-factor&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <span class="nd">@limiter</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="s2">&quot;10 per day&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <div class="viewcode-block" id="two_factor">
 <a class="viewcode-back" href="../../autoapi/app/views_auth/index.html#app.views_auth.two_factor">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">two_factor</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The view function for the two factor authentication page.&quot;&quot;&quot;</span>
+
     <span class="c1"># Don&#39;t allow logged in users here</span>
     <span class="k">if</span> <span class="n">current_user</span><span class="o">.</span><span class="n">is_authenticated</span><span class="p">:</span>
         <span class="n">flash</span><span class="p">(</span><span class="s2">&quot;You are already logged in.&quot;</span><span class="p">,</span> <span class="s2">&quot;info&quot;</span><span class="p">)</span>
@@ -439,11 +451,12 @@
 
 
 
-<span class="c1"># Email verification by sending the user an email with a code</span>
 <span class="nd">@auth_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/email-confirmation&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <div class="viewcode-block" id="email_confirmation_by_code">
 <a class="viewcode-back" href="../../autoapi/app/views_auth/index.html#app.views_auth.email_confirmation_by_code">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">email_confirmation_by_code</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The view function for the email verification page.&quot;&quot;&quot;</span>
+
     <span class="n">codeMatched</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">current_user</span><span class="o">.</span><span class="n">is_authenticated</span><span class="p">:</span>
@@ -502,12 +515,13 @@
 
 
 
-<span class="c1"># Password Reset</span>
 <span class="nd">@auth_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/forgot-password&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <span class="nd">@limiter</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="s2">&quot;1 per day&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <div class="viewcode-block" id="password_reset">
 <a class="viewcode-back" href="../../autoapi/app/views_auth/index.html#app.views_auth.password_reset">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">password_reset</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The view function for the password reset page.&quot;&quot;&quot;</span>
+
     <span class="c1"># Declare the form</span>
     <span class="n">form</span> <span class="o">=</span> <span class="n">ResetPassword</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">)</span>
 
@@ -529,23 +543,29 @@
 
 
 
-<span class="c1"># password reset requested</span>
 <span class="nd">@auth_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/password-reset-requested&quot;</span><span class="p">)</span>
 <div class="viewcode-block" id="password_reset_requested">
 <a class="viewcode-back" href="../../autoapi/app/views_auth/index.html#app.views_auth.password_reset_requested">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">password_reset_requested</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The view function for the password reset requested page.&quot;&quot;&quot;</span>
+
     <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span>
         <span class="s2">&quot;public/auth/password-reset-requested.html&quot;</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">current_user</span>
     <span class="p">)</span></div>
 
 
 
-<span class="c1"># Set new password</span>
 <span class="nd">@auth_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/set-new-password&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">],</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;token&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">})</span>
 <span class="nd">@auth_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/set-new-password/&lt;token&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <div class="viewcode-block" id="set_new_password">
 <a class="viewcode-back" href="../../autoapi/app/views_auth/index.html#app.views_auth.set_new_password">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">set_new_password</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The view function for the set new password page.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        token (str): The token from the forgot password email, used to verify the user.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">try</span><span class="p">:</span>
         <span class="n">ts</span> <span class="o">=</span> <span class="n">URLSafeTimedSerializer</span><span class="p">(</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;SECRET_KEY&quot;</span><span class="p">])</span>
         <span class="n">email</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">salt</span><span class="o">=</span><span class="s2">&quot;recover-key&quot;</span><span class="p">,</span> <span class="n">max_age</span><span class="o">=</span><span class="mi">86400</span><span class="p">)</span>
@@ -579,6 +599,11 @@
 <div class="viewcode-block" id="get_google_sso_config">
 <a class="viewcode-back" href="../../autoapi/app/views_auth/index.html#app.views_auth.get_google_sso_config">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_google_sso_config</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the Google SSO configuration.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: The Google SSO configuration.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
         <span class="s2">&quot;https://accounts.google.com/.well-known/openid-configuration&quot;</span>
     <span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span></div>
@@ -590,6 +615,11 @@
 <div class="viewcode-block" id="login_callback_google">
 <a class="viewcode-back" href="../../autoapi/app/views_auth/index.html#app.views_auth.login_callback_google">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">login_callback_google</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The view function for the Google login callback.</span>
+
+<span class="sd">    This is the page that Google redirects to after the Google authentication attempt.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="c1"># Don&#39;t allow logged in users here</span>
     <span class="k">if</span> <span class="n">current_user</span><span class="o">.</span><span class="n">is_authenticated</span> <span class="ow">and</span> <span class="n">current_user</span><span class="o">.</span><span class="n">is_connected_google</span><span class="p">():</span>
         <span class="n">flash</span><span class="p">(</span><span class="s2">&quot;You are already logged in.&quot;</span><span class="p">,</span> <span class="s2">&quot;info&quot;</span><span class="p">)</span>

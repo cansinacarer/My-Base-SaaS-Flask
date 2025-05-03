@@ -172,7 +172,7 @@
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#app.config.Config" title="app.config.Config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Configuration class for the Flask application.</p></td>
 </tr>
 </tbody>
 </table>
@@ -197,7 +197,11 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="app.config.Config">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">app.config.</span></span><span class="sig-name descname"><span class="pre">Config</span></span><a class="reference internal" href="../../../_modules/app/config.html#Config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.config.Config" title="Link to this definition"></a></dt>
-<dd><dl class="py attribute">
+<dd><p>Configuration class for the Flask application.</p>
+<p>This class contains the configuration for the Flask application,
+including database connection, email settings. Most of these are
+read from environment variables using the <cite>decouple</cite> library.</p>
+<dl class="py attribute">
 <dt class="sig sig-object py" id="app.config.Config.BASEDIR">
 <span class="sig-name descname"><span class="pre">BASEDIR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">b'.'</span></em><a class="reference internal" href="../../../_modules/app/config.html#Config.BASEDIR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.config.Config.BASEDIR" title="Link to this definition"></a></dt>
 <dd></dd></dl>

@@ -166,19 +166,19 @@
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#app.views_private.webhook" title="app.views_private.webhook"><code class="xref py py-obj docutils literal notranslate"><span class="pre">webhook</span></code></a>(path)</p></td>
-<td><p></p></td>
+<td><p>The view function for the webhook endpoint.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#app.views_private.billing" title="app.views_private.billing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">billing</span></code></a>(path)</p></td>
-<td><p></p></td>
+<td><p>The view function for the billing pages' routing.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#app.views_private.account" title="app.views_private.account"><code class="xref py py-obj docutils literal notranslate"><span class="pre">account</span></code></a>(path)</p></td>
-<td><p></p></td>
+<td><p>The view function for the account pages routing.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#app.views_private.admin" title="app.views_private.admin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">admin</span></code></a>(path)</p></td>
-<td><p></p></td>
+<td><p>The view function for the admin privilaged pages' routing.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#app.views_private.private_index" title="app.views_private.private_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">private_index</span></code></a>(path)</p></td>
-<td><p></p></td>
+<td><p>The view function for the private pages routing.</p></td>
 </tr>
 </tbody>
 </table>
@@ -193,27 +193,91 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="app.views_private.webhook">
 <span class="sig-prename descclassname"><span class="pre">app.views_private.</span></span><span class="sig-name descname"><span class="pre">webhook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/app/views_private.html#webhook"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.views_private.webhook" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>The view function for the webhook endpoint.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The part of the requested endpoint after /webhook/.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A JSON response indicating success or failure.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Response</p>
+</dd>
+</dl>
+<p>Webhook endpoints for external services to give us updates.
+Currently, this endpoint is used to receive webhook events from Stripe.</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="app.views_private.billing">
 <span class="sig-prename descclassname"><span class="pre">app.views_private.</span></span><span class="sig-name descname"><span class="pre">billing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/app/views_private.html#billing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.views_private.billing" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>The view function for the billing pages’ routing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The part of the requested endpoint after /billing/.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The rendered template for the requested billing page.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Response</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="app.views_private.account">
 <span class="sig-prename descclassname"><span class="pre">app.views_private.</span></span><span class="sig-name descname"><span class="pre">account</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/app/views_private.html#account"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.views_private.account" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>The view function for the account pages routing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The part of the requested endpoint after /account/.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The rendered template for the requested account page.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Response</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="app.views_private.admin">
 <span class="sig-prename descclassname"><span class="pre">app.views_private.</span></span><span class="sig-name descname"><span class="pre">admin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/app/views_private.html#admin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.views_private.admin" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>The view function for the admin privilaged pages’ routing.</p>
+<p>path:path is used to catch all paths, including those with multiple slashes (/)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The part of the requested endpoint after /admin/.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The rendered template for the requested admin page.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Response</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="app.views_private.private_index">
 <span class="sig-prename descclassname"><span class="pre">app.views_private.</span></span><span class="sig-name descname"><span class="pre">private_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/app/views_private.html#private_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.views_private.private_index" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>The view function for the private pages routing.</p>
+<p>This is the fallback view function for all private pages at /app/.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The part of the requested endpoint after /app/.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The rendered template for the requested private page.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Response</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 </section>

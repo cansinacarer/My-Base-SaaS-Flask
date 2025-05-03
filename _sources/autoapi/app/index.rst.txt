@@ -56,3 +56,15 @@ Package Contents
 
 .. py:function:: create_app(config_class='app.config.Config', test_config=False)
 
+   Application factory to create a Flask application instance
+   with the specified configuration.
+
+   :param config_class: Reference to the configuration object to use.
+   :type config_class: str
+   :param test_config: If True, apply the test configuration.
+   :type test_config: bool
+
+   :returns: The Flask application instance.
+   :rtype: app (Flask)
+
+

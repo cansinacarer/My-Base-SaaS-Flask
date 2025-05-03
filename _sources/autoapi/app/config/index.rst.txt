@@ -33,6 +33,13 @@ Module Contents
 
 .. py:class:: Config
 
+   Configuration class for the Flask application.
+
+   This class contains the configuration for the Flask application,
+   including database connection, email settings. Most of these are
+   read from environment variables using the `decouple` library.
+
+
    .. py:attribute:: BASEDIR
       :value: b'.'
 

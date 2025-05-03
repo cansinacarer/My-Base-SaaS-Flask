@@ -17,3 +17,14 @@ Module Contents
 
 .. py:function:: asyncr(f)
 
+   Decorator to run a function asynchronously.
+
+   We use this decorator to send emails on a separate thread without blocking the main thread.
+
+   :param f: The function to be decorated.
+   :type f: function
+
+   :returns: A wrapper function that runs the original function in a separate thread.
+   :rtype: function
+
+

@@ -229,16 +229,25 @@
 <div class="viewcode-block" id="favicon">
 <a class="viewcode-back" href="../../autoapi/app/views/index.html#app.views.favicon">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">favicon</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Serve the favicon.ico file.&quot;&quot;&quot;</span>
+
     <span class="k">return</span> <span class="n">current_app</span><span class="o">.</span><span class="n">send_static_file</span><span class="p">(</span><span class="s2">&quot;media/favicon.ico&quot;</span><span class="p">)</span></div>
 
 
 
-<span class="c1"># App main route + generic routing</span>
 <span class="nd">@public_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;index&quot;</span><span class="p">})</span>
 <span class="nd">@public_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/&lt;path&gt;&quot;</span><span class="p">)</span>
 <div class="viewcode-block" id="index">
 <a class="viewcode-back" href="../../autoapi/app/views/index.html#app.views.index">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">index</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Serve the index page or dynamically route for other pages with existing templates.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        path (str): The path to the requested page.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Response: The rendered HTML template for the requested page.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="c1"># Serve the file (if exists) from app/templates/public/PATH.html</span>
         <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;public/</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">.html&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">current_user</span><span class="p">)</span>

@@ -156,22 +156,22 @@
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#app.emails.send_email_to_reset_password" title="app.emails.send_email_to_reset_password"><code class="xref py py-obj docutils literal notranslate"><span class="pre">send_email_to_reset_password</span></code></a>(email)</p></td>
-<td><p></p></td>
+<td><p>Send an email with the password reset link.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#app.emails.send_email_with_code" title="app.emails.send_email_with_code"><code class="xref py py-obj docutils literal notranslate"><span class="pre">send_email_with_code</span></code></a>(user)</p></td>
-<td><p></p></td>
+<td><p>Send an email with the verification code.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#app.emails.send_email_about_subscription_confirmation" title="app.emails.send_email_about_subscription_confirmation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">send_email_about_subscription_confirmation</span></code></a>(user, tier_name)</p></td>
-<td><p></p></td>
+<td><p>Send an email with the paid subscription confirmation.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#app.emails.send_email_about_subscription_cancellation" title="app.emails.send_email_about_subscription_cancellation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">send_email_about_subscription_cancellation</span></code></a>(user, ...)</p></td>
-<td><p></p></td>
+<td><p>Send an email with the subscription cancellation information.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#app.emails.send_email_about_subscription_deletion" title="app.emails.send_email_about_subscription_deletion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">send_email_about_subscription_deletion</span></code></a>(user, tier_name)</p></td>
-<td><p></p></td>
+<td><p>Send an email with the subscription deletion information.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#app.emails.send_async_email" title="app.emails.send_async_email"><code class="xref py py-obj docutils literal notranslate"><span class="pre">send_async_email</span></code></a>(msg, app)</p></td>
-<td><p></p></td>
+<td><p>Send an email asynchronously.</p></td>
 </tr>
 </tbody>
 </table>
@@ -181,32 +181,84 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="app.emails.send_email_to_reset_password">
 <span class="sig-prename descclassname"><span class="pre">app.emails.</span></span><span class="sig-name descname"><span class="pre">send_email_to_reset_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/app/emails.html#send_email_to_reset_password"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.emails.send_email_to_reset_password" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Send an email with the password reset link.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>email</strong> (<em>str</em>) – The email address of the user.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="app.emails.send_email_with_code">
 <span class="sig-prename descclassname"><span class="pre">app.emails.</span></span><span class="sig-name descname"><span class="pre">send_email_with_code</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/app/emails.html#send_email_with_code"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.emails.send_email_with_code" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Send an email with the verification code.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>user</strong> (<a class="reference internal" href="../models/index.html#app.models.Users" title="app.models.Users"><em>Users</em></a>) – The user object.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="app.emails.send_email_about_subscription_confirmation">
 <span class="sig-prename descclassname"><span class="pre">app.emails.</span></span><span class="sig-name descname"><span class="pre">send_email_about_subscription_confirmation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tier_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/app/emails.html#send_email_about_subscription_confirmation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.emails.send_email_about_subscription_confirmation" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Send an email with the paid subscription confirmation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user</strong> (<a class="reference internal" href="../models/index.html#app.models.Users" title="app.models.Users"><em>Users</em></a>) – The user object.</p></li>
+<li><p><strong>tier_name</strong> (<em>str</em>) – The name of the subscription tier.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="app.emails.send_email_about_subscription_cancellation">
 <span class="sig-prename descclassname"><span class="pre">app.emails.</span></span><span class="sig-name descname"><span class="pre">send_email_about_subscription_cancellation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tier_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cancellation_date</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/app/emails.html#send_email_about_subscription_cancellation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.emails.send_email_about_subscription_cancellation" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Send an email with the subscription cancellation information.</p>
+<p>This is the email sent when the user cancels their subscription but the subscription
+is still active until the end of the billing period.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user</strong> (<a class="reference internal" href="../models/index.html#app.models.Users" title="app.models.Users"><em>Users</em></a>) – The user object.</p></li>
+<li><p><strong>tier_name</strong> (<em>str</em>) – The name of the subscription tier.</p></li>
+<li><p><strong>cancellation_date</strong> (<em>datetime</em>) – The date of cancellation.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="app.emails.send_email_about_subscription_deletion">
 <span class="sig-prename descclassname"><span class="pre">app.emails.</span></span><span class="sig-name descname"><span class="pre">send_email_about_subscription_deletion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tier_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/app/emails.html#send_email_about_subscription_deletion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.emails.send_email_about_subscription_deletion" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Send an email with the subscription deletion information.</p>
+<p>This is the email sent when the subscription has ended.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user</strong> (<a class="reference internal" href="../models/index.html#app.models.Users" title="app.models.Users"><em>Users</em></a>) – The user object.</p></li>
+<li><p><strong>tier_name</strong> (<em>str</em>) – The name of the subscription tier.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="app.emails.send_async_email">
 <span class="sig-prename descclassname"><span class="pre">app.emails.</span></span><span class="sig-name descname"><span class="pre">send_async_email</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/app/emails.html#send_async_email"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.emails.send_async_email" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Send an email asynchronously.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>msg</strong> (<em>Message</em>) – The Message object containing email details.</p></li>
+<li><p><strong>app</strong> (<em>Flask</em>) – The Flask application instance.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 </section>

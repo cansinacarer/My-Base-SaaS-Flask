@@ -22,13 +22,64 @@ Module Contents
 
 .. py:function:: send_email_to_reset_password(email)
 
+   Send an email with the password reset link.
+
+   :param email: The email address of the user.
+   :type email: str
+
+
 .. py:function:: send_email_with_code(user)
+
+   Send an email with the verification code.
+
+   :param user: The user object.
+   :type user: Users
+
 
 .. py:function:: send_email_about_subscription_confirmation(user, tier_name)
 
+   Send an email with the paid subscription confirmation.
+
+   :param user: The user object.
+   :type user: Users
+   :param tier_name: The name of the subscription tier.
+   :type tier_name: str
+
+
 .. py:function:: send_email_about_subscription_cancellation(user, tier_name, cancellation_date)
+
+   Send an email with the subscription cancellation information.
+
+   This is the email sent when the user cancels their subscription but the subscription
+   is still active until the end of the billing period.
+
+   :param user: The user object.
+   :type user: Users
+   :param tier_name: The name of the subscription tier.
+   :type tier_name: str
+   :param cancellation_date: The date of cancellation.
+   :type cancellation_date: datetime
+
 
 .. py:function:: send_email_about_subscription_deletion(user, tier_name)
 
+   Send an email with the subscription deletion information.
+
+   This is the email sent when the subscription has ended.
+
+   :param user: The user object.
+   :type user: Users
+   :param tier_name: The name of the subscription tier.
+   :type tier_name: str
+
+
 .. py:function:: send_async_email(msg, app)
+
+   Send an email asynchronously.
+
+   :param msg: The Message object containing email details.
+   :type msg: Message
+   :param app: The Flask application instance.
+   :type app: Flask
+
 

@@ -31,11 +31,63 @@ Module Contents
 
 .. py:function:: webhook(path)
 
+   The view function for the webhook endpoint.
+
+   :param path: The part of the requested endpoint after /webhook/.
+   :type path: str
+
+   :returns: A JSON response indicating success or failure.
+   :rtype: Response
+
+   Webhook endpoints for external services to give us updates.
+   Currently, this endpoint is used to receive webhook events from Stripe.
+
+
 .. py:function:: billing(path)
+
+   The view function for the billing pages' routing.
+
+   :param path: The part of the requested endpoint after /billing/.
+   :type path: str
+
+   :returns: The rendered template for the requested billing page.
+   :rtype: Response
+
 
 .. py:function:: account(path)
 
+   The view function for the account pages routing.
+
+   :param path: The part of the requested endpoint after /account/.
+   :type path: str
+
+   :returns: The rendered template for the requested account page.
+   :rtype: Response
+
+
 .. py:function:: admin(path)
 
+   The view function for the admin privilaged pages' routing.
+
+   path:path is used to catch all paths, including those with multiple slashes (/)
+
+   :param path: The part of the requested endpoint after /admin/.
+   :type path: str
+
+   :returns: The rendered template for the requested admin page.
+   :rtype: Response
+
+
 .. py:function:: private_index(path)
+
+   The view function for the private pages routing.
+
+   This is the fallback view function for all private pages at /app/.
+
+   :param path: The part of the requested endpoint after /app/.
+   :type path: str
+
+   :returns: The rendered template for the requested private page.
+   :rtype: Response
+
 

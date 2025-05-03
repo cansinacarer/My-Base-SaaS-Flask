@@ -181,12 +181,22 @@
 
 
 
-<span class="c1"># Webhook endpoints for external services to give us updates</span>
 <span class="nd">@private_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/webhook/&lt;path&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <span class="nd">@csrf</span><span class="o">.</span><span class="n">exempt</span>
 <div class="viewcode-block" id="webhook">
 <a class="viewcode-back" href="../../autoapi/app/views_private/index.html#app.views_private.webhook">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">webhook</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The view function for the webhook endpoint.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        path (str): The part of the requested endpoint after /webhook/.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Response: A JSON response indicating success or failure.</span>
+
+<span class="sd">    Webhook endpoints for external services to give us updates.</span>
+<span class="sd">    Currently, this endpoint is used to receive webhook events from Stripe.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">match</span> <span class="n">path</span><span class="p">:</span>
             <span class="c1"># The endpoint where stripe sends the webhook events</span>
@@ -229,13 +239,21 @@
 
 
 
-<span class="c1"># Billing pages routing</span>
 <span class="nd">@private_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/billing&quot;</span><span class="p">,</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;billing&quot;</span><span class="p">},</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <span class="nd">@private_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/billing/&lt;path&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <span class="nd">@login_required</span>
 <div class="viewcode-block" id="billing">
 <a class="viewcode-back" href="../../autoapi/app/views_private/index.html#app.views_private.billing">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">billing</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The view function for the billing pages&#39; routing.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        path (str): The part of the requested endpoint after /billing/.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Response: The rendered template for the requested billing page.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="c1"># Redirect to email confirmation</span>
     <span class="k">if</span> <span class="n">current_user</span><span class="o">.</span><span class="n">email_confirmed</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">flash</span><span class="p">(</span>
@@ -458,13 +476,21 @@
 
 
 
-<span class="c1"># Account pages routing</span>
 <span class="nd">@private_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/account&quot;</span><span class="p">,</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;account&quot;</span><span class="p">},</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <span class="nd">@private_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/account/&lt;path&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <span class="nd">@login_required</span>
 <div class="viewcode-block" id="account">
 <a class="viewcode-back" href="../../autoapi/app/views_private/index.html#app.views_private.account">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">account</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The view function for the account pages routing.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        path (str): The part of the requested endpoint after /account/.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Response: The rendered template for the requested account page.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="c1"># Redirect to email confirmation</span>
     <span class="k">if</span> <span class="n">current_user</span><span class="o">.</span><span class="n">email_confirmed</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">flash</span><span class="p">(</span>
@@ -558,14 +584,23 @@
 
 
 
-<span class="c1"># Admin pages routing</span>
 <span class="nd">@private_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/admin&quot;</span><span class="p">,</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;admin&quot;</span><span class="p">},</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
-<span class="c1"># path:path is to catch all paths, including those with multiple slashes (/)</span>
 <span class="nd">@private_bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/admin/&lt;path:path&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="nd">@login_required</span>
 <div class="viewcode-block" id="admin">
 <a class="viewcode-back" href="../../autoapi/app/views_private/index.html#app.views_private.admin">[docs]</a>
-<span class="nd">@login_required</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">admin</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The view function for the admin privilaged pages&#39; routing.</span>
+
+<span class="sd">    path:path is used to catch all paths, including those with multiple slashes (/)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        path (str): The part of the requested endpoint after /admin/.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Response: The rendered template for the requested admin page.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="c1"># If this user is not admin, return 403</span>
     <span class="k">if</span> <span class="n">current_user</span><span class="o">.</span><span class="n">role</span> <span class="o">!=</span> <span class="s2">&quot;admin&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">error_page</span><span class="p">(</span><span class="mi">403</span><span class="p">)</span>
@@ -608,6 +643,17 @@
 <div class="viewcode-block" id="private_index">
 <a class="viewcode-back" href="../../autoapi/app/views_private/index.html#app.views_private.private_index">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">private_index</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The view function for the private pages routing.</span>
+
+<span class="sd">    This is the fallback view function for all private pages at /app/.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        path (str): The part of the requested endpoint after /app/.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Response: The rendered template for the requested private page.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="c1"># Redirect to email confirmation</span>
     <span class="k">if</span> <span class="n">current_user</span><span class="o">.</span><span class="n">email_confirmed</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">flash</span><span class="p">(</span>
