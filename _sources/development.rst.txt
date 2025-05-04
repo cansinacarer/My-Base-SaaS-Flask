@@ -143,12 +143,20 @@ Defining More Configuration Variables
 If you need to have more config variables (e.g. credentials for a new
 OAuth provider):
 
-1. Define environment variables for them both in your local ``.env``
-   file and in prod,
+1. Set environment variable in:
+
+   - your local ``.env``  file in the dev environment,
+   - in the ``.env.template`` file as a template for other developers and future use,
+   - the production environment,
+   - in ``github/workflows/test.yml`` for the testing pipeline,
+   - in the secrets of the repository on GitHub.
+
 2. In ``app/config.py``, add a new attribute for the ``Config`` class.
-   Use the ``config`` method from decouple.
-3. You can then call the config value anywhere in the app as
-   ``app.config[""]``.
+   
+   - Use the ``config`` method from decouple to pull your environment variable.
+
+3. You can then call the config value anywhere in the app with
+   ``app.config["YOUR_CONFIG_VARIABLE"]``.
 
 Updating Dependencies
 ~~~~~~~~~~~~~~~~~~~~~

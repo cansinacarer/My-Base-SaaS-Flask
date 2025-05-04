@@ -295,12 +295,22 @@ the alternatives without one (e.g. <code class="docutils literal notranslate"><
 <p>If you need to have more config variables (e.g. credentials for a new
 OAuth provider):</p>
 <ol class="arabic simple">
-<li><p>Define environment variables for them both in your local <code class="docutils literal notranslate"><span class="pre">.env</span></code>
-file and in prod,</p></li>
-<li><p>In <code class="docutils literal notranslate"><span class="pre">app/config.py</span></code>, add a new attribute for the <code class="docutils literal notranslate"><span class="pre">Config</span></code> class.
-Use the <code class="docutils literal notranslate"><span class="pre">config</span></code> method from decouple.</p></li>
-<li><p>You can then call the config value anywhere in the app as
-<code class="docutils literal notranslate"><span class="pre">app.config[&quot;&quot;]</span></code>.</p></li>
+<li><p>Set environment variable in:</p>
+<ul class="simple">
+<li><p>your local <code class="docutils literal notranslate"><span class="pre">.env</span></code>  file in the dev environment,</p></li>
+<li><p>in the <code class="docutils literal notranslate"><span class="pre">.env.template</span></code> file as a template for other developers and future use,</p></li>
+<li><p>the production environment,</p></li>
+<li><p>in <code class="docutils literal notranslate"><span class="pre">github/workflows/test.yml</span></code> for the testing pipeline,</p></li>
+<li><p>in the secrets of the repository on GitHub.</p></li>
+</ul>
+</li>
+<li><p>In <code class="docutils literal notranslate"><span class="pre">app/config.py</span></code>, add a new attribute for the <code class="docutils literal notranslate"><span class="pre">Config</span></code> class.</p>
+<ul class="simple">
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">config</span></code> method from decouple to pull your environment variable.</p></li>
+</ul>
+</li>
+<li><p>You can then call the config value anywhere in the app with
+<code class="docutils literal notranslate"><span class="pre">app.config[&quot;YOUR_CONFIG_VARIABLE&quot;]</span></code>.</p></li>
 </ol>
 </section>
 <section id="updating-dependencies">
