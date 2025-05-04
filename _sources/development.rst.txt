@@ -96,7 +96,7 @@ database. pgAdmin is already configured to connect to the Postgres container. Wh
 prompted for the database password, use ``password``.
 
 A simple database model is defined in ``app/models.py``. When the database tables
-are created, a free tier is automatically addded in the Tiers table.
+are created, a free tier is automatically added in the Tiers table.
 
 .. mermaid::
 
