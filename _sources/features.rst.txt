@@ -17,7 +17,9 @@ Features
 
    -  **Postgres** as a development database,
 
-   -  **pgAdmin** pre-connected to the development.
+   -  **pgAdmin** pre-connected to the development,
+
+   -  **docs** serving the built html files of the Sphinx documentation.
 
 -  CI/CD pipelines with GitHub Actions to:
 
