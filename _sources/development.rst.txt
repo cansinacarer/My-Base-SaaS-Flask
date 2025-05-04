@@ -83,38 +83,57 @@ the ``.env`` file as shown in ``.env.template``.
 .. HINT::
    Some of the functionality will not work in your local development environment without having this listener forward the events from Stripe to the local instance of this app. For example, the account balance will not increment as this depends on the event from Stripe.
 
-Developing in a Virtual Environment
---------------------------------------
 
-I do not recommend using a virtual environment for development, but here is the legacy documentation I had for it before I switched to devcontainers.
+Database Model
+--------------
 
-1. Clone the repo, navigate to the repo directory,
+We use Object Relational Mapping (ORM) with SQLAlchemy to interact with the
+Postgres database. The database is created automatically when the app is
+started. The tables are created based on the models defined in
+``app/models.py``. In the dev environment, the database is created in a container
+and it is accessible at ``localhost:5432``. You can use pgAdmin to manage the
+database. pgAdmin is already configured to connect to the Postgres container. When
+prompted for the database password, use ``password``.
 
-2. Create a virtual environment: ``python -m venv env``
+A simple database model is defined in ``app/models.py``. When the database tables
+are created, a free tier is automatically addded in the Tiers table.
 
-3. Activate the virtual environment:
+.. mermaid::
 
-   -  For Windows:
+    erDiagram
+        
+        Users {
+            int id PK
+            string email
+            string password
+            string role
+            string stripe_customer_id
+            int tier_id FK
+            bigint credits
+            datetime cancel_at
+            string firstName
+            string lastName
+            int newsletter
+            datetime member_since
+            datetime last_login
+            string email_confirmation_code
+            datetime last_confirmation_codes_sent
+            int number_of_email_confirmation_codes_sent
+            int email_confirmed
+            string google_avatar_url
+            boolean avatar_uploaded
+            string totp_secret
+            int totp_enabled
+        }
+        
+        Tiers {
+            int id PK
+            string name
+            string label
+            string stripe_price_id
+        }
 
-      ``env\Scripts\activate``
-
-   -  For macOS/Linux:
-
-      ``source env/bin/activate``
-
-4. Install the dependencies inside the virtual environment:
-
-   ``pip install -r requirements.txt``
-
-5. Set the environment variables listed in the ``.env.template`` file
-
-6. Generate a self signed SSL certificate for using https locally. On
-   Linux or with WSL in the root path:
-
-   ``openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes``
-
-7. Run ``flask run``
-
+        Users }o--|| Tiers : "has"
 
 How to Build On Top of This App
 -------------------------------

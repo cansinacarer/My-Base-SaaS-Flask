@@ -17,6 +17,14 @@
       <script src="_static/documentation_options.js?v=d29a5c0e"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs"></script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+      <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+      <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -67,7 +75,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#testing-stripe-webhooks">Testing Stripe Webhooks</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#developing-in-a-virtual-environment">Developing in a Virtual Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#database-model">Database Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#how-to-build-on-top-of-this-app">How to Build On Top of This App</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#adding-new-pages">Adding New Pages</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#defining-more-configuration-variables">Defining More Configuration Variables</a></li>
@@ -243,33 +251,53 @@ the <code class="docutils literal notranslate"><span class="pre">.env</span></co
 </div>
 </section>
 </section>
-<section id="developing-in-a-virtual-environment">
-<h2>Developing in a Virtual Environment<a class="headerlink" href="#developing-in-a-virtual-environment" title="Link to this heading"></a></h2>
-<p>I do not recommend using a virtual environment for development, but here is the legacy documentation I had for it before I switched to devcontainers.</p>
-<ol class="arabic">
-<li><p>Clone the repo, navigate to the repo directory,</p></li>
-<li><p>Create a virtual environment: <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">venv</span> <span class="pre">env</span></code></p></li>
-<li><p>Activate the virtual environment:</p>
-<ul>
-<li><p>For Windows:</p>
-<p><code class="docutils literal notranslate"><span class="pre">env\Scripts\activate</span></code></p>
-</li>
-<li><p>For macOS/Linux:</p>
-<p><code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">env/bin/activate</span></code></p>
-</li>
-</ul>
-</li>
-<li><p>Install the dependencies inside the virtual environment:</p>
-<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-r</span> <span class="pre">requirements.txt</span></code></p>
-</li>
-<li><p>Set the environment variables listed in the <code class="docutils literal notranslate"><span class="pre">.env.template</span></code> file</p></li>
-<li><p>Generate a self signed SSL certificate for using https locally. On
-Linux or with WSL in the root path:</p>
-<p><code class="docutils literal notranslate"><span class="pre">openssl</span> <span class="pre">req</span> <span class="pre">-x509</span> <span class="pre">-newkey</span> <span class="pre">rsa:4096</span> <span class="pre">-keyout</span> <span class="pre">key.pem</span> <span class="pre">-out</span> <span class="pre">cert.pem</span> <span class="pre">-days</span> <span class="pre">365</span> <span class="pre">-nodes</span></code></p>
-</li>
-<li><p>Run <code class="docutils literal notranslate"><span class="pre">flask</span> <span class="pre">run</span></code></p></li>
-</ol>
-</section>
+<section id="database-model">
+<h2>Database Model<a class="headerlink" href="#database-model" title="Link to this heading"></a></h2>
+<p>We use Object Relational Mapping (ORM) with SQLAlchemy to interact with the
+Postgres database. The database is created automatically when the app is
+started. The tables are created based on the models defined in
+<code class="docutils literal notranslate"><span class="pre">app/models.py</span></code>. In the dev environment, the database is created in a container
+and it is accessible at <code class="docutils literal notranslate"><span class="pre">localhost:5432</span></code>. You can use pgAdmin to manage the
+database. pgAdmin is already configured to connect to the Postgres container. When
+prompted for the database password, use <code class="docutils literal notranslate"><span class="pre">password</span></code>.</p>
+<p>A simple database model is defined in <code class="docutils literal notranslate"><span class="pre">app/models.py</span></code>. When the database tables
+are created, a free tier is automatically addded in the Tiers table.</p>
+<pre  class="mermaid">
+        erDiagram
+
+    Users {
+        int id PK
+        string email
+        string password
+        string role
+        string stripe_customer_id
+        int tier_id FK
+        bigint credits
+        datetime cancel_at
+        string firstName
+        string lastName
+        int newsletter
+        datetime member_since
+        datetime last_login
+        string email_confirmation_code
+        datetime last_confirmation_codes_sent
+        int number_of_email_confirmation_codes_sent
+        int email_confirmed
+        string google_avatar_url
+        boolean avatar_uploaded
+        string totp_secret
+        int totp_enabled
+    }
+
+    Tiers {
+        int id PK
+        string name
+        string label
+        string stripe_price_id
+    }
+
+    Users }o--|| Tiers : &quot;has&quot;
+    </pre></section>
 <section id="how-to-build-on-top-of-this-app">
 <h2>How to Build On Top of This App<a class="headerlink" href="#how-to-build-on-top-of-this-app" title="Link to this heading"></a></h2>
 <section id="adding-new-pages">
