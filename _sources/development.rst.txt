@@ -41,8 +41,8 @@ Dev Containers are a the recommended way to develop this project. You simply clo
    - If you need to access the database, it is available at ``localhost:5432``.
 
 
-Local Endpoints Used by the Dev Containers
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Local Endpoints Served by the Dev Containers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 +------------------------+---------------------------------------------------------------------------------+
 | Port                   | Application                                                                     |
