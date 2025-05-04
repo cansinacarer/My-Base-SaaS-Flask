@@ -192,6 +192,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">app.utilities.user_registration_actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">new_user_actions_for_email_confirmed</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">app.utilities.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_n_digit_code</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">app.utilities.error_handlers</span><span class="w"> </span><span class="kn">import</span> <span class="n">error_page</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">app.utilities.recaptcha</span><span class="w"> </span><span class="kn">import</span> <span class="n">verify_recaptcha</span>
 
 <div class="viewcode-block" id="auth_bp">
 <a class="viewcode-back" href="../../autoapi/app/views_auth/index.html#app.views_auth.auth_bp">[docs]</a>
@@ -261,6 +262,18 @@
 
     <span class="c1"># Check if both http method is POST, form is valid, and csrf token is valid</span>
     <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">validate_on_submit</span><span class="p">():</span>
+        <span class="c1"># Verify reCAPTCHA</span>
+        <span class="n">recaptcha_response</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;g-recaptcha-response&quot;</span><span class="p">)</span>
+        <span class="n">recaptcha_verified</span> <span class="o">=</span> <span class="n">verify_recaptcha</span><span class="p">(</span><span class="n">recaptcha_response</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">remote_addr</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">recaptcha_verified</span><span class="p">:</span>
+            <span class="n">flash</span><span class="p">(</span>
+                <span class="s1">&#39;Please check the box next to the phrase &quot;I</span><span class="se">\&#39;</span><span class="s1">m not a robot&quot;.&#39;</span><span class="p">,</span> <span class="s2">&quot;danger&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span>
+                <span class="s2">&quot;public/auth/register.html&quot;</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">,</span> <span class="n">success</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">current_user</span>
+            <span class="p">)</span>
+
         <span class="c1"># assign form data to variables</span>
         <span class="n">email</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;email&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
         <span class="n">password</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
@@ -346,6 +359,18 @@
 
     <span class="c1"># Check if both http method is POST, form is valid, and csrf token is valid</span>
     <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">validate_on_submit</span><span class="p">():</span>
+        <span class="c1"># Verify reCAPTCHA</span>
+        <span class="n">recaptcha_response</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;g-recaptcha-response&quot;</span><span class="p">)</span>
+        <span class="n">recaptcha_verified</span> <span class="o">=</span> <span class="n">verify_recaptcha</span><span class="p">(</span><span class="n">recaptcha_response</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">remote_addr</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">recaptcha_verified</span><span class="p">:</span>
+            <span class="n">flash</span><span class="p">(</span>
+                <span class="s1">&#39;Please check the box next to the phrase &quot;I</span><span class="se">\&#39;</span><span class="s1">m not a robot&quot;.&#39;</span><span class="p">,</span> <span class="s2">&quot;danger&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span>
+                <span class="s2">&quot;public/auth/login.html&quot;</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">,</span> <span class="n">success</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">current_user</span>
+            <span class="p">)</span>
+
         <span class="c1"># Assign form data to variables</span>
         <span class="n">email</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;email&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
         <span class="n">password</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>

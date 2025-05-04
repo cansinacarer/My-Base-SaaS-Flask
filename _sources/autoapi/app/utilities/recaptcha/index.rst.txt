@@ -1,0 +1,30 @@
+app.utilities.recaptcha
+=======================
+
+.. py:module:: app.utilities.recaptcha
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   app.utilities.recaptcha.verify_recaptcha
+
+
+Module Contents
+---------------
+
+.. py:function:: verify_recaptcha(recaptcha_response, remote_ip)
+
+   Verify the reCAPTCHA response.
+
+   :param recaptcha_response: The response token from the reCAPTCHA widget.
+   :type recaptcha_response: str
+   :param remote_ip: The IP address of the user.
+   :type remote_ip: str
+
+   :returns: True if verification succeeded, False otherwise.
+   :rtype: bool
+
+

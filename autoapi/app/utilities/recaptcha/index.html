@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>app.utilities.qr &mdash; Cansin&#39;s Base SaaS (Flask) v1.0.1 documentation</title>
+  <title>app.utilities.recaptcha &mdash; Cansin&#39;s Base SaaS (Flask) v1.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
@@ -20,8 +20,8 @@
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
-    <link rel="next" title="app.utilities.recaptcha" href="../recaptcha/index.html" />
-    <link rel="prev" title="app.utilities.object_storage" href="../object_storage/index.html" /> 
+    <link rel="next" title="app.utilities.stripe_event_handler" href="../stripe_event_handler/index.html" />
+    <link rel="prev" title="app.utilities.qr" href="../qr/index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -140,9 +140,9 @@
           <li class="breadcrumb-item"><a href="../../../index.html">Auto Generated Documentation</a></li>
           <li class="breadcrumb-item"><a href="../../index.html">app</a></li>
           <li class="breadcrumb-item"><a href="../index.html">app.utilities</a></li>
-      <li class="breadcrumb-item active">app.utilities.qr</li>
+      <li class="breadcrumb-item active">app.utilities.recaptcha</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../../../_sources/autoapi/app/utilities/qr/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../../../_sources/autoapi/app/utilities/recaptcha/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -150,14 +150,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-app.utilities.qr">
-<span id="app-utilities-qr"></span><h1>app.utilities.qr<a class="headerlink" href="#module-app.utilities.qr" title="Link to this heading"></a></h1>
+  <section id="module-app.utilities.recaptcha">
+<span id="app-utilities-recaptcha"></span><h1>app.utilities.recaptcha<a class="headerlink" href="#module-app.utilities.recaptcha" title="Link to this heading"></a></h1>
 <section id="functions">
 <h2>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#app.utilities.qr.qrcode_img_src" title="app.utilities.qr.qrcode_img_src"><code class="xref py py-obj docutils literal notranslate"><span class="pre">qrcode_img_src</span></code></a>(qr_string)</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#app.utilities.recaptcha.verify_recaptcha" title="app.utilities.recaptcha.verify_recaptcha"><code class="xref py py-obj docutils literal notranslate"><span class="pre">verify_recaptcha</span></code></a>(recaptcha_response, remote_ip)</p></td>
+<td><p>Verify the reCAPTCHA response.</p></td>
 </tr>
 </tbody>
 </table>
@@ -165,9 +165,24 @@
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="app.utilities.qr.qrcode_img_src">
-<span class="sig-prename descclassname"><span class="pre">app.utilities.qr.</span></span><span class="sig-name descname"><span class="pre">qrcode_img_src</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qr_string</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/app/utilities/qr.html#qrcode_img_src"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.utilities.qr.qrcode_img_src" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="app.utilities.recaptcha.verify_recaptcha">
+<span class="sig-prename descclassname"><span class="pre">app.utilities.recaptcha.</span></span><span class="sig-name descname"><span class="pre">verify_recaptcha</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">recaptcha_response</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remote_ip</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/app/utilities/recaptcha.html#verify_recaptcha"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.utilities.recaptcha.verify_recaptcha" title="Link to this definition"></a></dt>
+<dd><p>Verify the reCAPTCHA response.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>recaptcha_response</strong> (<em>str</em>) – The response token from the reCAPTCHA widget.</p></li>
+<li><p><strong>remote_ip</strong> (<em>str</em>) – The IP address of the user.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if verification succeeded, False otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 </section>
@@ -176,8 +191,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../object_storage/index.html" class="btn btn-neutral float-left" title="app.utilities.object_storage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../recaptcha/index.html" class="btn btn-neutral float-right" title="app.utilities.recaptcha" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../qr/index.html" class="btn btn-neutral float-left" title="app.utilities.qr" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../stripe_event_handler/index.html" class="btn btn-neutral float-right" title="app.utilities.stripe_event_handler" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

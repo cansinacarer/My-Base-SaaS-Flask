@@ -14,6 +14,7 @@ Submodules
    /autoapi/app/utilities/helpers/index
    /autoapi/app/utilities/object_storage/index
    /autoapi/app/utilities/qr/index
+   /autoapi/app/utilities/recaptcha/index
    /autoapi/app/utilities/stripe_event_handler/index
    /autoapi/app/utilities/user_registration_actions/index
 

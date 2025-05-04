@@ -62,6 +62,7 @@ Features
 
    -  Two factor authentication (TOTP only),
    -  Forgot password flow,
+   -  reCAPTCHA v2 for sign up and login forms,
    -  Account details page where the user can:
 
       -  Upload a profile picture (stored in S3),

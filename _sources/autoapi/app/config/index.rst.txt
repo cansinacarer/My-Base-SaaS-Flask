@@ -121,6 +121,12 @@ Module Contents
    .. py:attribute:: GOOGLE_CLIENT_SECRET
 
 
+   .. py:attribute:: RECAPTCHA_SITE_KEY
+
+
+   .. py:attribute:: RECAPTCHA_SECRET_KEY
+
+
    .. py:attribute:: STRIPE_PUBLISHABLE_KEY
 
 
