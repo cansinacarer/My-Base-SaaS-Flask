@@ -135,6 +135,34 @@ are created, a free tier is automatically added in the Tiers table.
 
         Users }o--|| Tiers : "has"
 
+Updating the Database Model
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To ensure that the database schema is updated without losing existing data, we use database migrations with ``Flask-Migrate``. This uses ``Alembic`` under the hood to manage database migrations. Here are the steps to update the database model:
+
+1. Update the models in ``app/models.py`` as needed.
+
+2. In the dev container terminal, run the following command to create a new migration script:
+
+   ``flask db migrate -m "Description of the change"``
+
+3. Then run the following command to apply the migration to the local test database in your dev container:
+
+   ``flask db upgrade``
+
+4. Test the changes in the app.
+
+5. Commit the changes, including the migration script in the ``migrations/versions`` directory.
+
+6. When you push the changes to the remote repository, the CI/CD pipeline will automatically apply the migration to the production database.
+
+If you have already made changes to the database model before, I recommend not pulling the ``/migrations`` directory from this repository, and instead re-initialize the migrations with:
+
+``flask db init``
+
+Then follow the steps above to create a new migration script and upgrade the database.
+
+
 How to Build On Top of This App
 -------------------------------
 

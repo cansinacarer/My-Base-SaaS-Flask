@@ -75,7 +75,10 @@ window.addEventListener("load", () => mermaid.run());
 <li class="toctree-l3"><a class="reference internal" href="#testing-stripe-webhooks">Testing Stripe Webhooks</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#database-model">Database Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#database-model">Database Model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#updating-the-database-model">Updating the Database Model</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#how-to-build-on-top-of-this-app">How to Build On Top of This App</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#adding-new-pages">Adding New Pages</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#defining-more-configuration-variables">Defining More Configuration Variables</a></li>
@@ -297,7 +300,26 @@ are created, a free tier is automatically added in the Tiers table.</p>
     }
 
     Users }o--|| Tiers : &quot;has&quot;
-    </pre></section>
+    </pre><section id="updating-the-database-model">
+<h3>Updating the Database Model<a class="headerlink" href="#updating-the-database-model" title="Link to this heading"></a></h3>
+<p>To ensure that the database schema is updated without losing existing data, we use database migrations with <code class="docutils literal notranslate"><span class="pre">Flask-Migrate</span></code>. This uses <code class="docutils literal notranslate"><span class="pre">Alembic</span></code> under the hood to manage database migrations. Here are the steps to update the database model:</p>
+<ol class="arabic">
+<li><p>Update the models in <code class="docutils literal notranslate"><span class="pre">app/models.py</span></code> as needed.</p></li>
+<li><p>In the dev container terminal, run the following command to create a new migration script:</p>
+<p><code class="docutils literal notranslate"><span class="pre">flask</span> <span class="pre">db</span> <span class="pre">migrate</span> <span class="pre">-m</span> <span class="pre">&quot;Description</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">change&quot;</span></code></p>
+</li>
+<li><p>Then run the following command to apply the migration to the local test database in your dev container:</p>
+<p><code class="docutils literal notranslate"><span class="pre">flask</span> <span class="pre">db</span> <span class="pre">upgrade</span></code></p>
+</li>
+<li><p>Test the changes in the app.</p></li>
+<li><p>Commit the changes, including the migration script in the <code class="docutils literal notranslate"><span class="pre">migrations/versions</span></code> directory.</p></li>
+<li><p>When you push the changes to the remote repository, the CI/CD pipeline will automatically apply the migration to the production database.</p></li>
+</ol>
+<p>If you have already made changes to the database model before, I recommend not pulling the <code class="docutils literal notranslate"><span class="pre">/migrations</span></code> directory from this repository, and instead re-initialize the migrations with:</p>
+<p><code class="docutils literal notranslate"><span class="pre">flask</span> <span class="pre">db</span> <span class="pre">init</span></code></p>
+<p>Then follow the steps above to create a new migration script and upgrade the database.</p>
+</section>
+</section>
 <section id="how-to-build-on-top-of-this-app">
 <h2>How to Build On Top of This App<a class="headerlink" href="#how-to-build-on-top-of-this-app" title="Link to this heading"></a></h2>
 <section id="adding-new-pages">
