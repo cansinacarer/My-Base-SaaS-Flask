@@ -8,6 +8,29 @@ on:
             - completed
 
 jobs:
+    apply-database-migrations:
+        # Ensure tests passed
+        if: ${{ github.event.workflow_run.conclusion == 'success' && github.ref == 'refs/heads/main' }}
+        runs-on: ubuntu-latest
+        environment: Demo
+
+        steps:
+            - name: Check out repository
+              uses: actions/checkout@v4
+
+            - name: Set up Python
+              uses: actions/setup-python@v4
+              with:
+                  python-version: "3.10"
+
+            - name: Install dependencies
+              run: pip install -r requirements.txt
+
+            - name: Apply database migrations
+              env:
+                  DATABASE_CONNECTION_STRING: ${{ secrets.DATABASE_CONNECTION_STRING }}
+              run: flask db upgrade
+
     build-and-deploy:
         # Ensure tests passed
         if: ${{ github.event.workflow_run.conclusion == 'success' && github.ref == 'refs/heads/main' }}
