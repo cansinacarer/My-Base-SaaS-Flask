@@ -32,6 +32,20 @@
 ### Bug Fixes
 
 * **ci:** add the same set of env variables as those in test ([9704fc0](https://github.com/cansinacarer/My-Base-SaaS-Flask/commit/9704fc0fa5c4e9799d2d9bee25b67b0aa23ed95c))
+* **ci:** we are not doing db migrations on ci ([6bdc9e7](https://github.com/cansinacarer/My-Base-SaaS-Flask/commit/6bdc9e7176ae9727985cac222684373dbd1bb1c9))
+
+
+### Features
+
+* add schema versioning with Flask-Migrate ([00f72f4](https://github.com/cansinacarer/My-Base-SaaS-Flask/commit/00f72f47ac9eee48fa1ea8fadb9977e022b615e2))
+* better navigation on homepage when logged in ([e9c42b4](https://github.com/cansinacarer/My-Base-SaaS-Flask/commit/e9c42b49aadf57dfd3eec47628835e2372c3d059))
+
+# [1.3.0](https://github.com/cansinacarer/My-Base-SaaS-Flask/compare/v1.2.1...v1.3.0) (2025-09-28)
+
+
+### Bug Fixes
+
+* **ci:** add the same set of env variables as those in test ([9704fc0](https://github.com/cansinacarer/My-Base-SaaS-Flask/commit/9704fc0fa5c4e9799d2d9bee25b67b0aa23ed95c))
 
 
 ### Features
