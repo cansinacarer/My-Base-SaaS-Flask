@@ -31,6 +31,7 @@ Attributes
    app.bc
    app.lm
    app.csrf
+   app.migrate
 
 
 Functions
@@ -53,6 +54,8 @@ Package Contents
 .. py:data:: lm
 
 .. py:data:: csrf
+
+.. py:data:: migrate
 
 .. py:function:: create_app(config_class='app.config.Config', test_config=False)
 
