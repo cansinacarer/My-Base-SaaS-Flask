@@ -135,6 +135,9 @@ are created, a free tier is automatically added in the Tiers table.
 
         Users }o--|| Tiers : "has"
 
+How to Build On Top of This App
+-------------------------------
+
 Updating the Database Model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -162,9 +165,6 @@ If you have already made changes to the database model before, I recommend not p
 
 Then follow the steps above to create a new migration script and upgrade the database.
 
-
-How to Build On Top of This App
--------------------------------
 
 Adding New Pages
 ~~~~~~~~~~~~~~~~
