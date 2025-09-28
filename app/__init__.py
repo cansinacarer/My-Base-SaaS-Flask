@@ -21,6 +21,7 @@ db = SQLAlchemy()
 bc = Bcrypt()
 lm = LoginManager()
 csrf = CSRFProtect()
+migrate = Migrate()
 
 
 def create_app(config_class="app.config.Config", test_config=False):
@@ -54,7 +55,7 @@ def create_app(config_class="app.config.Config", test_config=False):
     # Initialize the Flask extensions for the app instance
     mail.init_app(app)
     db.init_app(app)
-    migrate = Migrate(app, db)
+    migrate.init_app(app, db)
     bc.init_app(app)
     lm.init_app(app)
     csrf.init_app(app)
