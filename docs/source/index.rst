@@ -33,8 +33,8 @@ Related links:
 
 
 
-.. |Uptime| image:: https://uptime.apps.cansin.net/api/badge/5/uptime
-   :target: https://uptime.apps.cansin.net/status/base-saas-flask-demo
+.. |Uptime| image:: https://uptime.apps2.cansin.net/api/badge/5/uptime
+   :target: https://uptime.apps2.cansin.net/status/base-saas-flask-demo
 .. |Test Coverage| image:: https://raw.githubusercontent.com/cansinacarer/My-Base-SaaS-Flask/main/tests/coverage/coverage-badge.svg
 .. |Last Commit| image:: https://img.shields.io/github/last-commit/cansinacarer/My-Base-SaaS-Flask?color=blue
 .. |Code Style| image:: https://img.shields.io/badge/code%20style-black-000000
