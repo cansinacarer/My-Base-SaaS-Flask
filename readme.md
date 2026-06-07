@@ -2,7 +2,7 @@
 
 [![Docs](https://img.shields.io/badge/Docs-blue?&logo=read-the-docs&logoColor=white)](https://cansinacarer.github.io/My-Base-SaaS-Flask/)
 ![Test Coverage](tests/coverage/coverage-badge.svg)
-[![Uptime](https://uptime.apps2.cansin.net/api/badge/5/uptime)](https://uptime.apps2.cansin.net/status/base-saas-flask-demo)
+[![Uptime](https://uptime.apps3.cansin.net/api/badge/5/uptime)](https://uptime.apps3.cansin.net/status/base-saas-flask-demo)
 ![Last Commit](https://img.shields.io/github/last-commit/cansinacarer/My-Base-SaaS-Flask?color=blue)
 [![Code Style](https://img.shields.io/badge/code%20style-black-000000)](https://github.com/psf/black)
 
